@@ -2,3 +2,5 @@ script.R
 testing.R
 .Rbuildignore
 .Rhistory
+.Rproj.user
+fasttrack.Rproj
