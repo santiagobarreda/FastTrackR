@@ -4,18 +4,17 @@
 \alias{contours}
 \title{Plot formant contours from aggregated files}
 \usage{
-contours()
+contours(path)
 }
 \arguments{
 \item{path}{The path to your Fast Track working directory.}
 }
 \value{
-A list containing the formnt objects as data frames.
+A list containing the formant objects as data frames.
 }
 \description{
 Plot formant contours from aggregated files
 }
 \examples{
 1+1
-
 }

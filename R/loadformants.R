@@ -4,7 +4,6 @@
 #' @return A list containing the formnt objects as data frames.
 #' @examples
 #' 1+1
-#'
 
 loadformants <- function(path) {
   print("Hello, world!")

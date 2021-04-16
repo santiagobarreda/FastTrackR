@@ -17,5 +17,4 @@ Load Praat formant objects
 }
 \examples{
 1+1
-
 }
