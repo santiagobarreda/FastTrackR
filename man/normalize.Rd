@@ -4,17 +4,23 @@
 \alias{normalize}
 \title{Normalize aggregated data}
 \usage{
-normalize(aggregated_data)
+normalize(aggregated_data, talker = NA)
 }
 \arguments{
 \item{aggregated_data}{A dataframe representing data aggregated by Fast Track.}
+
+\item{talker}{an optional vector indicating which talker produced each row in the data.}
 }
 \value{
 Another dataframe with normalized formant frequencies.
 }
 \description{
-Normalize aggregated data
+Normalize formant frequencies using the log mean method outlined in Barreda and Nearey (2018). This approach is robust to unbalanced and missing data and is appropriate to use with formant contours. If you do not provide a vector of talkers, the data is assumed to be produced by a single talker.
 }
 \examples{
-1+1
+data (aggregated_data)
+normalize (aggregated_data)
+}
+\references{
+Barreda, S., & Nearey, T. M. (2018). A regression approach to vowel normalization for missing and unbalanced data. The Journal of the Acoustical Society of America, 144(1), 500-520.
 }

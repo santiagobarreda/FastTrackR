@@ -9,6 +9,9 @@ readformants(path = NA)
 \arguments{
 \item{path}{the path to the working directory for the Fast Track project.}
 }
+\value{
+A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.
+}
 \description{
 If no path is provided the working directory is assumed to be the Fast Track directory. This is recommended as it means that is means all reading/writing can be done without ever providing a path.
 }

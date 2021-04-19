@@ -9,6 +9,9 @@ readcsvs(path = NA)
 \arguments{
 \item{path}{the path to the working directory for the Fast Track project.}
 }
+\value{
+A list of dataframes, one containing the data from each csv file. Each dataframe is named after the data filename.
+}
 \description{
 If no path is provided the working directory is assumed to be the Fast Track directory. This is recommended as it means that is means all reading/writing can be done without ever providing a path.
 }
