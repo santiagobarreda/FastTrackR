@@ -36,7 +36,7 @@ ft.points(
 \item{...}{Additional arguments are passed to the internal call of 'text'.}
 }
 \description{
-Plot labels at specific points long formant trajectories.
+Plot labels at specific points along formant trajectories.
 }
 \examples{
 data(aggregated_data)

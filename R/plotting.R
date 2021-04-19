@@ -116,7 +116,7 @@ ft.arrows <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 
 #' Plot points
 #'
-#' Plot labels at specific points long formant trajectories.
+#' Plot labels at specific points along formant trajectories.
 #'
 #' @param aggregated_data A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.
 #' @param xformant an integer indicating which formant number should be plotted on the x axis.
