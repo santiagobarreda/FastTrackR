@@ -30,5 +30,5 @@ ft.plot(
 \item{...}{Additional arguments are passed to the internal call of 'plot'.}
 }
 \description{
-Set up a plot aggregated files
+Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions.
 }

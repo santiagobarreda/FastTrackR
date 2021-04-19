@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting.R
 \name{ft.points}
 \alias{ft.points}
-\title{Plot formant contours from aggregated files}
+\title{Plot points}
 \usage{
 ft.points(
   aggregated_data,
@@ -36,7 +36,7 @@ ft.points(
 \item{...}{Additional arguments are passed to the internal call of 'text'.}
 }
 \description{
-Plot formant contours from aggregated files
+Plot labels at specific points long formant trajectories.
 }
 \examples{
 data(aggregated_data)

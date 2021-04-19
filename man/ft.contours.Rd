@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting.R
 \name{ft.contours}
 \alias{ft.contours}
-\title{Plot formant contours from aggregated files}
+\title{Plot formant contours}
 \usage{
 ft.contours(
   aggregated_data,
@@ -39,7 +39,7 @@ ft.contours(
 \item{...}{Additional arguments are passed to the internal call of 'lines'.}
 }
 \description{
-Plot formant contours from aggregated files
+Draws lines representing formant contours using the information represented in aggregated data files.
 }
 \examples{
 data(aggregated_data)

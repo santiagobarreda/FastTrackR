@@ -1,6 +1,6 @@
 #' Plot an aggregated file
 #'
-#' Set up a plot aggregated files
+#' Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions.
 #'
 #' @param aggregated_data A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.
 #' @param xformant an integer indicating which formant number should be plotted on the x axis.
@@ -48,7 +48,9 @@ ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 }
 
 
-#' Plot formant contours from aggregated files
+#' Plot formant contours
+#'
+#' Draws lines representing formant contours using the information represented in aggregated data files.
 #'
 #' @param aggregated_data A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.
 #' @param xformant an integer indicating which formant number should be plotted on the x axis.
@@ -80,7 +82,9 @@ ft.contours <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 }
 
 
-#' Plot formant contours from aggregated files
+#' Plot arrows
+#'
+#' Add arrows to the end of contours made by the ft.contour function.
 #'
 #' @param aggregated_data A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.
 #' @param xformant an integer indicating which formant number should be plotted on the x axis.
@@ -110,7 +114,9 @@ ft.arrows <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   }
 }
 
-#' Plot formant contours from aggregated files
+#' Plot points
+#'
+#' Plot labels at specific points long formant trajectories.
 #'
 #' @param aggregated_data A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.
 #' @param xformant an integer indicating which formant number should be plotted on the x axis.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting.R
 \name{ft.arrows}
 \alias{ft.arrows}
-\title{Plot formant contours from aggregated files}
+\title{Plot arrows}
 \usage{
 ft.arrows(
   aggregated_data,
@@ -36,7 +36,7 @@ ft.arrows(
 \item{...}{Additional arguments are passed to the internal call of 'arrows'.}
 }
 \description{
-Plot formant contours from aggregated files
+Add arrows to the end of contours made by the ft.contour function.
 }
 \examples{
 data(aggregated_data)
