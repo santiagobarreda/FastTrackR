@@ -2,10 +2,9 @@ Package: fasttrackr
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Santiago Barreda
+Maintainer: Santiago Barreda <sbarreda@ucdavis.edu>
+Description: Facilitation of integration with Fast TRack formant data generated using Praat. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
