@@ -4,7 +4,7 @@
 \alias{readformants}
 \title{Load Fast Track formant objects}
 \usage{
-readformants(path = NA)
+readformants(path)
 }
 \arguments{
 \item{path}{the path to the working directory for the Fast Track project.}

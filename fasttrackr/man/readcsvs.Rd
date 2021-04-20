@@ -4,7 +4,7 @@
 \alias{readcsvs}
 \title{Load Fast Track csv files}
 \usage{
-readcsvs(path = NA)
+readcsvs(path)
 }
 \arguments{
 \item{path}{the path to the working directory for the Fast Track project.}

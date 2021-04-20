@@ -11,8 +11,8 @@
 #' csvs = readcsvs ()
 #' }
 
-readcsvs <- function (path=NA){
-  if (is.na(path)) path = getwd()
+readcsvs <- function (path){
+  if (missing(path)) path = getwd()
   files = list.files (paste0(path,"/csvs"),full.names=TRUE)
   file_names = list.files (paste0(path,"/csvs"))
   file_names = substr (file_names,1, nchar(file_names)-4)
@@ -39,8 +39,8 @@ readcsvs <- function (path=NA){
 #' csvs = readformants ()
 #' }
 
-readformants <- function (path=NA){
-  if (is.na(path)) path = getwd()
+readformants <- function (path){
+  if (missing(path)) path = getwd()
   info = readLines (list.files (paste0(path,"/infos"),full.names=TRUE)[1])
   nsteps = as.numeric (info[3])
   nf = as.numeric (info[9])
