@@ -6,6 +6,7 @@
 #' @param talker an optional vector indicating which talker produced each row in the data.
 #' @return Another dataframe with normalized formant frequencies.
 #' @references Barreda, S., & Nearey, T. M. (2018). A regression approach to vowel normalization for missing and unbalanced data. The Journal of the Acoustical Society of America, 144(1), 500-520.
+#' @export
 #' @examples
 #' data (aggregated_data)
 #' normalize (aggregated_data)
