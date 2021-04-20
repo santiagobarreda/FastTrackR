@@ -10,6 +10,8 @@ ft.plot(
   yformant = 2,
   revaxes = FALSE,
   logaxes = FALSE,
+  xlab,
+  ylab,
   add = FALSE,
   ...
 )
@@ -24,6 +26,10 @@ ft.plot(
 \item{revaxes}{if TRUE, axis ranges are inverted so that they go high > low.}
 
 \item{logaxes}{if TRUE, axes are logarithmic.}
+
+\item{xlab}{an optional user-specified x-axis label.}
+
+\item{ylab}{an optional user-specified y-axis label.}
 
 \item{add}{if FALSE, a new plot if created.}
 

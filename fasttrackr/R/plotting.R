@@ -7,12 +7,14 @@
 #' @param yformant an integer indicating which formant number should be plotted on the y axis.
 #' @param revaxes if TRUE, axis ranges are inverted so that they go high > low.
 #' @param logaxes if TRUE, axes are logarithmic.
+#' @param xlab an optional user-specified x-axis label.
+#' @param ylab an optional user-specified y-axis label.
 #' @param add if FALSE, a new plot if created.
 #' @param ... Additional arguments are passed to the internal call of 'plot'.
 #' @export
 
 ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
-                    logaxes=FALSE, add=FALSE,...){
+                    logaxes=FALSE, xlab, ylab, add=FALSE,...){
 
   n = nrow (aggregated_data)
   nf = as.numeric (substr (utils::tail(colnames(aggregated_data),1),2,2))
@@ -39,8 +41,8 @@ ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   if (revaxes){ xrange = rev (xrange); yrange = rev (yrange) }
   log=""
   if (logaxes) log="xy"
-  xlab = paste0 ("F",xformant," (Hz)")
-  ylab = paste0 ("F",yformant," (Hz)")
+  if (missing (xlab)) xlab = paste0 ("F",xformant," (Hz)")
+  if (missing (ylab)) ylab = paste0 ("F",yformant," (Hz)")
 
   if (!add) plot (0,type='n',xlim=xrange,ylim=yrange,xlab=xlab,ylab=ylab,log=log,...)
 
@@ -51,7 +53,7 @@ ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 
 #' Plot formant contours
 #'
-#' Draws lines representing formant contours using the information represented in aggregated data files.
+#' Draws lines representing formant contours using the information represented in aggregated data files. Colors are taken from the 'color' column in the data.
 #'
 #' @param aggregated_data A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.
 #' @param xformant an integer indicating which formant number should be plotted on the x axis.
@@ -66,10 +68,10 @@ ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 #' @export
 #' @examples
 #' data(aggregated_data)
-#' ft.contours (aggregated_data)
-#' ft.contours (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
+#' ft.lines (aggregated_data)
+#' ft.lines (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
 
-ft.contours <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
+ft.lines <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
                      logaxes=FALSE,lwd=2,starttime=0,endtime=0,add=FALSE,...){
 
   output = ft.plot (aggregated_data, xformant=xformant,yformant=yformant,add=add,
@@ -86,7 +88,7 @@ ft.contours <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 
 #' Plot points
 #'
-#' Plot labels at specific points along formant trajectories.
+#' Plot labels at specific points along formant trajectories. Colors and labels are taken from the 'color' column in the data.
 #'
 #' @param aggregated_data A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.
 #' @param xformant an integer indicating which formant number should be plotted on the x axis.
@@ -100,7 +102,7 @@ ft.contours <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 #' @export
 #' @examples
 #' data(aggregated_data)
-#' ft.contours (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
+#' ft.lines (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
 #' ft.arrows (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
 #' ft.points (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
 
@@ -119,7 +121,7 @@ ft.points <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 
 #' Plot arrows
 #'
-#' Add arrows to the end of contours made by the ft.contour function.
+#' Add arrows to the end of contours made by the ft.contour function. Colors are taken from the 'color' column in the data.
 #'
 #' @param aggregated_data A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.
 #' @param xformant an integer indicating which formant number should be plotted on the x axis.
@@ -133,7 +135,7 @@ ft.points <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
 #' @export
 #' @examples
 #' data(aggregated_data)
-#' ft.contours (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
+#' ft.lines (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
 #' ft.arrows (aggregated_data, xformant=2,yformant=1,revaxes=TRUE)
 
 ft.arrows <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,

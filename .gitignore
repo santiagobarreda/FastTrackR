@@ -1,8 +1,11 @@
-script.R
-testing.R
-.Rbuildignore
-.Rhistory
-.Rproj.user
-fasttrack.Rproj
 tmp
 todo.txt
+script.R
+testing.R
+
+fasttrackr/.Rproj.user
+fasttrackr/.Rbuildignore
+fasttrackr/.Rhistory
+fasttrackr/fasttrack.Rproj
+
+
