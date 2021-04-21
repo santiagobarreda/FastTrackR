@@ -4,14 +4,15 @@
 #' If no path is provided the working directory is assumed to be the Fast Track directory. This is recommended as it means that is means all reading/writing can be done without ever providing a path.
 #'
 #' @param path the path to the working directory for the Fast Track project.
-#' @return A list of dataframes, one containing the data from each csv file. Each dataframe is named after the data filename.
+#' @param asone if TRUE, the csv files are all stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.
+#' @return A dataframe or list of dataframes, as per the asone parameter.
 #' @export
 #' @examples
 #' \dontrun{
 #' csvs = readcsvs ()
 #' }
 
-readcsvs <- function (path){
+readcsvs <- function (path, asone = TRUE){
   if (missing(path)) path = getwd()
   files = list.files (paste0(path,"/csvs"),full.names=TRUE)
   file_names = list.files (paste0(path,"/csvs"))
@@ -20,8 +21,10 @@ readcsvs <- function (path){
   csvs = list()
   for (i in 1:length(files)){
     csvs[[i]] = utils::read.csv (files[i])
-    names (csvs)[i] = file_names[i]
+    if (!asone) names (csvs)[i] = file_names[i]
+    if (asone) csvs[[i]]$filename = file_names[i]
   }
+  if (asone) csvs = do.call (rbind, csvs)
 
   return (csvs)
 }

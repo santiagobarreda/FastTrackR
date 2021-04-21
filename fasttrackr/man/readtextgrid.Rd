@@ -17,7 +17,7 @@ Create a list of dataframes from a textgrid. Each list element is a dataframe re
 }
 \examples{
 \dontrun{
-path = "/textgrids/your-textgrid-file.TextGrid"
+path = "../example data/textgrids/NCF011_01-02-long.TextGrid"
 readtextgrid (path)
 }
 }
