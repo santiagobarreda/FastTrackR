@@ -1,9 +1,9 @@
 
 #' Load Fast Track csv files
 #'
-#' If no path is provided the working directory is assumed to be the Fast Track directory. This is recommended as it means that is means all reading/writing can be done without ever providing a path.
 #'
-#' @param path the path to the working directory for the Fast Track project.
+#'
+#' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
 #' @param asone if TRUE, the csv files are all stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.
 #' @return A dataframe or list of dataframes, as per the asone parameter.
 #' @export
@@ -22,19 +22,18 @@ readcsvs <- function (path, asone = TRUE){
   for (i in 1:length(files)){
     csvs[[i]] = utils::read.csv (files[i])
     if (!asone) names (csvs)[i] = file_names[i]
-    if (asone) csvs[[i]]$filename = file_names[i]
+    if (asone) csvs[[i]]$file = file_names[i]
   }
   if (asone) csvs = do.call (rbind, csvs)
-
   return (csvs)
 }
 
 
 #' Load Fast Track formant objects
 #'
-#' If no path is provided the working directory is assumed to be the Fast Track directory. This is recommended as it means that is means all reading/writing can be done without ever providing a path.
 #'
-#' @param path the path to the working directory for the Fast Track project.
+#'
+#' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
 #' @return A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.
 #' @export
 #' @examples
@@ -71,5 +70,6 @@ readformants <- function (path){
       formants[[i]][[j]] = tmp
     }
   }
+  return (formants)
 }
 

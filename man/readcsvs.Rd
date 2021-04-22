@@ -7,7 +7,7 @@
 readcsvs(path, asone = TRUE)
 }
 \arguments{
-\item{path}{the path to the working directory for the Fast Track project.}
+\item{path}{the path to the working directory for the Fast Track project. If no path is provided this is the working directory.}
 
 \item{asone}{if TRUE, the csv files are all stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.}
 }
@@ -15,7 +15,7 @@ readcsvs(path, asone = TRUE)
 A dataframe or list of dataframes, as per the asone parameter.
 }
 \description{
-If no path is provided the working directory is assumed to be the Fast Track directory. This is recommended as it means that is means all reading/writing can be done without ever providing a path.
+Load Fast Track csv files
 }
 \examples{
 \dontrun{
