@@ -49,7 +49,7 @@ writeformants <- function (formants, path){
              0,
              time_step,
              0.025, # first analysis
-             6) # maximum number of formants
+             nf) # maximum number of formants
 
 
   for (i in 1:length(snd_files)){
