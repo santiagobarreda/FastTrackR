@@ -7,3 +7,4 @@ testing.R
 .Rhistory
 fasttrack.Rproj
 .Rproj.user
+*.RDS
