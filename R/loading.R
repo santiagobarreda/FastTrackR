@@ -55,6 +55,8 @@ readformants <- function (path){
     for (j in 1:nsteps){
 
       tmp = utils::read.csv (files[i])[,1]
+      w1 = tmp[6]
+      timestep = tmp[5]
       tmp = tmp[-c(1:7)]
       len1 = which (nchar (tmp)==1)
       tmp = as.numeric (tmp)
