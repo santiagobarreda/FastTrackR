@@ -29,13 +29,13 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
   nfft = 2^(ceiling(log2(windowlength_pts)))
 
   window <- phonTools::windowfunc(windowlength_pts, "gaussian")
-  snd_matrix = (sapply (spots, function (x) snd[x:(x+windowlength_pts-1)]*window))
+  snd_matrix = (sapply (spots, function (x) sound[x:(x+windowlength_pts-1)]*window))
   zeros = matrix (0, nfft-windowlength_pts, ncol (snd_matrix))
   snd_matrix = rbind (snd_matrix, zeros)
 
-  spect <- mvfft(snd_matrix)
+  spect <- stats::mvfft(snd_matrix)
   spect = abs(spect)^2
-  r <- Re(mvfft(spect,inverse=TRUE))
+  r <- Re(stats::mvfft(spect,inverse=TRUE))
   r <- r[1:(nfft/2),]
 
   coeffs <- suppressWarnings (signal::levinson(x = r, p = 11))$a
