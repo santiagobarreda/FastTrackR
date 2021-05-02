@@ -28,8 +28,8 @@ autoselectwinners <- function (formants, order = 5, method = "classic", subset =
       for (k in 1:nf){
         tmp_ff = formants[[i]][[j]][,k]
         xs = makepredictors (length (tmp_ff), order = order)
-        mod = lm (tmp_ff ~ 0 + xs)
-        errors[i,j] = errors[i,j] + sd(mod$residuals)
+        mod = stats::lm (tmp_ff ~ 0 + xs)
+        errors[i,j] = errors[i,j] + stats::sd(mod$residuals)
       }
     }
   }
