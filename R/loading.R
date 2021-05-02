@@ -46,6 +46,7 @@ readformants <- function (path){
   info = readLines (list.files (paste0(path,"/infos"),full.names=TRUE)[1])
   nsteps = as.numeric (info[3])
   nf = as.numeric (info[9])
+  cutoffs = as.numeric (strsplit (info[5], split=" ")[[1]])
 
   files = list.files (paste0(path,"/formants"),full.names=TRUE)
 
@@ -73,6 +74,12 @@ readformants <- function (path){
       formants[[i]][[j]] = tmp
     }
   }
+  attr(formants, "object") = "formants"
+  attr(formants, "cutoffs") = cutoffs
   return (formants)
 }
+
+
+
+
 
