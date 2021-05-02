@@ -49,12 +49,13 @@ readformants <- function (path){
 
   files = list.files (paste0(path,"/formants"),full.names=TRUE)
 
+  count = 0
   formants = list()
   for (i in 1:(length(files)/nsteps)){
     formants[[i]] = list()
     for (j in 1:nsteps){
-
-      tmp = utils::read.csv (files[i])[,1]
+      count = count + 1
+      tmp = utils::read.csv (files[count])[,1]
       w1 = tmp[6]
       timestep = tmp[5]
       tmp = tmp[-c(1:7)]
