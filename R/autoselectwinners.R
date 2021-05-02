@@ -13,15 +13,18 @@
 #' autoselectwinners (formants)
 #' }
 
-autoselectwinners <- function (formants, order = 5, method = "classic"){
+autoselectwinners <- function (formants, order = 5, method = "classic", subset = NA){
 
   n = length (formants)
   nsteps = length (formants[[1]])
   nf = ncol (formants[[1]][[1]])/2
 
+  steps = 1:nsteps
+  if (!is.na(subset)) steps = subset
+
   errors = matrix (0, n, nsteps)
   for (i in 1:n){
-    for (j in 1:nsteps){
+    for (j in steps){
       for (k in 1:nf){
         tmp_ff = formants[[i]][[j]][,k]
         xs = makepredictors (length (tmp_ff), order = order)
@@ -31,7 +34,8 @@ autoselectwinners <- function (formants, order = 5, method = "classic"){
     }
   }
   winners = apply (errors, 1, which.min)
-
+  winners = steps[winners]
+  winners
 }
 
 
