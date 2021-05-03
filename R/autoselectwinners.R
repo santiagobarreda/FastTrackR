@@ -35,6 +35,8 @@ autoselectwinners <- function (formants, order = 5, method = "classic", subset =
   }
   winners = apply (errors, 1, which.min)
   winners = steps[winners]
+  attr(formants, "type") = "fasttrack"
+  attr(formants, "object") = "winners"
   winners
 }
 
