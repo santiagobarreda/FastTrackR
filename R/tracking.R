@@ -197,3 +197,50 @@ getformants = function (coeffs, fs = 1, nreturn=4){
 
 
 
+
+#' Spectrogram
+#'
+#' @param sound a numeric vector representing the sound to be analyzed.
+#' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).
+#' @param windowlength the windowlength specified in seconds.
+#' @param timestep the analysis time step specified in seconds.
+#' @return A matrix representing a spectrogram.
+#' @export
+#' @examples
+#' \dontrun{
+#' sound = tuneR::readWave("yoursound.wav")
+#' spectrogram (sound, maxformant = 5000)
+#' }
+
+spectrogram = function (sound, maxformant = 5000, windowlength = 0.05, timestep = 0.002){
+
+  if (class(sound)=="Wave"){
+    fs = sound@samp.rate
+    sound = sound@left
+  }
+
+  tmp_snd = downsample (snd, fs, maxformant = maxformant)
+  fs = maxformant*2
+  n = length (sound)
+  duration = n / (maxformant*2)
+  spots = round(seq (1/fs,duration-windowlength, 0.002)*fs)
+
+  windowlength_pts <- round(windowlength * fs)
+  window <- phonTools::windowfunc(windowlength_pts, "gaussian")
+  snd_matrix = (sapply (spots, function (x) sound[x:(x+windowlength_pts-1)]*window))
+
+  #nfft = 2^(ceiling(log2(windowlength_pts)))
+  #zeros = matrix (0, nfft-windowlength_pts, ncol (snd_matrix))
+  #snd_matrix = rbind (snd_matrix, zeros)
+
+  spect <- stats::mvfft(snd_matrix)
+  spect = abs(spect)^2
+
+  class(spect) = "fasttrack"
+  attr(spect, "object") = "spectrogram"
+
+  spect
+}
+
+
+
