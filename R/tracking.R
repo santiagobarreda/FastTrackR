@@ -85,7 +85,6 @@ analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
   attr(ffs, "object") = "fileffs"
 
   ffs
-  formants[[i]]
 }
 
 
