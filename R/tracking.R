@@ -22,10 +22,13 @@
 #' }
 
 analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.05,
-                    timestep = 0.002, path = NA, showprogress=TRUE){
+                    timestep = 0.0025, path = NA, showprogress=TRUE){
+
+  # if there is a list of file names read them all in
+  if (length(path)>1) sound = lapply (path, tuneR::readWave)
 
   # if there is a single file run it once
-  if (class(sound)=="Wave" | (!is.na(path) & length(path)==1)){
+  if (class(sound[1])=="Wave" | (length(path)==1)){
     if (!is.na(path)) sound = tuneR::readWave(path)
 
     ffs = analyze.internal (sound, from = from, to = to,
@@ -35,8 +38,6 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
     attr(ffs, "object") = "fileffs"
   }
 
-  # if there is a list of file names read them all in
-  if (length(path)>1) sound = lapply (path, tuneR::readWave)
 
   # if there is a list of wave objects analyze them
   if (class(sound)=="list"){
@@ -53,7 +54,7 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
       attr(ffs[[i]], "object") = "fileffs"
     }
 
-    #ffs = lapply (sound, analyze.internal, fs = fs, from = from, to = to,
+    #ffs = lapply (sound, analyze.internal, from = from, to = to,
     #              nsteps=nsteps, windowlength = windowlength,
     #              timestep = timestep)
 

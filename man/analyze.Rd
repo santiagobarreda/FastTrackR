@@ -10,7 +10,7 @@ analyze(
   to = 6800,
   nsteps = 12,
   windowlength = 0.05,
-  timestep = 0.002,
+  timestep = 0.0025,
   path = NA,
   showprogress = TRUE
 )
