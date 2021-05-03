@@ -1,15 +1,15 @@
 
-#' Analyze sound
+#' Analyze sounds
 #'
 #'
-#' @param sound a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of path to wave files on your hard drive can be provided instead using the path parameter.
+#' @param sound a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of paths to wave files on your hard drive can be provided instead using the path parameter.
 #' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).
 #' @param from the lowest analysis frequency.
 #' @param to the highest analysis frequency.
 #' @param nsteps the number of steps between the lowest and highest analysis frequencies.
 #' @param windowlength the windowlength specified in seconds.
 #' @param timestep the analysis time step specified in seconds.
-#' @param path a vector of file names to be analyzed.
+#' @param path a vector of file names to be analyzed, can be provided instead of the WAve objects directly.
 #' @return A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.
 #' @export
 #' @examples
@@ -21,8 +21,8 @@
 #' trackformants (tmp_snd, maxformant = 5000)
 #' }
 
-analyze = function (sound, from = 4800, to = 6800, nsteps=12,
-                    windowlength = 0.05, timestep = 0.002, path = NA){
+analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.05,
+                    timestep = 0.002, path = NA, showprogress=TRUE){
 
   # if there is a single file run it once
   if (class(sound)=="Wave" | (!is.na(path) & length(path)==1)){
@@ -40,13 +40,23 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12,
 
   # if there is a list of wave objects analyze them
   if (class(sound)=="list"){
-    ffs = lapply (sound, analyze.internal, fs = fs, from = from, to = to,
-                  nsteps=nsteps, windowlength = windowlength,
-                  timestep = timestep)
+    n = length(sound)
+    ffs = list(rep(0, n))
+    if (showprogress) cat ("Analyzing sound... \n")
+    for (i in 1:n){
+      if (showprogress) cat (i, " of ", n, " ...\n")
+      ffs[[i]] = analyze.internal (sound[[i]], fs = fs, from = from, to = to,
+                                   nsteps=nsteps, windowlength = windowlength,
+                                   timestep = timestep)
+    }
+
+    #ffs = lapply (sound, analyze.internal, fs = fs, from = from, to = to,
+    #              nsteps=nsteps, windowlength = windowlength,
+    #              timestep = timestep)
   }
 
-  attr(formants, "type") = "fasttrack"
-  attr(formants, "object") = "formants"
+  attr(ffs, "type") = "fasttrack"
+  attr(ffs, "object") = "formants"
 
   ffs
 }
@@ -76,7 +86,6 @@ analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
 
 #' Track formants
 #'
-#'
 #' @param sound a numeric vector representing the sound to be analyzed.
 #' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).
 #' @param windowlength the windowlength specified in seconds.
@@ -92,7 +101,6 @@ analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
 #' trackformants (tmp_snd, maxformant = 5000)
 #' }
 
-
 trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timestep = 0.002){
 
   fs = maxformant*2
@@ -101,17 +109,17 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
   spots = round(seq (1/fs,duration-windowlength, 0.002)*fs)
 
   windowlength_pts <- round(windowlength * fs)
-  nfft = 2^(ceiling(log2(windowlength_pts)))
-
   window <- phonTools::windowfunc(windowlength_pts, "gaussian")
   snd_matrix = (sapply (spots, function (x) sound[x:(x+windowlength_pts-1)]*window))
-  zeros = matrix (0, nfft-windowlength_pts, ncol (snd_matrix))
-  snd_matrix = rbind (snd_matrix, zeros)
+
+  #nfft = 2^(ceiling(log2(windowlength_pts)))
+  #zeros = matrix (0, nfft-windowlength_pts, ncol (snd_matrix))
+  #snd_matrix = rbind (snd_matrix, zeros)
 
   spect <- stats::mvfft(snd_matrix)
   spect = abs(spect)^2
   r <- Re(stats::mvfft(spect,inverse=TRUE))
-  r <- r[1:(nfft/2),]
+  r <- r[1:(nrow(r)/2),]
 
   coeffs <- suppressWarnings (signal::levinson(x = r, p = 11))$a
   coeffs <- t(coeffs)
