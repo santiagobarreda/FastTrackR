@@ -33,6 +33,8 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
     ffs = analyze.internal (sound, fs = fs, from = from, to = to,
                             nsteps=nsteps, windowlength = windowlength,
                             timestep = timestep)
+    class(ffs) = "fasttrack"
+    attr(ffs, "object") = "fileffs"
   }
 
   # if there is a list of file names read them all in
@@ -56,10 +58,10 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
     #ffs = lapply (sound, analyze.internal, fs = fs, from = from, to = to,
     #              nsteps=nsteps, windowlength = windowlength,
     #              timestep = timestep)
-  }
 
-  class(formants) = "fasttrack"
-  attr(ffs, "object") = "formants"
+    class(ffs) = "fasttrack"
+    attr(ffs, "object") = "formants"
+  }
 
   ffs
 }
@@ -75,7 +77,9 @@ analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
 
   ffs = list(rep(0,nsteps))
   count = nsteps
-  for (i in seq(to,from,length.out=nsteps)){
+  maxformants = round(seq(from,to,length.out=nsteps))
+
+  for (i in rev(maxformants)){
     tmp_snd = downsample (tmp_snd, fs, maxformant = i)
     fs = i*2
     ffs[[count]] = trackformants (tmp_snd,maxformant = i)
@@ -83,10 +87,9 @@ analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
   }
   class(ffs) = "fasttrack"
   attr(ffs, "object") = "fileffs"
-
+  attr(ffs, "maxformants") = maxformants
   ffs
 }
-
 
 
 #' Track formants
@@ -134,6 +137,7 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
 
   class(ffs) = "fasttrack"
   attr(ffs, "object") = "ffs"
+  attr(ffs, "maxformant") = maxformant
 
   ffs
 }
