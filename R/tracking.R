@@ -1,4 +1,79 @@
 
+#' Analyze sound
+#'
+#'
+#' @param sound a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of path to wave files on your hard drive can be provided instead using the path parameter.
+#' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).
+#' @param from the lowest analysis frequency.
+#' @param to the highest analysis frequency.
+#' @param nsteps the number of steps between the lowest and highest analysis frequencies.
+#' @param windowlength the windowlength specified in seconds.
+#' @param timestep the analysis time step specified in seconds.
+#' @param path a vector of file names to be analyzed.
+#' @return A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.
+#' @export
+#' @examples
+#' \dontrun{
+#' sound = tuneR::readWave("yoursound.wav")
+#' snd = sound@left
+#' fs = sound@samp.rate
+#' tmp_snd = downsample (snd, fs, maxformant = 5000)
+#' trackformants (tmp_snd, maxformant = 5000)
+#' }
+
+analyze = function (sound, from = 4800, to = 6800, nsteps=12,
+                    windowlength = 0.05, timestep = 0.002, path = NA){
+
+  # if there is a single file run it once
+  if (class(sound)=="Wave" | (!is.na(path) & length(path)==1)){
+    if (!is.na(path)) sound = tuneR::readWave(path)
+    tmp_snd = sound@left
+    fs = sound@samp.rate
+
+    ffs = analyze.internal (sound, fs = fs, from = from, to = to,
+                            nsteps=nsteps, windowlength = windowlength,
+                            timestep = timestep)
+  }
+
+  # if there is a list of file names read them all in
+  if (length(path)>1) sound = lapply (path, tuneR::readWave)
+
+  # if there is a list of wave objects analyze them
+  if (class(sound)=="list"){
+    ffs = lapply (sound, analyze.internal, fs = fs, from = from, to = to,
+                  nsteps=nsteps, windowlength = windowlength,
+                  timestep = timestep)
+  }
+
+  attr(formants, "type") = "fasttrack"
+  attr(formants, "object") = "formants"
+
+  ffs
+}
+
+
+analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
+                    windowlength = 0.05, timestep = 0.002){
+
+  if (class(tmp_snd)=="Wave"){
+    fs = tmp_snd@samp.rate
+    tmp_snd = tmp_snd@left
+  }
+
+  ffs = list(rep(0,nsteps))
+  count = nsteps
+  for (i in seq(to,from,length.out=nsteps)){
+    tmp_snd = downsample (tmp_snd, fs, maxformant = i)
+    fs = i*2
+    ffs[[count]] = trackformants (tmp_snd,maxformant = i)
+    count = count - 1
+  }
+
+  ffs
+}
+
+
+
 #' Track formants
 #'
 #'
