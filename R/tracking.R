@@ -55,7 +55,7 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
     #              timestep = timestep)
   }
 
-  attr(ffs, "type") = "fasttrack"
+  class(formants) = "fasttrack"
   attr(ffs, "object") = "formants"
 
   ffs
@@ -127,7 +127,7 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
   ffs = t(apply (coeffs,2,getformants, fs=fs,nreturn=4))
   colnames (ffs) = c(paste0("f",1:4),paste0("b",1:4))
 
-  attr(formants, "type") = "fasttrack"
+  class(formants) = "fasttrack"
   attr(formants, "object") = "ffs"
 
   ffs
