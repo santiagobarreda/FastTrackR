@@ -50,3 +50,5 @@ ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   output = list (ffs=ffs, nf=nf, ntimes=ntimes,color=color)
   return (output)
 }
+
+
