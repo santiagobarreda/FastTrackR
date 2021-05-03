@@ -1,10 +1,13 @@
 tmp
 todo.txt
-script.R
-testing.R
 .Rproj.user
 .Rbuildignore
 .Rhistory
 fasttrack.Rproj
 .Rproj.user
 *.RDS
+script.R
+testing.R
+yoursound.wav
+
+
