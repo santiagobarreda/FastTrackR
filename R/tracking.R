@@ -48,6 +48,9 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
       ffs[[i]] = analyze.internal (sound[[i]], fs = fs, from = from, to = to,
                                    nsteps=nsteps, windowlength = windowlength,
                                    timestep = timestep)
+
+      class(ffs[[i]]) = "fasttrack"
+      attr(ffs[[i]], "object") = "fileffs"
     }
 
     #ffs = lapply (sound, analyze.internal, fs = fs, from = from, to = to,
@@ -78,8 +81,11 @@ analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
     ffs[[count]] = trackformants (tmp_snd,maxformant = i)
     count = count - 1
   }
+  class(ffs) = "fasttrack"
+  attr(ffs, "object") = "fileffs"
 
   ffs
+  formants[[i]]
 }
 
 
