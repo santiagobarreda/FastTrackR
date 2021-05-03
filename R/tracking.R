@@ -3,13 +3,13 @@
 #'
 #'
 #' @param sound a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of paths to wave files on your hard drive can be provided instead using the path parameter.
-#' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).
 #' @param from the lowest analysis frequency.
 #' @param to the highest analysis frequency.
 #' @param nsteps the number of steps between the lowest and highest analysis frequencies.
 #' @param windowlength the windowlength specified in seconds.
 #' @param timestep the analysis time step specified in seconds.
 #' @param path a vector of file names to be analyzed, can be provided instead of the WAve objects directly.
+#' @param showprogress if TRUE, analysis progress is shown.
 #' @return A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.
 #' @export
 #' @examples
@@ -70,10 +70,10 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
 analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
                     windowlength = 0.05, timestep = 0.002){
 
-  if (class(tmp_snd)=="Wave"){
-    fs = tmp_snd@samp.rate
-    tmp_snd = tmp_snd@left
-  }
+  if (!class(tmp_snd)=="Wave") stop ("Sound must be a Wave object read in using the tuneR package.")
+
+  fs = tmp_snd@samp.rate
+  tmp_snd = tmp_snd@left
 
   ffs = list(rep(0,nsteps))
   count = nsteps
@@ -111,7 +111,15 @@ analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
 
 trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timestep = 0.002){
 
+  if (!class(sound)=="Wave") stop ("Sound must be a Wave object read in using the tuneR package.")
+
+  fs = sound@samp.rate
+  if (maxformant*2 < fs)
+    sound = tuneR::downsample (sound, maxformant*2)
+
+  sound = sound@left
   fs = maxformant*2
+
   n = length (sound)
   duration = n / (maxformant*2)
   spots = round(seq (1/fs,duration-windowlength, 0.002)*fs)
@@ -147,7 +155,6 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
 #'
 #'
 #' @param sound a numeric vector representing the sound to be analyzed.
-#' @param fs the sampling frequency of the sound (i.e., the Nyquist*2).
 #' @param maxformant the desired maximum analysis frequency (i.e., the new Nyquist/2).
 #' @param precision the number of neighbors used to interpolate.
 #' @return A numeric vector representing the downsampled sound. The new sampling frequency is maxformant*2.
@@ -158,7 +165,12 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
 #' tmp_snd = downsample (snd, fs, maxformant = 5000)
 #' }
 
-downsample = function (sound, fs, maxformant = 5000, precision = 50){
+downsample = function (sound, maxformant = 5000, precision = 50){
+
+  if (!class(sound)=="Wave") stop ("Sound must be a Wave object read in using the tuneR package.")
+
+  tmp_snd = sound@left
+  fs = sound@samp.rate
 
   ratio = (maxformant/fs)*2
   fs = maxformant*2
@@ -166,18 +178,22 @@ downsample = function (sound, fs, maxformant = 5000, precision = 50){
   if (ratio > 1) stop ("Downsampling only, sorry!")
 
   filter = signal::butter (5,ratio)
-  sound = signal::filtfilt (filt = filter, x = sound)
+  tmp_snd = signal::filtfilt (filt = filter, x = tmp_snd)
 
-  newtime = seq(1, length(sound) + 1, by = 1/ratio)
+  newtime = seq(1, length(tmp_snd) + 1, by = 1/ratio)
   nearest = round(newtime)
   offset = newtime - nearest
-  sound = c(rep(0, precision), sound, rep(0, precision + 1))
+  tmp_snd = c(rep(0, precision), tmp_snd, rep(0, precision + 1))
   y = newtime * 0
   for (i in -precision:precision)
-    y = y + sound[nearest + precision + i] * phonTools::sinc(offset - i, normalized = TRUE)
-  y = y / max (y)
+    y = y + tmp_snd[nearest + precision + i] * phonTools::sinc(offset - i, normalized = TRUE)
+  y = (y / max (y)) * 1000
 
-  return(y)
+
+  sound@left = tmp_snd
+  sound@samp.rate = fs
+
+  return(sound)
 }
 
 
@@ -196,14 +212,15 @@ getformants = function (coeffs, fs = 1, nreturn=4){
 
 
 
-
-
 #' Spectrogram
 #'
 #' @param sound a numeric vector representing the sound to be analyzed.
 #' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).
 #' @param windowlength the windowlength specified in seconds.
 #' @param timestep the analysis time step specified in seconds.
+#' @param dynamicrange the dynamic range desired for the spectrogram, in decibels.
+#' @param plot if TRUE, a plot is created.
+#' @param ... Additional arguments are passed to the internal call of 'image'.
 #' @return A matrix representing a spectrogram.
 #' @export
 #' @examples
@@ -212,35 +229,53 @@ getformants = function (coeffs, fs = 1, nreturn=4){
 #' spectrogram (sound, maxformant = 5000)
 #' }
 
-spectrogram = function (sound, maxformant = 5000, windowlength = 0.05, timestep = 0.002){
+spectrogram = function (sound, maxformant = 5000, windowlength = 0.009, timestep = 0.005,
+                        dynamicrange = 60, plot = TRUE, ...){
 
   if (class(sound)=="Wave"){
     fs = sound@samp.rate
-    sound = sound@left
+    tmp_snd = sound@left
   }
+  tmp_snd = signal::filter (.97,1, tmp_snd)
+  if (maxformant*2 < fs)
+    tmp_snd = tuneR::downsample (sound, maxformant*2)
 
-  tmp_snd = downsample (snd, fs, maxformant = maxformant)
   fs = maxformant*2
-  n = length (sound)
+  n = length (tmp_snd)
   duration = n / (maxformant*2)
   spots = round(seq (1/fs,duration-windowlength, 0.002)*fs)
 
   windowlength_pts <- round(windowlength * fs)
   window <- phonTools::windowfunc(windowlength_pts, "gaussian")
-  snd_matrix = (sapply (spots, function (x) sound[x:(x+windowlength_pts-1)]*window))
+  snd_matrix = (sapply (spots, function (x) tmp_snd[x:(x+windowlength_pts-1)]*window))
 
-  #nfft = 2^(ceiling(log2(windowlength_pts)))
-  #zeros = matrix (0, nfft-windowlength_pts, ncol (snd_matrix))
-  #snd_matrix = rbind (snd_matrix, zeros)
+  nfft = 2^(ceiling(log2(windowlength_pts))) * 2
+  zeros = matrix (0, nfft-windowlength_pts, ncol (snd_matrix))
+  snd_matrix = rbind (snd_matrix, zeros)
 
   spect <- stats::mvfft(snd_matrix)
-  spect = abs(spect)^2
+  spect = spect[1:(nrow(spect)/2),]
+  spect = t(abs(spect)^2)
+  spect = log10(spect)*10
+  spect = spect - max(spect)
+  spect[spect < -(dynamicrange)] = -dynamicrange
 
+  times = 1000 * round(spots/fs + windowlength/2 , 4)
+  rownames (spect) = times
+  frequencies = seq (0, (fs/2)-(1/fs), length.out = nfft/2)
+  colnames (spect) = frequencies
+
+  #zcolors = colorRampPalette(c("dark blue", "blue", "cyan", "light green",
+                                #"yellow","orange", "red", "brown"))
+  if (plot){
+    zcolors = grDevices::colorRampPalette(c("white", "black"))
+    zcolors = zcolors(40)
+    graphics::image (times, frequencies, spect,col = zcolors, xlab = "Time (ms)",
+           ylab = "Frequency",...)
+  }
   class(spect) = "fasttrack"
   attr(spect, "object") = "spectrogram"
 
-  spect
+  invisible (spect)
 }
-
-
 
