@@ -27,10 +27,8 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
   # if there is a single file run it once
   if (class(sound)=="Wave" | (!is.na(path) & length(path)==1)){
     if (!is.na(path)) sound = tuneR::readWave(path)
-    tmp_snd = sound@left
-    fs = sound@samp.rate
 
-    ffs = analyze.internal (sound, fs = fs, from = from, to = to,
+    ffs = analyze.internal (sound, from = from, to = to,
                             nsteps=nsteps, windowlength = windowlength,
                             timestep = timestep)
     class(ffs) = "fasttrack"
@@ -47,7 +45,7 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
     if (showprogress) cat ("Analyzing sound... \n")
     for (i in 1:n){
       if (showprogress) cat (i, " of ", n, " ...\n")
-      ffs[[i]] = analyze.internal (sound[[i]], fs = fs, from = from, to = to,
+      ffs[[i]] = analyze.internal (sound[[i]], from = from, to = to,
                                    nsteps=nsteps, windowlength = windowlength,
                                    timestep = timestep)
 
@@ -67,21 +65,17 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
 }
 
 
-analyze.internal = function (tmp_snd, fs, from = 4800, to = 6800, nsteps=12,
+analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
                     windowlength = 0.05, timestep = 0.002){
 
   if (!class(tmp_snd)=="Wave") stop ("Sound must be a Wave object read in using the tuneR package.")
-
-  fs = tmp_snd@samp.rate
-  tmp_snd = tmp_snd@left
 
   ffs = list(rep(0,nsteps))
   count = nsteps
   maxformants = round(seq(from,to,length.out=nsteps))
 
   for (i in rev(maxformants)){
-    tmp_snd = downsample (tmp_snd, fs, maxformant = i)
-    fs = i*2
+    tmp_snd = downsample (tmp_snd, maxformant = i)
     ffs[[count]] = trackformants (tmp_snd,maxformant = i)
     count = count - 1
   }
