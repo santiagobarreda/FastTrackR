@@ -5,6 +5,7 @@
 #' @param formants a list of formant data read in with the readformants function.
 #' @param order the order of the prediction model.
 #' @param method method of selecting the winning analysis.
+#' @param subset a vector indicating a subset of the analyses to be considered.
 #' @return A vector with the winning analysis for each file.
 #' @export
 #' @examples
