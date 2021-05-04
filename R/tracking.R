@@ -15,10 +15,9 @@
 #' @examples
 #' \dontrun{
 #' sound = tuneR::readWave("yoursound.wav")
-#' snd = sound@left
-#' fs = sound@samp.rate
-#' tmp_snd = downsample (snd, fs, maxformant = 5000)
-#' trackformants (tmp_snd, maxformant = 5000)
+#' ffs = analyze (sound)
+#' plotffs (ffs)
+#' plotffs (ffs[[2]])
 #' }
 
 analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.05,
@@ -37,7 +36,6 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
     class(ffs) = "fasttrack"
     attr(ffs, "object") = "fileffs"
   }
-
 
   # if there is a list of wave objects analyze them
   if (class(sound)=="list"){
@@ -67,7 +65,7 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
 
 
 analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
-                    windowlength = 0.05, timestep = 0.002){
+                    windowlength = 0.05, timestep = 0.0025){
 
   if (!class(tmp_snd)=="Wave") stop ("Sound must be a Wave object read in using the tuneR package.")
 
@@ -104,7 +102,7 @@ analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
 #' trackformants (tmp_snd, maxformant = 5000)
 #' }
 
-trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timestep = 0.002){
+trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timestep = 0.0025){
 
   if (!class(sound)=="Wave") stop ("Sound must be a Wave object read in using the tuneR package.")
 
@@ -141,9 +139,12 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
   class(ffs) = "fasttrack"
   attr(ffs, "object") = "ffs"
   attr(ffs, "maxformant") = maxformant
+  attr(ffs, "timestep") = timestep
 
   ffs
 }
+
+
 
 
 #' Downsample
@@ -157,7 +158,7 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
 #' @examples
 #' \dontrun{
 #' sound = tuneR::readWave("yoursound.wav")
-#' tmp_snd = downsample (snd, fs, maxformant = 5000)
+#' tmp_snd = downsample (snd, maxformant = 5000)
 #' }
 
 downsample = function (sound, maxformant = 5000, precision = 50){
@@ -184,8 +185,7 @@ downsample = function (sound, maxformant = 5000, precision = 50){
     y = y + tmp_snd[nearest + precision + i] * phonTools::sinc(offset - i, normalized = TRUE)
   y = (y / max (y)) * 1000
 
-
-  sound@left = tmp_snd
+  sound@left = y
   sound@samp.rate = fs
 
   return(sound)
