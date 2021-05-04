@@ -7,7 +7,7 @@
 spectrogram(
   sound,
   maxformant = 5000,
-  windowlength = 0.009,
+  windowlength = 0.006,
   timestep = 0.005,
   dynamicrange = 60,
   plot = TRUE,
@@ -39,5 +39,7 @@ Spectrogram
 \dontrun{
 sound = tuneR::readWave("yoursound.wav")
 spectrogram (sound, maxformant = 5000)
+ffs = analyze (sound)
+plotffs (ffs[[2]], add = TRUE)
 }
 }

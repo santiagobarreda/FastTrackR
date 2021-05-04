@@ -4,7 +4,7 @@
 \alias{trackformants}
 \title{Track formants}
 \usage{
-trackformants(sound, maxformant = 5000, windowlength = 0.05, timestep = 0.002)
+trackformants(sound, maxformant = 5000, windowlength = 0.05, timestep = 0.0025)
 }
 \arguments{
 \item{sound}{a numeric vector representing the sound to be analyzed.}

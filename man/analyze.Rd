@@ -41,9 +41,8 @@ Analyze sounds
 \examples{
 \dontrun{
 sound = tuneR::readWave("yoursound.wav")
-snd = sound@left
-fs = sound@samp.rate
-tmp_snd = downsample (snd, fs, maxformant = 5000)
-trackformants (tmp_snd, maxformant = 5000)
+ffs = analyze (sound)
+plotffs (ffs)
+plotffs (ffs[[2]])
 }
 }

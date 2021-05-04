@@ -13,6 +13,7 @@ plotffs(
   main = NA,
   colors = NA,
   add = FALSE,
+  spect = NA,
   ...
 )
 }
@@ -33,6 +34,8 @@ plotffs(
 
 \item{add}{if FALSE, a new plot if created.}
 
+\item{spect}{a spectrogram to be shown behind the tracks.}
+
 \item{...}{Additional arguments are passed to the internal call of 'plot'.}
 }
 \description{
@@ -42,7 +45,10 @@ Set up a plot aggregated files. This function does not draw anything but is used
 \dontrun{
 sound = tuneR::readWave("yoursound.wav")
 ffs = analyze (sound)
+spect = spectrogram (sound)
 plotffs (ffs)
+plotffs (ffs, spect = spect)
 plotffs (ffs[[2]])
+plotffs (ffs[[2]], spect = spect)
 }
 }

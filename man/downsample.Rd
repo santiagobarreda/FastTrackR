@@ -22,6 +22,6 @@ Downsample
 \examples{
 \dontrun{
 sound = tuneR::readWave("yoursound.wav")
-tmp_snd = downsample (snd, fs, maxformant = 5000)
+tmp_snd = downsample (snd, maxformant = 5000)
 }
 }
