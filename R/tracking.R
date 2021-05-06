@@ -63,7 +63,7 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
   ffs
 }
 
-
+#' @export
 analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
                     windowlength = 0.05, timestep = 0.0025){
 
@@ -115,7 +115,7 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
 
   n = length (sound)
   duration = n / (maxformant*2)
-  spots = round(seq (1/fs,duration-windowlength, 0.002)*fs)
+  spots = round(seq (1/fs,duration-windowlength, timestep)*fs)
 
   windowlength_pts <- round(windowlength * fs)
   window <- phonTools::windowfunc(windowlength_pts, "gaussian")
@@ -191,7 +191,7 @@ downsample = function (sound, maxformant = 5000, precision = 50){
   return(sound)
 }
 
-
+#' @export
 getformants = function (coeffs, fs = 1, nreturn=4){
 
   roots = polyroot(rev(coeffs))

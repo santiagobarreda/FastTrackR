@@ -1,8 +1,9 @@
 
+#' @export
 '%+%' = function (x,y) paste0 (x,y)
 
 
-
+#' @export
 getnumbers = function (x){
   string = strsplit(x,split="")
   use = suppressWarnings (lapply (string, as.numeric))

@@ -65,6 +65,7 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 }
 
 
+#' @export
 plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
                             main=NA,colors=NA,add=FALSE,...){
 
@@ -114,9 +115,9 @@ plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 #' @examples
 #' \dontrun{
 #' sound = tuneR::readWave("yoursound.wav")
-#' spectrogram (sound, maxformant = 5000)
-#' ffs = analyze (sound)
-#' plotffs (ffs[[2]], add = TRUE)
+#' spect = spectrogram (sound, maxformant = 5000)
+#' ffs = analyze (sound, timestep = 2)
+#' plotffs (ffs[[2]], spect = spect)
 #' }
 
 spectrogram = function (sound, maxformant = 5000, windowlength = 0.006, timestep = 0.005,
