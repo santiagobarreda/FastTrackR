@@ -15,3 +15,8 @@ getnumbers = function (x){
 }
 
 
+
+addzeros = function (nums){
+  toadd = 4-nchar (nums)
+  sapply (1:length (toadd), function (i) paste0 (paste0(rep(0,toadd[i]),collapse=""), nums[i]))
+}
