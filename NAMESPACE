@@ -3,6 +3,7 @@
 export(analyze)
 export(autoselectwinners)
 export(downsample)
+export(extractsounds)
 export(ft.arrows)
 export(ft.lines)
 export(ft.plot)
