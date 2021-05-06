@@ -24,9 +24,6 @@ Track formants
 \examples{
 \dontrun{
 sound = tuneR::readWave("yoursound.wav")
-snd = sound@left
-fs = sound@samp.rate
-tmp_snd = downsample (snd, fs, maxformant = 5000)
-trackformants (tmp_snd, maxformant = 5000)
+trackformants (sound, maxformant = 5000)
 }
 }

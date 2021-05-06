@@ -41,7 +41,7 @@ Analyze sounds
 \examples{
 \dontrun{
 sound = tuneR::readWave("yoursound.wav")
-ffs = analyze (sound)
+ffs = analyze (sound, timestep = 2)
 plotffs (ffs)
 plotffs (ffs[[2]])
 }
