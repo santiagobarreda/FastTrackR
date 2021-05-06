@@ -15,7 +15,7 @@
 #' @examples
 #' \dontrun{
 #' sound = tuneR::readWave("yoursound.wav")
-#' ffs = analyze (sound)
+#' ffs = analyze (sound, timestep = 0.002)
 #' plotffs (ffs)
 #' plotffs (ffs[[2]])
 #' }
@@ -63,7 +63,6 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
   ffs
 }
 
-#' @export
 analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
                     windowlength = 0.05, timestep = 0.0025){
 
@@ -75,7 +74,7 @@ analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
 
   for (i in rev(maxformants)){
     tmp_snd = downsample (tmp_snd, maxformant = i)
-    ffs[[count]] = trackformants (tmp_snd,maxformant = i)
+    ffs[[count]] = trackformants (tmp_snd,maxformant = i,timestep=timestep)
     count = count - 1
   }
   class(ffs) = "fasttrack"
@@ -96,10 +95,7 @@ analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
 #' @examples
 #' \dontrun{
 #' sound = tuneR::readWave("yoursound.wav")
-#' snd = sound@left
-#' fs = sound@samp.rate
-#' tmp_snd = downsample (snd, fs, maxformant = 5000)
-#' trackformants (tmp_snd, maxformant = 5000)
+#' trackformants (sound, maxformant = 5000)
 #' }
 
 trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timestep = 0.0025){
@@ -191,7 +187,7 @@ downsample = function (sound, maxformant = 5000, precision = 50){
   return(sound)
 }
 
-#' @export
+
 getformants = function (coeffs, fs = 1, nreturn=4){
 
   roots = polyroot(rev(coeffs))
