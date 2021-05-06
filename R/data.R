@@ -40,3 +40,18 @@
 
 "coefficients"
 
+
+#' Default set of vowel symbols to extract from Praat TextGrids
+#'
+#' A default set of vowel symbols to extract from Praat TextGrids.
+#'
+#' @section Columns:
+#' \describe{
+#' \item{group}{group number is useless i nthis context, I think, but is maintained to keep the same formatting as in the Praat file. }
+#' \item{label}{the labels used to indicate vowels that should be extracted.}
+#' \item{color}{which color will be used when using some automatic plotting functions. Also more useful in Praat but maintained for consistency.}
+#' }
+#' @source \url{https://github.com/santiagobarreda/FastTrackR}
+
+"vowelstoextract"
+
