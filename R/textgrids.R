@@ -1,4 +1,121 @@
 
+
+
+#' Extract Sounds
+#'
+#' Extracts vowels from larger sounds using information from matching TextGrids.
+#'
+#' @param path the path to the Praat textgrid file you want to read.
+#' @return A list containing 1) information about the extracted vowel sounds, 2) a list containing the extracted vowel sounds as Weve objects.
+#' @export
+#' @examples
+#' \dontrun{
+#' tgpath = "tmp/yoursound2.TextGrid"
+#' sndpath = "tmp/yoursound2.wav"
+#' wordtier = "word"
+#' extractsounds (tgpath)
+#' }
+
+extractsounds = function (tgpath, sndpath, outputpath="output", segmenttier="phone",wordtier=NA,
+                           commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA,writedata=TRUE){
+
+  if (!missing(tgpath) & !missing(sndpath)){
+    base = strsplit (basename (tgpath), split ="\\.")[[1]][1]
+    dirname = dirname (tgpath)
+  }
+  if (!missing(tgpath) & missing(sndpath)){
+    base = strsplit (basename (tgpath), split ="\\.")[[1]][1]
+    dirname = dirname (tgpath)
+    sndpath = dirname %+% "/" %+% base %+% ".wav"
+  }
+  if (missing(tgpath) & !missing(sndpath)){
+    base = strsplit (basename (sndpath), split ="\\.")[[1]][1]
+    dirname = dirname (sndpath)
+    tgpath = dirname %+% "/" %+% base %+% ".TextGrid"
+  }
+
+  if (missing(tgpath) & missing(sndpath)) stop ("No paths provided.")
+
+  tgdata = readtextgrid(tgpath)
+  sound = tuneR::readWave(sndpath)
+  duration = length(sound@left)/sound@samp.rate
+
+  phones = tgdata[[segmenttier]][,1]
+  stresses = NA
+  if (!is.na(stress[1])){
+    stresses = substr( phones , nchar(phones) , nchar(phones))
+    phones = gsub('.{1}$', '', phones)
+  }
+
+  use = phones %in% vowelstoextract[,2]
+  if (!is.na(stress[1])) use = (phones %in% vowelstoextract[,2]) & (stresses %in% stress)
+
+  extract = tgdata[[segmenttier]]
+  extract$interval = 1:nrow(extract)
+  extract = tgdata[[segmenttier]][use,]
+  extract[,1] = phones[use]
+  extract = extract[,c(1,4,2,3)]
+
+  segmentlabels = c("-",tgdata[[segmenttier]]$label,"-")
+  use = which (phones %in% vowelstoextract[,2])
+  extract$previous_sound = segmentlabels[use]
+  extract$next_sound = segmentlabels[use+2]
+
+  if (!is.na(stresses[1])) extract$stress = stresses[use]
+
+  extract$omit = as.numeric (extract$duration < 0.03)
+
+  if (!missing (wordtier)){
+    midpoints = (extract$start+extract$end)/2
+    vowelwordtiers = sapply (1:length (midpoints), function (i){
+      use = (midpoints[i] > tgdata[[wordtier]]$start & midpoints[i] < tgdata[[wordtier]]$end)
+      which.max (use)
+    })
+    wordlabels = c("-",tgdata[[wordtier]]$label,"-")
+    extract$word = wordlabels[vowelwordtiers+1]
+    extract$word_interval = vowelwordtiers
+
+    extract$word_start = tgdata[[word]]$start[vowelwordtiers]
+    extract$word_end = tgdata[[word]]end[vowelwordtiers]
+
+    extract$previous_word = wordlabels[vowelwordtiers]
+    extract$next_word = wordlabels[vowelwordtiers+2]
+  }
+  extract = cbind (filename="--", extract)
+  extract$filename[extract$omit==0] = paste0 (base, "_", addzeros(1:sum(extract$omit==0)), ".wav")
+
+  data_out = extract
+  extract = extract[extract$omit==0,]
+
+  times = extract[,c("start","end","omit")]
+  times[,1] = times[,1] - 0.025
+  times[,2] = times[,2] + 0.025
+  times[times[,1] < 0,1] = 0
+  times[times[,2] > duration,2] = duration
+  sounds = lapply (1:nrow (extract),
+                   function (i) tuneR::extractWave (sound,
+                                                    from=times[i,1],to=times[i,2],
+                                                    xunit='time',interact=FALSE))
+  output = list (data_out, sounds)
+  output
+}
+
+
+
+
+#extractsounds = function (tgpath, sndpath, outputpath="output", segmenttier="phone",wordtier=NA,
+#commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA,writedata=TRUE){
+
+#dir.create (outputpath, showWarnings = FALSE)
+#dir.create (outputpath %+% "/sounds", showWarnings = FALSE)
+#filenames = paste0 (outputpath, "/sounds/", base, "_", addzeros(1:nrow(extract)), ".wav")
+#for (i in 1:length (filenames))  tuneR::writeWave (sounds[[i]], filenames[i])
+
+#}
+
+
+
+
 #' Load textgrid information into R
 #'
 #' Create a list of dataframes from a textgrid. Each list element is a dataframe representing information from a different interval tier. Each dataframe contains the interval label, start time, end time, and duration (all in milliseconds).
@@ -8,12 +125,13 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' path = "../example data/textgrids/NCF011_01-02-long.TextGrid"
+#' path = "tmp/yoursound2.TextGrid"
 #' readtextgrid (path)
 #' }
 
 readtextgrid <- function (path){
 
+  if (!file.exists(path)) stop ("File does not exist. The path is probably wrong.")
   tg = readLines(path)
 
   filetype = "neither"
