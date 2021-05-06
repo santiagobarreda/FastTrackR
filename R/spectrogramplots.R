@@ -19,10 +19,10 @@
 #' sound = tuneR::readWave("yoursound.wav")
 #' ffs = analyze (sound)
 #' spect = spectrogram (sound)
+#' plotffs (ffs[[9]])
+#' plotffs (ffs[[9]], spect = spect)
 #' plotffs (ffs)
 #' plotffs (ffs, spect = spect)
-#' plotffs (ffs[[2]])
-#' plotffs (ffs[[2]], spect = spect)
 #' }
 
 plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
@@ -65,7 +65,6 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 }
 
 
-#' @export
 plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
                             main=NA,colors=NA,add=FALSE,...){
 
@@ -120,7 +119,7 @@ plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 #' plotffs (ffs[[2]], spect = spect)
 #' }
 
-spectrogram = function (sound, maxformant = 5000, windowlength = 0.006, timestep = 0.005,
+spectrogram = function (sound, maxformant = 5000, windowlength = 0.006, timestep = 0.001,
                         dynamicrange = 60, plot = TRUE, ...){
 
   if (class(sound)=="Wave"){
@@ -135,7 +134,7 @@ spectrogram = function (sound, maxformant = 5000, windowlength = 0.006, timestep
   fs = maxformant*2
   n = length (tmp_snd)
   duration = n / (maxformant*2)
-  spots = round(seq (1/fs,duration-windowlength, 0.002)*fs)
+  spots = round(seq (1/fs,duration-windowlength, timestep)*fs)
 
   windowlength_pts <- round(windowlength * fs)
   window <- phonTools::windowfunc(windowlength_pts, "gaussian")
