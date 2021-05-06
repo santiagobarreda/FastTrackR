@@ -46,9 +46,9 @@ Set up a plot aggregated files. This function does not draw anything but is used
 sound = tuneR::readWave("yoursound.wav")
 ffs = analyze (sound)
 spect = spectrogram (sound)
+plotffs (ffs[[9]])
+plotffs (ffs[[9]], spect = spect)
 plotffs (ffs)
 plotffs (ffs, spect = spect)
-plotffs (ffs[[2]])
-plotffs (ffs[[2]], spect = spect)
 }
 }
