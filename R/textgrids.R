@@ -3,7 +3,8 @@
 
 #' Extract Sounds
 #'
-#' Extracts vowels from larger sounds using information from matching TextGrids.Words to skip does not work, comment tiers do not work.
+#' Extracts vowels from larger sounds using information from matching TextGrids.
+#'
 #'
 #' @param tgpath --.
 #' @param sndpath --.
@@ -18,7 +19,9 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' # nothing yet
+#' tgpath = "yoursound2.TextGrid"
+#' tmp = readtextgrid (tgpath)
+#' output = extractsounds (tgpath, wordtier="word",commenttiers=c("omit","comments"))
 #' }
 
 extractsounds = function (tgpath, sndpath, outputpath="output", segmenttier="phone",wordtier=NA,
@@ -87,7 +90,31 @@ extractsounds = function (tgpath, sndpath, outputpath="output", segmenttier="pho
 
     extract$previous_word = wordlabels[vowelwordtiers]
     extract$next_word = wordlabels[vowelwordtiers+2]
+
+    if (!is.na (wordstoskip[1])) extract = extract[!(extract$word %in% wordstoskip),]
   }
+  if (!missing (omittier)){
+    midpoints = (extract$start+extract$end)/2
+    vowelomittiers = sapply (1:length (midpoints), function (i){
+      use = (midpoints[i] > tgdata[[omittier]]$start & midpoints[i] < tgdata[[omittier]]$end)
+      which.max (use)
+    })
+    whichkeep = which(tgdata[[omittier]]$label=="")
+    extract$omit = as.numeric(extract$omit | !(vowelomittiers %in% whichkeep))
+  }
+  if (!missing (commenttiers)){
+    midpoints = (extract$start+extract$end)/2
+
+    for (i in 1:length (commenttiers)){
+      tier = commenttiers[i]
+      vowelomittiers = sapply (1:length (midpoints), function (i){
+        use = (midpoints[i] > tgdata[[tier]]$start & midpoints[i] < tgdata[[tier]]$end)
+        which.max (use)
+      })
+      extract[[tier %+% "_comment"]] = tgdata[[tier]]$label[vowelomittiers]
+    }
+  }
+
   extract = cbind (filename="--", extract)
   extract$filename[extract$omit==0] = paste0 (base, "_", addzeros(1:sum(extract$omit==0)), ".wav")
 
