@@ -2,12 +2,12 @@
 % Please edit documentation in R/textgrids.R
 \name{extractsounds}
 \alias{extractsounds}
-\title{Load textgrid information into R}
+\title{Extract Sounds}
 \usage{
 extractsounds(
   tgpath,
   sndpath,
-  outputpath,
+  outputpath = "output",
   segmenttier = "phone",
   wordtier = NA,
   commenttiers = NA,
@@ -17,17 +17,32 @@ extractsounds(
 )
 }
 \arguments{
-\item{path}{the path to the Praat textgrid file you want to read.}
+\item{tgpath}{--.}
+
+\item{sndpath}{--.}
+
+\item{outputpath}{--.}
+
+\item{segmenttier}{--.}
+
+\item{wordtier}{--.}
+
+\item{commenttiers}{--.}
+
+\item{omittier}{--.}
+
+\item{stress}{--.}
+
+\item{wordstoskip}{--.}
 }
 \value{
-A list of dataframes, one containing the data from each interval tier in the textgrid. Each dataframe is named after the tier.
+--.
 }
 \description{
-Create a list of dataframes from a textgrid. Each list element is a dataframe representing information from a different interval tier. Each dataframe contains the interval label, start time, end time, and duration (all in milliseconds).
+Extracts vowels from larger sounds using information from matching TextGrids.Words to skip does not work, comment tiers do not work.
 }
 \examples{
 \dontrun{
-tgpath = "tmp/yoursound2.TextGrid"
-extractsounds (tgpath)
+# nothing yet
 }
 }
