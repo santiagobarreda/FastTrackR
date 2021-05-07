@@ -31,10 +31,8 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
   zcolors = grDevices::colorRampPalette(c("white", "black"))
   zcolors = zcolors(40)
 
-  if (class (ffs)=="fasttrack"){
-    if (attr (ffs,"object")=="ffs"){
-
-      if (class(spect)=="fasttrack"){
+  if (attr (ffs,"object")=="ffs"){
+      if (attr(spect, "object")=="spectrogram"){
         graphics::image (as.numeric(rownames(spect)), as.numeric(colnames(spect)),
                          spect,col = zcolors,
                          xlab = "Time (ms)", ylab = "Frequency",...)
@@ -42,25 +40,24 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
       }
       plotffs.internal(ffs,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,
                        main=main,colors=colors,add=add, ...)
-    }
-    if (attr (ffs,"object")=="fileffs"){
-      tmp_par = graphics::par(no.readonly = TRUE)
+  }
+  if (attr (ffs,"object")=="fileffs"){
+    tmp_par = graphics::par(no.readonly = TRUE)
 
-      n = length (ffs)
-      rows = floor(n/4)
+    n = length (ffs)
+    rows = floor(n/4)
 
-      graphics::par (mfrow = c(4,rows), mar =c(1,1,2,1), oma = c(1,1,0,1))
-      for (i in 1:n){
-        if (class(spect)=="fasttrack"){
-          graphics::image (as.numeric(rownames(spect)), as.numeric(colnames(spect)),
-                           spect,col = zcolors,
-                           xlab = "Time (ms)", ylab = "Frequency")
-          add = TRUE
-        }
-        plotffs.internal (ffs[[i]],xaxt='n',yaxt='n', add = add, ...)
+    graphics::par (mfrow = c(4,rows), mar =c(1,1,2,1), oma = c(1,1,0,1))
+    for (i in 1:n){
+      if (attr(spect, "object")=="spectrogram"){
+        graphics::image (as.numeric(rownames(spect)), as.numeric(colnames(spect)),
+                         spect,col = zcolors,
+                         xlab = "Time (ms)", ylab = "Frequency")
+        add = TRUE
       }
-      graphics::par (tmp_par)
+      plotffs.internal (ffs[[i]],xaxt='n',yaxt='n', add = add, ...)
     }
+    graphics::par (tmp_par)
   }
 }
 
@@ -164,7 +161,6 @@ spectrogram = function (sound, maxformant = 5000, windowlength = 0.006, timestep
     graphics::image (times, frequencies, spect,col = zcolors, xlab = "Time (ms)",
                      ylab = "Frequency",...)
   }
-  class(spect) = "fasttrack"
   attr(spect, "object") = "spectrogram"
 
   invisible (spect)

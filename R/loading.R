@@ -25,8 +25,9 @@ readcsvs <- function (path, asone = TRUE){
     if (asone) csvs[[i]]$file = file_names[i]
   }
   if (asone) csvs = do.call (rbind, csvs)
-  class(formants) = "fasttrack"
-  attr(formants, "object") = "csvs"
+
+  attr(csvs, "object") = "csvs"
+
   return (csvs)
 }
 
@@ -73,12 +74,10 @@ readformants <- function (path){
         tmp = data.frame (f1=tmp[len1+1],f2=tmp[len1+3],f3=tmp[len1+5],f4=tmp[len1+7],
                           b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6],b4=tmp[len1+8])
 
-      class(tmp) = "fasttrack"
       attr(tmp, "object") = "fileffs"
       formants[[i]][[j]] = tmp
     }
   }
-  class(formants) = "fasttrack"
   attr(formants, "object") = "formants"
   attr(formants, "cutoffs") = cutoffs
   return (formants)

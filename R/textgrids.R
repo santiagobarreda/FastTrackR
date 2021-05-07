@@ -3,21 +3,28 @@
 
 #' Extract Sounds
 #'
-#' Extracts vowels from larger sounds using information from matching TextGrids.
+#' Extracts vowels from larger sounds using information from matching TextGrids.Words to skip does not work, comment tiers do not work.
 #'
-#' @param path the path to the Praat textgrid file you want to read.
-#' @return A list containing 1) information about the extracted vowel sounds, 2) a list containing the extracted vowel sounds as Weve objects.
+#' @param tgpath --.
+#' @param sndpath --.
+#' @param outputpath --.
+#' @param segmenttier --.
+#' @param wordtier --.
+#' @param commenttiers --.
+#' @param omittier --.
+#' @param stress --.
+#' @param wordstoskip --.
+#' @return --.
 #' @export
 #' @examples
 #' \dontrun{
-#' tgpath = "tmp/yoursound2.TextGrid"
-#' sndpath = "tmp/yoursound2.wav"
-#' wordtier = "word"
-#' extractsounds (tgpath)
+#' # nothing yet
 #' }
 
 extractsounds = function (tgpath, sndpath, outputpath="output", segmenttier="phone",wordtier=NA,
-                           commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA,writedata=TRUE){
+                           commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA){
+
+  vowelstoextract = fasttrackr::vowelstoextract
 
   if (!missing(tgpath) & !missing(sndpath)){
     base = strsplit (basename (tgpath), split ="\\.")[[1]][1]
@@ -75,8 +82,8 @@ extractsounds = function (tgpath, sndpath, outputpath="output", segmenttier="pho
     extract$word = wordlabels[vowelwordtiers+1]
     extract$word_interval = vowelwordtiers
 
-    extract$word_start = tgdata[[word]]$start[vowelwordtiers]
-    extract$word_end = tgdata[[word]]end[vowelwordtiers]
+    extract$word_start = tgdata[[wordtier]]$start[vowelwordtiers]
+    extract$word_end = tgdata[[wordtier]]$end[vowelwordtiers]
 
     extract$previous_word = wordlabels[vowelwordtiers]
     extract$next_word = wordlabels[vowelwordtiers+2]

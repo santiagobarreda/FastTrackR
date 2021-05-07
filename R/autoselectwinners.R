@@ -34,10 +34,10 @@ autoselectwinners <- function (formants, order = 5, method = "classic", subset =
       }
     }
   }
+
+  ## output needs to be the same as in Praat output
   winners = apply (errors, 1, which.min)
   winners = steps[winners]
-  class(formants) = "fasttrack"
-  attr(formants, "object") = "winners"
   winners
 }
 

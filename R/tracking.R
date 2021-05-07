@@ -33,7 +33,7 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
     ffs = analyze.internal (sound, from = from, to = to,
                             nsteps=nsteps, windowlength = windowlength,
                             timestep = timestep)
-    class(ffs) = "fasttrack"
+
     attr(ffs, "object") = "fileffs"
   }
 
@@ -48,7 +48,6 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
                                    nsteps=nsteps, windowlength = windowlength,
                                    timestep = timestep)
 
-      class(ffs[[i]]) = "fasttrack"
       attr(ffs[[i]], "object") = "fileffs"
     }
 
@@ -56,7 +55,6 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
     #              nsteps=nsteps, windowlength = windowlength,
     #              timestep = timestep)
 
-    class(ffs) = "fasttrack"
     attr(ffs, "object") = "formants"
   }
 
