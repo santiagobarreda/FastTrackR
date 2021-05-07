@@ -75,6 +75,10 @@ readformants <- function (path){
                           b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6],b4=tmp[len1+8])
 
       attr(tmp, "object") = "fileffs"
+      attr(tmp, "timestep") = as.numeric (timestep)
+      attr(tmp, "w1") = as.numeric(w1)
+      attr(tmp, "maxformant") = cutoffs[j]
+
       formants[[i]][[j]] = tmp
     }
   }

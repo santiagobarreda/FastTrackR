@@ -75,7 +75,6 @@ analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
     ffs[[count]] = trackformants (tmp_snd,maxformant = i,timestep=timestep)
     count = count - 1
   }
-  class(ffs) = "fasttrack"
   attr(ffs, "object") = "fileffs"
   attr(ffs, "maxformants") = maxformants
   ffs
@@ -130,10 +129,10 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
   ffs = t(apply (coeffs,2,getformants, fs=fs,nreturn=4))
   colnames (ffs) = c(paste0("f",1:4),paste0("b",1:4))
 
-  class(ffs) = "fasttrack"
   attr(ffs, "object") = "ffs"
-  attr(ffs, "maxformant") = maxformant
   attr(ffs, "timestep") = timestep
+  attr(tmp, "w1") = windowlength/2
+  attr(ffs, "maxformant") = maxformant
 
   ffs
 }
