@@ -52,6 +52,11 @@ readformants <- function (path){
   cutoffs = as.numeric (strsplit (info[5], split=" ")[[1]])
 
   files = list.files (paste0(path,"/formants"),full.names=TRUE)
+  ord = unlist (strsplit (basename (files), "_"))[c(T,T,F)]
+  ord = matrix (ord, length(ord)/2, 2, byrow=TRUE)
+  ord[,2] = addzeros(ord[,2])
+  ord = paste0 (ord[,1],"_", ord[,2])
+  ord = order (ord)
 
   count = 0
   formants = list()
@@ -59,7 +64,7 @@ readformants <- function (path){
     formants[[i]] = list()
     for (j in 1:nsteps){
       count = count + 1
-      tmp = utils::read.csv (files[count])[,1]
+      tmp = utils::read.csv (files[ord[count]])[,1]
       w1 = tmp[6]
       timestep = tmp[5]
       tmp = tmp[-c(1:7)]
@@ -78,12 +83,12 @@ readformants <- function (path){
       attr(tmp, "timestep") = as.numeric (timestep)
       attr(tmp, "w1") = as.numeric(w1)
       attr(tmp, "maxformant") = cutoffs[j]
-      attr(tmp, "filename") = strsplit(basename(files[1]),split="_")[[1]][1]
+      attr(tmp, "filename") = strsplit(basename(files[ord[count]]),split="_")[[1]][1]
 
       formants[[i]][[j]] = round (tmp)
     }
     attr(formants[[i]], "object") = "fileffs"
-    attr(formants[[i]], "filename") = strsplit(basename(files[1]),split="_")[[1]][1]
+    attr(formants[[i]], "filename") = strsplit(basename(files[ord[count]]),split="_")[[1]][1]
   }
   attr(formants, "object") = "formants"
   attr(formants, "cutoffs") = cutoffs
