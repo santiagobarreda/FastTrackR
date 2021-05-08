@@ -6,25 +6,26 @@
 #' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
 #' @param winners an optional dataframe representing the data in the 'winners.csv' file.
 #' @param formants an optional list of lists representing all of the possible formant analyses.
-#' @param csvs and optional list of dataframes representing all the current formant data.
 #' @param asone if TRUE, the formant data is stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.
+#' @param write if TRUE, the data is written out to a CSV folder in the working directory.
 #' @return A dataframe or list of dataframes, as per the asone parameter.
 #' @export
 #' @examples
 #' \dontrun{
-#' csvs = readcsvs ()
+#' getwinners ()
 #' }
 
-getwinners <- function (path, winners, formants, csvs, asone = TRUE){
+getwinners <- function (path, winners, formants, asone = TRUE, write = FALSE){
   if (missing(path)) path = getwd()
 
   # read in data
   if (missing(winners)) winners = utils::read.csv (path %+% "/winners.csv")
   if (missing(formants)) formants = readformants (path)
-  if (missing(csvs)) csvs = readcsvs (path, asone = FALSE)
 
   # find number of formants
   nf = 3 + sum (colnames(winners)=="F4")
+
+  csvs = list ()
 
   for (i in 1:nrow (winners)){
     ws = unlist (winners[i,2:(2+nf)])
@@ -32,18 +33,20 @@ getwinners <- function (path, winners, formants, csvs, asone = TRUE){
 
     # if individual formants are not being selected across analyses
     if (allsame){
-      tmp_formants = round(formants[[i]][[ws[1]]],1)
-      tmp_csv = csvs[[i]]
+      tmp_formants = formants[[i]][[ws[1]]]
 
-      minrow = min (nrow (tmp_csv), nrow(tmp_formants))
+      n = nrow(tmp_formants)-1
+      time = attr (tmp_formants,"w1") + attr (tmp_formants,"timestep")*(0:n)
+      time = round (time, 4)
+      tmp_csv = data.frame (time = time)
 
       if (nf == 3){
-        tmp_formants = tmp_formants[1:minrow, c(1,4,2,5,3,6)]
-        tmp_csv[1:minrow,2:7] = tmp_formants
+        tmp_formants = tmp_formants[, c(1,4,2,5,3,6)]
+        tmp_csv[,2:7] = tmp_formants
       }
       if (nf == 4){
-        tmp_formants = tmp_formants[1:minrow, c(1,5,2,6,3,7,4,8)]
-        tmp_csv[1:minrow,2:9] = tmp_formants
+        tmp_formants = tmp_formants[, c(1,5,2,6,3,7,4,8)]
+        tmp_csv[,2:9] = tmp_formants
       }
       csvs[[i]] = tmp_csv
     }
@@ -53,14 +56,16 @@ getwinners <- function (path, winners, formants, csvs, asone = TRUE){
       tmp_formants2 = round(formants[[i]][[ws[3]]],1)
       tmp_formants3 = round(formants[[i]][[ws[4]]],1)
       if (nf == 4) tmp_formants4 = round(formants[[i]][[ws[5]]],1)
-      tmp_csv = csvs[[i]]
+
+      n = nrow(tmp_formants1)-1
+      time = attr (tmp_formants1,"w1") + attr (tmp_formants1,"timestep")*(0:n)
+      time = round (time, 4)
+      tmp_csv = data.frame (time = time)
 
       if (nf == 3)
-        minrow = min (nrow (tmp_csv), nrow(tmp_formants1), nrow(tmp_formants2),
-                      nrow(tmp_formants3))
+        minrow = min (nrow(tmp_formants1), nrow(tmp_formants2), nrow(tmp_formants3))
       if (nf == 4)
-        minrow = min (nrow (tmp_csv), nrow(tmp_formants1), nrow(tmp_formants2),
-                      nrow(tmp_formants3), nrow(tmp_formants4))
+        minrow = min (nrow(tmp_formants1), nrow(tmp_formants2), nrow(tmp_formants3), nrow(tmp_formants4))
 
       if (nf == 3){
         tmp_formants = cbind (tmp_formants1[1:minrow, c(1,4)],
@@ -77,9 +82,22 @@ getwinners <- function (path, winners, formants, csvs, asone = TRUE){
       }
       csvs[[i]] = tmp_csv
     }
-    if (asone) csvs[[i]]$file = winners$file[i]
   }
-  if (asone) csvs = do.call(rbind, csvs)
+
+  if (write){
+    dir.create (path %+% "/csvs", showWarnings = FALSE)
+    filenames = path %+% "/csvs/" %+% winners$file %+% ".csv"
+    lapply (1:length(csvs),
+            function(j) utils::write.csv (csvs[[j]], filenames[j],row.names=FALSE))
+  }
+
+  if (asone){
+    rows = sapply (csvs, nrow)
+    filename = sapply (1:length(rows), function(i) rep (winners$file[i], rows[i]))
+    filename = unlist(filename)
+    csvs = do.call(rbind, csvs)
+    csvs$file = filename
+  }
   invisible (csvs)
 }
 
