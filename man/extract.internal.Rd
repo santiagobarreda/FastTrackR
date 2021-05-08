@@ -16,33 +16,29 @@ extract.internal(
 )
 }
 \arguments{
-\item{tgpath}{--.}
+\item{tgpath}{a path or vector of paths to textgrid files.}
 
-\item{sndpath}{--.}
+\item{sndpath}{a path or vector of paths to wav files.}
 
-\item{segmenttier}{--.}
+\item{segmenttier}{the name of the tier containing segmental information used for extraction.}
 
-\item{wordtier}{--.}
+\item{wordtier}{the name of a tier containing information about words (optional).}
 
-\item{commenttiers}{--.}
+\item{commenttiers}{a vector containing names of tiers with comments you wish to extract (optional).}
 
-\item{omittier}{--.}
+\item{omittier}{the name of a tier indicating which segments you wish to skip (optional).}
 
-\item{stress}{--.}
+\item{stress}{a vector contianing labels you may have used to mark stress.}
 
-\item{wordstoskip}{--.}
-}
-\value{
---.
+\item{wordstoskip}{a vector containing any words you do not want to extract vowels from.}
 }
 \description{
-Extracts vowels from larger sounds using information from matching TextGrids.
+Extracts vowels from larger sounds using information from matching TextGrids. A complete explanation of function behavior is provided in the extractvowels reference page.
 }
 \examples{
 \dontrun{
-q = readWave2 ("yoursound2.wav")
 tgpath = "yoursound2.TextGrid"
 tmp = readtextgrid (tgpath)
-output = extractsounds (tgpath, wordtier="word",commenttiers=c("omit","comments"))
+output = extract.internal (tgpath, wordtier="word",commenttiers=c("omit","comments"))
 }
 }

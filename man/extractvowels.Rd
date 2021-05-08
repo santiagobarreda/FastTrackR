@@ -17,23 +17,23 @@ extractvowels(
 )
 }
 \arguments{
-\item{tgpath}{--.}
+\item{tgpath}{a path or vector of paths to textgrid files.}
 
-\item{sndpath}{--.}
+\item{sndpath}{a path or vector of paths to wav files.}
 
-\item{outputpath}{--.}
+\item{outputpath}{a path to the folder where you want data to go. If NA, nothing is written out. If "working" it will output in a folder called "output" in your working directory.}
 
-\item{segmenttier}{--.}
+\item{segmenttier}{the name of the tier containing segmental information used for extraction.}
 
-\item{wordtier}{--.}
+\item{wordtier}{the name of a tier containing information about words (optional).}
 
-\item{commenttiers}{--.}
+\item{commenttiers}{a vector containing names of tiers with comments you wish to extract (optional).}
 
-\item{omittier}{--.}
+\item{omittier}{the name of a tier indicating which segments you wish to skip (optional).}
 
-\item{stress}{--.}
+\item{stress}{a vector contianing labels you may have used to mark stress.}
 
-\item{wordstoskip}{--.}
+\item{wordstoskip}{a vector containing any words you do not want to extract vowels from.}
 }
 \value{
 --.
@@ -43,9 +43,9 @@ Extracts vowels from larger sounds using information from matching TextGrids.
 }
 \examples{
 \dontrun{
-q = readWave2 ("yoursound2.wav")
-tgpath = "yoursound2.TextGrid"
-tmp = readtextgrid (tgpath)
-output = extractsounds (tgpath, wordtier="word",commenttiers=c("omit","comments"))
+tgpath = c("yoursound3.TextGrid")
+tgpath = c("yoursound2.TextGrid","yoursound3.TextGrid")
+output = extractvowels (tgpath, wordtier="word", outputpath = "working")
 }
+
 }

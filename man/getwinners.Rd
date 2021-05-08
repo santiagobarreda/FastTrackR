@@ -4,7 +4,7 @@
 \alias{getwinners}
 \title{Get winning analyses}
 \usage{
-getwinners(path, winners, formants, csvs, asone = TRUE, write = FALSE)
+getwinners(path, winners, formants, asone = TRUE, write = FALSE)
 }
 \arguments{
 \item{path}{the path to the working directory for the Fast Track project. If no path is provided this is the working directory.}
@@ -13,11 +13,9 @@ getwinners(path, winners, formants, csvs, asone = TRUE, write = FALSE)
 
 \item{formants}{an optional list of lists representing all of the possible formant analyses.}
 
-\item{csvs}{and optional list of dataframes representing all the current formant data.}
-
 \item{asone}{if TRUE, the formant data is stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.}
 
-\item{write}{if TRUE, the data is written out to a CSV folder just like Fast Track does.}
+\item{write}{if TRUE, the data is written out to a CSV folder in the working directory.}
 }
 \value{
 A dataframe or list of dataframes, as per the asone parameter.
@@ -27,6 +25,6 @@ This function will read winning analyses into R based on the content of the 'win
 }
 \examples{
 \dontrun{
-# nothing so far
+getwinners ()
 }
 }

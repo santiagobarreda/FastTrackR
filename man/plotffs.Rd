@@ -20,21 +20,21 @@ plotffs(
 \arguments{
 \item{ffs}{a dataframe containing formant tracks for a single file, or a list of dataframes comparing multiple analyses for a single file.}
 
-\item{xlim}{an integer indicating which formant number should be plotted on the x axis.}
+\item{xlim}{an optional user-specified x-axis range.}
 
-\item{ylim}{--.}
+\item{ylim}{an optional user-specified x-axis range.}
 
 \item{xlab}{an optional user-specified x-axis label.}
 
 \item{ylab}{an optional user-specified y-axis label.}
 
-\item{main}{--.}
+\item{main}{an optional user-specified plot label.}
 
-\item{colors}{--.}
+\item{colors}{an optional vector of colors to use for the formant points/lines.}
 
 \item{add}{if FALSE, a new plot if created.}
 
-\item{spect}{a spectrogram to be shown behind the tracks.}
+\item{spect}{an optional spectrogram to be shown behind the tracks.}
 
 \item{...}{Additional arguments are passed to the internal call of 'plot'.}
 }

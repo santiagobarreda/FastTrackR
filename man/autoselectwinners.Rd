@@ -4,14 +4,25 @@
 \alias{autoselectwinners}
 \title{Automatically select winning analyses}
 \usage{
-autoselectwinners(formants, order = 5, method = "classic", subset = NA)
+autoselectwinners(
+  formants,
+  order = 5,
+  nf = 4,
+  method = "classic",
+  outputpath = NA,
+  subset = NA
+)
 }
 \arguments{
 \item{formants}{a list of formant data read in with the readformants function.}
 
 \item{order}{the order of the prediction model.}
 
+\item{nf}{the number of formants to optimize for.}
+
 \item{method}{method of selecting the winning analysis.}
+
+\item{outputpath}{--.}
 
 \item{subset}{a vector indicating a subset of the analyses to be considered.}
 }
@@ -24,6 +35,6 @@ Automatically select winning analyses
 \examples{
 \dontrun{
 formants = readformants ()
-autoselectwinners (formants)
+winners = autoselectwinners (formants, outputpath="working")
 }
 }
