@@ -41,10 +41,11 @@ autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
       coefficients[i,j,,] = t(mod$coefficients)
     }
   }
-  winners = apply (errors, 1, which.min)
-  winners = steps[winners]
 
   total_errors = apply (errors,c(1,2), sum)
+  winners = apply (total_errors, 1, which.min)
+  winners = steps[winners]
+
   errors = round (errors,1)
   total_errors = round (total_errors,1)
   coefficients = round (coefficients,1)
@@ -58,11 +59,11 @@ autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
     if (outputpath == "working") outputpath = getwd()
     utils::write.csv (output, outputpath %+% "/winners.csv", row.names=FALSE)
 
-    colnames(errors) = paste0("e",1:dim(errors)[2])
+    colnames(total_errors) = paste0("e",1:ncol(total_errors))
     colnames(coefficients) = paste0("a",1:dim(coefficients)[2])
     dir.create (outputpath %+% "/infos_aggregated/", showWarnings = FALSE)
 
-    utils::write.csv (errors, outputpath %+% "/infos_aggregated/all_errors.csv", row.names=FALSE)
+    utils::write.csv (total_errors, outputpath %+% "/infos_aggregated/all_errors.csv", row.names=FALSE)
     utils::write.csv (coefficients[,,1,1], outputpath %+% "/infos_aggregated/all_f1s.csv", row.names=FALSE)
     utils::write.csv (coefficients[,,2,1], outputpath %+% "/infos_aggregated/all_f2s.csv", row.names=FALSE)
     utils::write.csv (coefficients[,,3,1], outputpath %+% "/infos_aggregated/all_f3s.csv", row.names=FALSE)
@@ -88,7 +89,6 @@ autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
       }
     }
   }
-
   output
 }
 
