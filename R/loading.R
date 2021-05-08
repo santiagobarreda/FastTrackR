@@ -41,7 +41,7 @@ readcsvs <- function (path, asone = TRUE){
 #' @export
 #' @examples
 #' \dontrun{
-#' csvs = readformants ()
+#' formants = readformants ()
 #' }
 
 readformants <- function (path){
@@ -78,9 +78,12 @@ readformants <- function (path){
       attr(tmp, "timestep") = as.numeric (timestep)
       attr(tmp, "w1") = as.numeric(w1)
       attr(tmp, "maxformant") = cutoffs[j]
+      attr(tmp, "filename") = strsplit(basename(files[1]),split="_")[[1]][1]
 
-      formants[[i]][[j]] = tmp
+      formants[[i]][[j]] = round (tmp)
     }
+    attr(formants[[i]], "object") = "fileffs"
+    attr(formants[[i]], "filename") = strsplit(basename(files[1]),split="_")[[1]][1]
   }
   attr(formants, "object") = "formants"
   attr(formants, "cutoffs") = cutoffs
