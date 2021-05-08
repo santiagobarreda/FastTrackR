@@ -43,7 +43,7 @@ Set up a plot aggregated files. This function does not draw anything but is used
 }
 \examples{
 \dontrun{
-sound = tuneR::readWave("yoursound.wav")
+sound = readWave2("yoursound.wav")
 ffs = analyze (sound)
 spect = spectrogram (sound)
 plotffs (ffs[[9]])

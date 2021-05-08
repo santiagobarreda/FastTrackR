@@ -17,6 +17,6 @@ Load Fast Track formant objects
 }
 \examples{
 \dontrun{
-csvs = readformants ()
+formants = readformants ()
 }
 }

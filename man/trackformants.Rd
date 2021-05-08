@@ -23,7 +23,7 @@ Track formants
 }
 \examples{
 \dontrun{
-sound = tuneR::readWave("yoursound.wav")
+sound = readWave2("yoursound.wav")
 trackformants (sound, maxformant = 5000)
 }
 }

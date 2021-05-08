@@ -37,7 +37,7 @@ Spectrogram
 }
 \examples{
 \dontrun{
-sound = tuneR::readWave("yoursound.wav")
+sound = readWave2("yoursound.wav")
 spect = spectrogram (sound, maxformant = 5000)
 ffs = analyze (sound, timestep = 2)
 plotffs (ffs[[2]], spect = spect)
