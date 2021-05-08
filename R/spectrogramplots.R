@@ -4,19 +4,19 @@
 #' Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions.
 #'
 #' @param ffs a dataframe containing formant tracks for a single file, or a list of dataframes comparing multiple analyses for a single file.
-#' @param xlim an integer indicating which formant number should be plotted on the x axis.
-#' @param ylim --.
+#' @param xlim an optional user-specified x-axis range.
+#' @param ylim an optional user-specified x-axis range.
 #' @param xlab an optional user-specified x-axis label.
 #' @param ylab an optional user-specified y-axis label.
-#' @param main --.
-#' @param colors --.
+#' @param main an optional user-specified plot label.
+#' @param colors an optional vector of colors to use for the formant points/lines.
 #' @param add if FALSE, a new plot if created.
-#' @param spect a spectrogram to be shown behind the tracks.
+#' @param spect an optional spectrogram to be shown behind the tracks.
 #' @param ... Additional arguments are passed to the internal call of 'plot'.
 #' @export
 #' @examples
 #' \dontrun{
-#' sound = tuneR::readWave("yoursound.wav")
+#' sound = readWave2("yoursound.wav")
 #' ffs = analyze (sound)
 #' spect = spectrogram (sound)
 #' plotffs (ffs[[9]])
@@ -32,13 +32,15 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
   zcolors = zcolors(40)
 
   if (attr (ffs,"object")=="ffs"){
+    if (!is.na(spect[1])){
       if (attr(spect, "object")=="spectrogram"){
         graphics::image (as.numeric(rownames(spect)), as.numeric(colnames(spect)),
                          spect,col = zcolors,
                          xlab = "Time (ms)", ylab = "Frequency",...)
         add = TRUE
       }
-      plotffs.internal(ffs,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,
+    }
+    plotffs.internal(ffs,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,
                        main=main,colors=colors,add=add, ...)
   }
   if (attr (ffs,"object")=="fileffs"){
@@ -49,11 +51,13 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 
     graphics::par (mfrow = c(4,rows), mar =c(1,1,2,1), oma = c(1,1,0,1))
     for (i in 1:n){
-      if (attr(spect, "object")=="spectrogram"){
-        graphics::image (as.numeric(rownames(spect)), as.numeric(colnames(spect)),
-                         spect,col = zcolors,
-                         xlab = "Time (ms)", ylab = "Frequency")
-        add = TRUE
+      if (!is.na(spect[1])){
+        if (attr(spect, "object")=="spectrogram"){
+          graphics::image (as.numeric(rownames(spect)), as.numeric(colnames(spect)),
+                           spect,col = zcolors,
+                           xlab = "Time (ms)", ylab = "Frequency")
+          add = TRUE
+        }
       }
       plotffs.internal (ffs[[i]],xaxt='n',yaxt='n', add = add, ...)
     }
@@ -110,7 +114,7 @@ plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 #' @export
 #' @examples
 #' \dontrun{
-#' sound = tuneR::readWave("yoursound.wav")
+#' sound = readWave2("yoursound.wav")
 #' spect = spectrogram (sound, maxformant = 5000)
 #' ffs = analyze (sound, timestep = 2)
 #' plotffs (ffs[[2]], spect = spect)

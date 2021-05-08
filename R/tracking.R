@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' sound = tuneR::readWave("yoursound.wav")
+#' sound = readWave2("yoursound.wav")
 #' ffs = analyze (sound, timestep = 0.002)
 #' plotffs (ffs)
 #' plotffs (ffs[[2]])
@@ -24,11 +24,11 @@ analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.0
                     timestep = 0.0025, path = NA, showprogress=TRUE){
 
   # if there is a list of file names read them all in
-  if (length(path)>1) sound = lapply (path, tuneR::readWave)
+  if (length(path)>1) sound = lapply (path, readWave2)
 
   # if there is a single file run it once
   if (class(sound[1])=="Wave" | (length(path)==1)){
-    if (!is.na(path)) sound = tuneR::readWave(path)
+    if (!is.na(path)) sound = readWave2(path)
 
     ffs = analyze.internal (sound, from = from, to = to,
                             nsteps=nsteps, windowlength = windowlength,
@@ -91,7 +91,7 @@ analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
 #' @export
 #' @examples
 #' \dontrun{
-#' sound = tuneR::readWave("yoursound.wav")
+#' sound = readWave2("yoursound.wav")
 #' trackformants (sound, maxformant = 5000)
 #' }
 
@@ -129,10 +129,13 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
   ffs = t(apply (coeffs,2,getformants, fs=fs,nreturn=4))
   colnames (ffs) = c(paste0("f",1:4),paste0("b",1:4))
 
+  ffs = data.frame(ffs)
+
   attr(ffs, "object") = "ffs"
   attr(ffs, "timestep") = timestep
-  attr(tmp, "w1") = windowlength/2
+  attr(ffs, "w1") = windowlength/2
   attr(ffs, "maxformant") = maxformant
+  #attr(tmp, "filename") = strsplit(basename(files[1]),split="_")[[1]][1]
 
   ffs
 }
@@ -150,7 +153,7 @@ trackformants = function (sound, maxformant = 5000, windowlength = 0.05, timeste
 #' @export
 #' @examples
 #' \dontrun{
-#' sound = tuneR::readWave("yoursound.wav")
+#' sound = readWave2 ("yoursound.wav")
 #' tmp_snd = downsample (snd, maxformant = 5000)
 #' }
 

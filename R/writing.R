@@ -53,7 +53,7 @@ writeformants <- function (formants, path){
 
 
   for (i in 1:length(snd_files)){
-    tmp_snd = tuneR::readWave (snd_files[i])
+    tmp_snd = readWave2 (snd_files[i])
     duration = length(tmp_snd@left)/tmp_snd@samp.rate
     header[5] = duration
 
