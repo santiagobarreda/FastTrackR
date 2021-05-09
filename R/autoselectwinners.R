@@ -37,7 +37,7 @@ autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
       xs = makepredictors (nrow (y), order = order)
       mod = stats::lm (y ~ 0 + xs)
 
-      errors[i,j,] = errors[i,j,] + apply (mod$residuals,2,sd)
+      errors[i,j,] = errors[i,j,] + apply (mod$residuals,2,stats::sd)
       coefficients[i,j,,] = t(mod$coefficients)
     }
   }

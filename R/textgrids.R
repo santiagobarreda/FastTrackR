@@ -17,8 +17,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' tgpath = c("yoursound3.TextGrid")
-#' tgpath = c("yoursound2.TextGrid","yoursound3.TextGrid")
+#' tgpath = "yoursound3.TextGrid"
 #' output = extractvowels (tgpath, wordtier="word", outputpath = "working")
 #' }
 #'
