@@ -1,14 +1,11 @@
 
 #' Aggregate analysis data
 #'
-#'
-#' @param formants a list of formant data read in with the readformants function.
-#' @param order the order of the prediction model.
-#' @param nf the number of formants to optimize for.
-#' @param method method of selecting the winning analysis.
-#' @param outputpath --.
-#' @param subset a vector indicating a subset of the analyses to be considered.
-#' @return A vector with the winning analysis for each file.
+#' @param csvs --.
+#' @param bins --.
+#' @param nf --.
+#' @param method --.
+#' @return --.
 #' @export
 #' @examples
 #' \dontrun{
@@ -27,6 +24,8 @@ aggregatedata <- function (csvs, bins = 5, nf = NA, method = "median"){
     if (length (which(colnames(csvs)=="f4")) == 0) nf = 3
   }
 
+  if (method=="median") method = stats::median
+
   aggregated = data.frame (matrix (0, length(tmp_csvs), bins*nf))
   duration = matrix (0, length(tmp_csvs), 1)
   colnames (aggregated) = paste0 ("f",rep(1:4,bins),rep(1:bins,each=nf))
@@ -35,8 +34,8 @@ aggregatedata <- function (csvs, bins = 5, nf = NA, method = "median"){
     n = nrow (tmp_csvs[[i]])
     tmp_csvs[[i]]$ntime = ceiling((1:n)/n*bins)
 
-    if (nf==3) tmp_agg = aggregate (cbind (f1,f2,f3) ~ ntime, tmp_csvs[[i]], method)
-    if (nf==4) tmp_agg = aggregate (cbind (f1,f2,f3,f4) ~ ntime, tmp_csvs[[i]], method)
+    if (nf==3) tmp_agg = stats::aggregate (cbind (f1,f2,f3) ~ ntime, tmp_csvs[[i]], method)
+    if (nf==4) tmp_agg = stats::aggregate (cbind (f1,f2,f3,f4) ~ ntime, tmp_csvs[[i]], method)
 
     aggregated[i,] = round (c(t(tmp_agg[,-1])))
     duration[i] = diff(range(tmp_csvs[[i]]$time))
