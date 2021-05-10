@@ -70,18 +70,12 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 
 
 plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
-                            main=NA,colors=NA,add=FALSE,cex=NA,lwd=NA,pch=NA,...){
+                            main=NA,colors=NA,add=FALSE,...){
 
-  if (length(colors)==1) colors = c("darkgoldenrod2",3,4,2)
+  if (is.na(colors[1]) & length(colors)==1) colors = c("darkgoldenrod2",3,4,2)
   if (is.na(xlab)) xlab="Time (ms)"
   if (is.na(ylab)) ylab = "Frequency (Hz)"
-  if (is.na(main)) main = paste0 ("maximum formant = ",
-                                  attr(ffs,"maxformant"), " (Hz)")
-  if (is.na(cex)) cex = 1
-  if (is.na(lwd)) lwd = 1
-  if (!is.na(pch[1]) & length (pch)) pch = rep (pch, 4)
-  if (is.na(pch[1])) pch = rep (16, 4)
-
+  if (is.na(main)) main = ""
   nf = 4
   if (!("f4" %in% colnames (ffs))) nf = 3
 
@@ -92,6 +86,8 @@ plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
     time = w1 + timestep*(0:(n-1))
   }
   if ("time" %in% colnames (ffs)) time = ffs$time*1000
+
+  if (length(pch)==1) pch = rep (pch, 4)
 
   if (is.na(xlim)) xlim = range(time)
   if (is.na(ylim) & nf==3) ylim =c(100,max (ffs$f3)+500)
@@ -114,72 +110,9 @@ plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 
 
 
-#' Spectrogram
-#'
-#' @param sound a numeric vector representing the sound to be analyzed.
-#' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).
-#' @param windowlength the windowlength specified in seconds.
-#' @param timestep the analysis time step specified in seconds.
-#' @param dynamicrange the dynamic range desired for the spectrogram, in decibels.
-#' @param plot if TRUE, a plot is created.
-#' @param ... Additional arguments are passed to the internal call of 'image'.
-#' @return A matrix representing a spectrogram.
-#' @export
-#' @examples
-#' \dontrun{
-#' sound = readWave2("yoursound.wav")
-#' spect = spectrogram (sound, maxformant = 5000)
-#' ffs = analyze (sound, timestep = 2)
-#' plotffs (ffs[[2]], spect = spect)
-#' }
 
-spectrogram = function (sound, maxformant = 5000, windowlength = 0.006, timestep = 0.001,
-                        dynamicrange = 60, plot = TRUE, ...){
 
-  if (class(sound)=="Wave"){
-    fs = sound@samp.rate
-    if (maxformant*2 < fs) sound = tuneR::downsample (sound, maxformant*2)
-    tmp_snd = sound@left
-  }
 
-  tmp_snd = signal::filter (.97,1, tmp_snd)
 
-  fs = maxformant*2
-  n = length (tmp_snd)
-  duration = n / (maxformant*2)
-  spots = round(seq (1/fs,duration-windowlength, timestep)*fs)
-
-  windowlength_pts <- round(windowlength * fs)
-  window <- phonTools::windowfunc(windowlength_pts, "gaussian")
-  snd_matrix = (sapply (spots, function (x) tmp_snd[x:(x+windowlength_pts-1)]*window))
-
-  nfft = 2^(ceiling(log2(windowlength_pts))) * 2
-  zeros = matrix (0, nfft-windowlength_pts, ncol (snd_matrix))
-  snd_matrix = rbind (snd_matrix, zeros)
-
-  spect <- stats::mvfft(snd_matrix)
-  spect = spect[1:(nrow(spect)/2),]
-  spect = t(abs(spect)^2)
-  spect = log10(spect)*10
-  spect = spect - max(spect)
-  spect[spect < -(dynamicrange)] = -dynamicrange
-
-  times = 1000 * round(spots/fs + windowlength/2 , 4)
-  rownames (spect) = times
-  frequencies = seq (0, (fs/2)-(1/fs), length.out = nfft/2)
-  colnames (spect) = frequencies
-
-  #zcolors = colorRampPalette(c("dark blue", "blue", "cyan", "light green",
-  #"yellow","orange", "red", "brown"))
-  if (plot){
-    zcolors = grDevices::colorRampPalette(c("white", "black"))
-    zcolors = zcolors(40)
-    graphics::image (times, frequencies, spect,col = zcolors, xlab = "Time (ms)",
-                     ylab = "Frequency",...)
-  }
-  attr(spect, "object") = "spectrogram"
-
-  invisible (spect)
-}
 
 
