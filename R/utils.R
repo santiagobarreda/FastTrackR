@@ -102,3 +102,16 @@ getformants = function (coeffs, fs = 1, nreturn=4){
 }
 
 
+progressbar = function (i, n){
+
+  previous = round (50*((i-1)/n))
+  progress = round (50*(i/n))
+
+  if (previous!=progress){
+    message = paste0 ("Progress: [", paste(rep("*", progress),collapse=""),paste(rep(" ", 50-progress),collapse=""), "]")
+    cat (message, "\n")
+  }
+}
+
+
+
