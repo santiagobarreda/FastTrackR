@@ -69,7 +69,7 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 }
 
 
-plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
+plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,cex=NA,lwd=NA,pch=NA,
                             main=NA,colors=NA,add=FALSE,...){
 
   if (is.na(colors[1]) & length(colors)==1) colors = c("darkgoldenrod2",3,4,2)

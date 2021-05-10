@@ -7,7 +7,7 @@
 #' @param windowlength the windowlength specified in seconds.
 #' @param timestep the analysis time step specified in seconds.
 #' @param dynamicrange the dynamic range desired for the spectrogram, in decibels.
-#' @param padding the amount of zeor padding applied to the analysis as a multiplier of signal length.
+#' @param resolution the spectral resolution in Hertz.
 #' @param plot if TRUE, a plot is created.
 #' @param ... Additional arguments are passed to the internal call of 'image'.
 #' @return A matrix representing a spectrogram.

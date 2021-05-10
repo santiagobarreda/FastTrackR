@@ -4,7 +4,7 @@
 \alias{makewinnerplots}
 \title{MAke images for winning analysies}
 \usage{
-makewinnerplots(path, resolution = 1000, csvs = NA)
+makewinnerplots(path, resolution = 1000, csvs = NA, showprogressbar = FALSE)
 }
 \arguments{
 \item{path}{--.}
@@ -12,6 +12,8 @@ makewinnerplots(path, resolution = 1000, csvs = NA)
 \item{resolution}{--.}
 
 \item{csvs}{--.}
+
+\item{showprogressbar}{--.}
 }
 \description{
 MAke images for winning analysies
@@ -19,5 +21,6 @@ MAke images for winning analysies
 \examples{
 \dontrun{
 # nothing yet
+system.time (makewinnerplots(showprogressbar=TRUE))
 }
 }

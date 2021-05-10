@@ -4,7 +4,13 @@
 \alias{makecomparisonplots}
 \title{Make images comparing alternative analysies}
 \usage{
-makecomparisonplots(path, resolution = 1000, formants = NA, winners = NA)
+makecomparisonplots(
+  path,
+  resolution = 1000,
+  formants = NA,
+  winners = NA,
+  showprogressbar = FALSE
+)
 }
 \arguments{
 \item{path}{--.}
@@ -14,12 +20,14 @@ makecomparisonplots(path, resolution = 1000, formants = NA, winners = NA)
 \item{formants}{--.}
 
 \item{winners}{--.}
+
+\item{showprogressbar}{--.}
 }
 \description{
 Make images comparing alternative analysies
 }
 \examples{
 \dontrun{
-# nothing yet
+system.time (makecomparisonplots(showprogressbar=TRUE))
 }
 }
