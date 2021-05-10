@@ -10,6 +10,9 @@
 #' @param ylab an optional user-specified y-axis label.
 #' @param main an optional user-specified plot label.
 #' @param colors an optional vector of colors to use for the formant points/lines.
+#' @param cex --.
+#' @param lwd --.
+#' @param pch --.
 #' @param add if FALSE, a new plot if created.
 #' @param spect an optional spectrogram to be shown behind the tracks.
 #' @param ... Additional arguments are passed to the internal call of 'plot'.
@@ -26,12 +29,12 @@
 #' }
 
 plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
-                   main=NA,colors=NA,add=FALSE,spect=NA,...){
+                   main=NA,colors=NA,cex=NA,lwd=NA,pch=NA,add=FALSE,spect=NA,...){
 
   zcolors = grDevices::colorRampPalette(c("white", "black"))
   zcolors = zcolors(40)
 
-  if (attr (ffs,"object")=="ffs"){
+  if (class (ffs) == "data.frame"){
     if (!is.na(spect[1])){
       if (attr(spect, "object")=="spectrogram"){
         graphics::image (as.numeric(rownames(spect)), as.numeric(colnames(spect)),
@@ -41,9 +44,9 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
       }
     }
     plotffs.internal(ffs,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,
-                       main=main,colors=colors,add=add, ...)
+                       main=main,colors=colors,cex=cex,lwd=lwd,pch=pch,add=add, ...)
   }
-  if (attr (ffs,"object")=="fileffs"){
+  if (class (ffs)=="list"){
     tmp_par = graphics::par(no.readonly = TRUE)
 
     n = length (ffs)
@@ -67,35 +70,45 @@ plotffs = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 
 
 plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
-                            main=NA,colors=NA,add=FALSE,...){
+                            main=NA,colors=NA,add=FALSE,cex=NA,lwd=NA,pch=NA,...){
 
   if (length(colors)==1) colors = c("darkgoldenrod2",3,4,2)
   if (is.na(xlab)) xlab="Time (ms)"
   if (is.na(ylab)) ylab = "Frequency (Hz)"
   if (is.na(main)) main = paste0 ("maximum formant = ",
                                   attr(ffs,"maxformant"), " (Hz)")
+  if (is.na(cex)) cex = 1
+  if (is.na(lwd)) lwd = 1
+  if (!is.na(pch[1]) & length (pch)) pch = rep (pch, 4)
+  if (is.na(pch[1])) pch = rep (16, 4)
 
-  timestep = attr (ffs,"timestep")*1000
+  nf = 4
+  if (!("f4" %in% colnames (ffs))) nf = 3
 
-  n = nrow (ffs)
-  nf = ncol (ffs)/2
-  if (is.na(ylim)) ylim =c(100,max (ffs[,1:nf]))
-  time = 25 + timestep*(0:(n-1))
-  if (is.na(xlim)) xlim = range((time))
+  if (!("time" %in% colnames (ffs))){
+    w1 = attr (ffs,"w1")*1000
+    timestep = attr (ffs,"timestep")*1000
+    n = nrow (ffs)
+    time = w1 + timestep*(0:(n-1))
+  }
+  if ("time" %in% colnames (ffs)) time = ffs$time*1000
 
+  if (is.na(xlim)) xlim = range(time)
+  if (is.na(ylim) & nf==3) ylim =c(100,max (ffs$f3)+500)
+  if (is.na(ylim) & nf==4) ylim =c(100,max (ffs$f4)+500)
 
   if (!add) plot (0, type="n", xlim=xlim, ylim=ylim, xlab=xlab,
                   ylab=ylab,main=main, ...)
 
-  graphics::points (time, ffs[,1], pch=16, col = colors[1])
-  graphics::lines (time, ffs[,1], col = colors[1])
-  graphics::points (time, ffs[,2], pch=16, col = colors[2])
-  graphics::lines (time, ffs[,2], col = colors[2])
-  graphics::points (time, ffs[,3], pch=16, col = colors[3])
-  graphics::lines (time, ffs[,3], col = colors[3])
+  graphics::points (time, ffs[,"f1"], pch=pch[1], col = colors[1],cex=cex)
+  graphics::lines (time, ffs[,"f1"], col = colors[1],lwd=lwd)
+  graphics::points (time, ffs[,"f2"], pch=pch[2], col = colors[2],cex=cex)
+  graphics::lines (time, ffs[,"f2"], col = colors[2],lwd=lwd)
+  graphics::points (time, ffs[,"f3"], pch=pch[3], col = colors[3],cex=cex)
+  graphics::lines (time, ffs[,"f3"], col = colors[3],lwd=lwd)
   if (nf==4){
-    graphics::points (time, ffs[,4], pch=16, col = colors[4])
-    graphics::lines (time, ffs[,4], col = colors[4])
+    graphics::points (time, ffs[,"f4"], pch=pch[4], col = colors[4],cex=cex)
+    graphics::lines (time, ffs[,"f4"], col = colors[4],lwd=lwd)
   }
 }
 
@@ -125,8 +138,7 @@ spectrogram = function (sound, maxformant = 5000, windowlength = 0.006, timestep
 
   if (class(sound)=="Wave"){
     fs = sound@samp.rate
-    if (maxformant*2 < fs)
-      sound = tuneR::downsample (sound, maxformant*2)
+    if (maxformant*2 < fs) sound = tuneR::downsample (sound, maxformant*2)
     tmp_snd = sound@left
   }
 
