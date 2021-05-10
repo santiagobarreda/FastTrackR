@@ -12,6 +12,9 @@ plotffs(
   ylab = NA,
   main = NA,
   colors = NA,
+  cex = NA,
+  lwd = NA,
+  pch = NA,
   add = FALSE,
   spect = NA,
   ...
@@ -31,6 +34,12 @@ plotffs(
 \item{main}{an optional user-specified plot label.}
 
 \item{colors}{an optional vector of colors to use for the formant points/lines.}
+
+\item{cex}{--.}
+
+\item{lwd}{--.}
+
+\item{pch}{--.}
 
 \item{add}{if FALSE, a new plot if created.}
 
