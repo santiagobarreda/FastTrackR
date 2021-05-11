@@ -11,3 +11,53 @@ template:
     twitter:
       creator: "@joey_stan"
       card: summary_large_image
+reference:
+- title: "Interacting with Praat output"
+- contents: 
+  - readcsvs
+  - readformants
+  - readtextgrid
+  - writecsvs
+  - writeformants
+- title: "Data Processing"
+- contents: 
+  - aggregatedata
+  - normalize
+  - extractvowels
+  - extract.internal
+- title: "Data Analysis"
+- contents: 
+  - makecomparisonplots
+  - analyze
+  - analyze.internal
+  - trackformants
+- title: "Data visualization"
+- contents: 
+  - ft.lines
+  - ft.points
+  - ft.arrows
+  - spectrogram
+  - plotffs
+  - plotffs.internal
+- title: "Winners"
+- contents: 
+  - autoselectwinners
+  - getwinners
+  - makewinnerplots
+- title: "Data"
+- contents:
+  - aggregated_data
+  - coefficients
+  - vowelstoextract
+- title: "Helper functions"
+- ref: "For internal use"
+- contents: 
+  - makepredictors
+  - '%+%'
+  - getnumbers
+  - addzeros
+  - readWave2
+  - extractWave2
+  - downsample
+  - getformants
+  - progressbar
