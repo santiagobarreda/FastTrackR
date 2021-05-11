@@ -42,8 +42,8 @@
 <meta property="og:title" content="Spectrogram — spectrogram" />
 <meta property="og:description" content="Spectrogram" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:creator" content="@joeystsanley" />
-<meta name="twitter:site" content="@joeystsanley" />
+<meta name="twitter:creator" content="@joey_stan" />
+<meta name="twitter:site" content="@joey_stan" />
 
 
 
@@ -128,9 +128,10 @@
     <pre class="usage"><span class='fu'>spectrogram</span><span class='op'>(</span>
   <span class='va'>sound</span>,
   maxformant <span class='op'>=</span> <span class='fl'>5000</span>,
-  windowlength <span class='op'>=</span> <span class='fl'>0.006</span>,
+  windowlength <span class='op'>=</span> <span class='fl'>0.005</span>,
   timestep <span class='op'>=</span> <span class='fl'>0.001</span>,
   dynamicrange <span class='op'>=</span> <span class='fl'>60</span>,
+  resolution <span class='op'>=</span> <span class='fl'>50</span>,
   plot <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -157,6 +158,10 @@
     <tr>
       <th>dynamicrange</th>
       <td><p>the dynamic range desired for the spectrogram, in decibels.</p></td>
+    </tr>
+    <tr>
+      <th>resolution</th>
+      <td><p>the spectral resolution in Hertz.</p></td>
     </tr>
     <tr>
       <th>plot</th>
