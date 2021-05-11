@@ -75,7 +75,11 @@ plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,cex=NA,lwd=NA,pc
   if (is.na(colors[1]) & length(colors)==1) colors = c("darkgoldenrod2",3,4,2)
   if (is.na(xlab)) xlab="Time (ms)"
   if (is.na(ylab)) ylab = "Frequency (Hz)"
+  if (is.na(cex)) cex = 1
+  if (is.na(lwd)) mlwd = 1
   if (is.na(main)) main = ""
+  if (is.na(pch[1])) pch = 1
+
   nf = 4
   if (!("f4" %in% colnames (ffs))) nf = 3
 
