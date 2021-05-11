@@ -2,8 +2,8 @@ Package: fasttrackr
 Type: Package
 Title: Fast Track integration in R
 Version: 0.1.0
-Author: Santiago Barreda
-Maintainer: Santiago Barreda <sbarreda@ucdavis.edu>
+Author: Santiago Barreda, Joey Stanley
+Maintainer: Santiago Barreda <sbarreda@ucdavis.edu>, Joey Stanley <joey_stanley@byu.edu>
 Description: Facilitation of integration with Fast Track formant data generated using Praat, including alternate analysis selection, outlier detection, normalization, plotting, etc. 
 License: MIT + file LICENSE
 Encoding: UTF-8
