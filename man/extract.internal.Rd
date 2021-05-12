@@ -4,7 +4,7 @@
 \alias{extract.internal}
 \title{Extract Vowels}
 \usage{
-extract.internal(
+\method{extract}{internal}(
   tgpath,
   sndpath,
   segmenttier = "phone",
