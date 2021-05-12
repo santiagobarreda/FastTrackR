@@ -27,6 +27,8 @@ writecsvs <- function (csvs, path){
 }
 
 
+#' Write Fast Track formant objects
+#' @export
 writeformants <- function (formants, path){
 
   snd_files = list.files (paste0(path,"/sounds"),full.names=TRUE)
