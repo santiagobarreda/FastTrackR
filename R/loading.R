@@ -1,15 +1,15 @@
 
 #' Load Fast Track csv files
 #'
+#' This function quickly reads in all the files contained in the "/csvs" folder within a Fast Track directory. Since Fast Track exports the acoustic measurements into separate files per token, this function is a quick way to read those all in at once.
 #'
-#'
-#' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
-#' @param asone if TRUE, the csv files are all stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.
-#' @return A dataframe or list of dataframes, as per the asone parameter.
+#' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
+#' @param asone If TRUE (the default), the csv files are combined into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.
+#' @return A dataframe or list of dataframes, as determined by the \code{asone} parameter.
 #' @export
 #' @examples
 #' \dontrun{
-#' csvs = readcsvs ()
+#' csvs <- readcsvs()
 #' }
 
 readcsvs <- function (path, asone = TRUE){
@@ -34,10 +34,12 @@ readcsvs <- function (path, asone = TRUE){
 
 #' Load Fast Track formant objects
 #'
+#' This function quickly reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, thre are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time for all the data to be read in if there are many tokens that were analyzed in that directory.
+#' 
+#' 
 #'
-#'
-#' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
-#' @return A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.
+#' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
+#' @return A list of lists of dataframes. The "external" list is as long as number of files that were analyzed. For each "external" list element there are \emph{n} "internal" list elements for \emph{n} analysis steps. For example, \code{formant[[32]][[3]]} contains information regarding the 3rd analysis option for the 32nd file.
 #' @export
 #' @examples
 #' \dontrun{
