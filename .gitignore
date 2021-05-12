@@ -6,6 +6,9 @@ todo.txt
 fasttrack.Rproj
 .Rproj.user
 *.RDS
+*.Rproj
+
 script.R
 testing.R
 yoursound.wav
+joeys_sandbox.Rmd
