@@ -10,7 +10,7 @@ analyze(
   to = 6800,
   nsteps = 12,
   windowlength = 0.05,
-  timestep = 0.0025,
+  timestep = 0.002,
   path = NA,
   showprogress = TRUE
 )
@@ -41,8 +41,9 @@ Analyze sounds
 \examples{
 \dontrun{
 sound = readWave2("yoursound.wav")
-ffs = analyze (sound, timestep = 0.002)
-plotffs (ffs)
+ffs1 = analyze (sound, timestep = 0.002)
+ffs2 = trackformants (sound, timestep = 0.002)
+plotffs (ffs2)
 plotffs (ffs[[2]])
 }
 }
