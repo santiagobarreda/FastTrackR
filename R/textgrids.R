@@ -80,26 +80,26 @@ extractvowels = function (tgpath, sndpath,outputpath=NA, segmenttier="phone",wor
 }
 
 
-#' Extract Vowels
-#'
-#' Extracts vowels from larger sounds using information from matching TextGrids. A complete explanation of function behavior is provided in the extractvowels reference page.
-#'
-#' @param tgpath a path or vector of paths to textgrid files.
-#' @param sndpath a path or vector of paths to wav files.
-#' @param segmenttier the name of the tier containing segmental information used for extraction.
-#' @param wordtier the name of a tier containing information about words (optional).
-#' @param commenttiers a vector containing names of tiers with comments you wish to extract (optional).
-#' @param omittier the name of a tier indicating which segments you wish to skip (optional).
-#' @param stress a vector contianing labels you may have used to mark stress.
-#' @param wordstoskip a vector containing any words you do not want to extract vowels from.
-#'
-#' @export
-#' @examples
-#' \dontrun{
-#' tgpath = "yoursound2.TextGrid"
-#' tmp = readtextgrid (tgpath)
-#' output = extract.internal (tgpath, wordtier="word",commenttiers=c("omit","comments"))
-#' }
+# #' Extract Vowels
+# #'
+# #' Extracts vowels from larger sounds using information from matching TextGrids. A complete explanation of function behavior is provided in the extractvowels reference page.
+# #'
+# #' @param tgpath a path or vector of paths to textgrid files.
+# #' @param sndpath a path or vector of paths to wav files.
+# #' @param segmenttier the name of the tier containing segmental information used for extraction.
+# #' @param wordtier the name of a tier containing information about words (optional).
+# #' @param commenttiers a vector containing names of tiers with comments you wish to extract (optional).
+# #' @param omittier the name of a tier indicating which segments you wish to skip (optional).
+# #' @param stress a vector contianing labels you may have used to mark stress.
+# #' @param wordstoskip a vector containing any words you do not want to extract vowels from.
+# #'
+# #' @export
+# #' @examples
+# #' \dontrun{
+# #' tgpath = "yoursound2.TextGrid"
+# #' tmp = readtextgrid (tgpath)
+# #' output = extract.internal (tgpath, wordtier="word",commenttiers=c("omit","comments"))
+# #' }
 
 extract.internal = function (tgpath, sndpath, segmenttier="phone",wordtier=NA,
                            commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA){
