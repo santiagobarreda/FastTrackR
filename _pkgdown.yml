@@ -16,9 +16,9 @@ reference:
 - contents: 
   - readcsvs
   - readformants
-  - readtextgrid
   - writecsvs
   - writeformants
+  - readtextgrid
 - title: "Data Processing"
 - contents: 
   - aggregatedata

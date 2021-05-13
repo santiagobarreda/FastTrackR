@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Load Fast Track formant objects — readformants" />
-<meta property="og:description" content="Load Fast Track formant objects" />
+<meta property="og:description" content="This function quickly reads in all the files contained in the &quot;/formants&quot; folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, thre are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time for all the data to be read in if there are many tokens that were analyzed in that directory." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -125,7 +125,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Load Fast Track formant objects</p>
+    <p>This function quickly reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, thre are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time for all the data to be read in if there are many tokens that were analyzed in that directory.</p>
     </div>
 
     <pre class="usage"><span class='fu'>readformants</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
@@ -135,13 +135,13 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path</th>
-      <td><p>the path to the working directory for the Fast Track project. If no path is provided this is the working directory.</p></td>
+      <td><p>The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.</p>
+    <p>A list of lists of dataframes. The "external" list is as long as number of files that were analyzed. For each "external" list element there are <em>n</em> "internal" list elements for <em>n</em> analysis steps. For example, <code>formant[[32]][[3]]</code> contains information regarding the 3rd analysis option for the 32nd file.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>

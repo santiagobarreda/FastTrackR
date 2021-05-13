@@ -7,18 +7,18 @@
 readcsvs(path, asone = TRUE)
 }
 \arguments{
-\item{path}{the path to the working directory for the Fast Track project. If no path is provided this is the working directory.}
+\item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
-\item{asone}{if TRUE, the csv files are all stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.}
+\item{asone}{If TRUE (the default), the csv files are combined into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.}
 }
 \value{
-A dataframe or list of dataframes, as per the asone parameter.
+A dataframe or list of dataframes, as determined by the \code{asone} parameter.
 }
 \description{
-Load Fast Track csv files
+This function quickly reads in all the files contained in the "/csvs" folder within a Fast Track directory. Since Fast Track exports the acoustic measurements into separate files per token, this function is a quick way to read those all in at once.
 }
 \examples{
 \dontrun{
-csvs = readcsvs ()
+csvs <- readcsvs()
 }
 }

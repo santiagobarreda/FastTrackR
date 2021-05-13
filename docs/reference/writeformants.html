@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load Fast Track csv files — readcsvs • fasttrackr</title>
+<title>Write Fast Track formant objects — writeformants • fasttrackr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Load Fast Track csv files — readcsvs" />
-<meta property="og:description" content="This function quickly reads in all the files contained in the &quot;/csvs&quot; folder within a Fast Track directory. Since Fast Track exports the acoustic measurements into separate files per token, this function is a quick way to read those all in at once." />
+<meta property="og:title" content="Write Fast Track formant objects — writeformants" />
+<meta property="og:description" content="Write Fast Track formant objects" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -119,39 +119,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load Fast Track csv files</h1>
+    <h1>Write Fast Track formant objects</h1>
     
-    <div class="hidden name"><code>readcsvs.Rd</code></div>
+    <div class="hidden name"><code>writeformants.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function quickly reads in all the files contained in the "/csvs" folder within a Fast Track directory. Since Fast Track exports the acoustic measurements into separate files per token, this function is a quick way to read those all in at once.</p>
+    <p>Write Fast Track formant objects</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readcsvs</span><span class='op'>(</span><span class='va'>path</span>, asone <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>writeformants</span><span class='op'>(</span><span class='va'>formants</span>, <span class='va'>path</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>path</th>
-      <td><p>The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.</p></td>
-    </tr>
-    <tr>
-      <th>asone</th>
-      <td><p>If TRUE (the default), the csv files are combined into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe or list of dataframes, as determined by the <code>asone</code> parameter.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>csvs</span> <span class='op'>&lt;-</span> <span class='fu'>readcsvs</span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
