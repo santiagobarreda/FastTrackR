@@ -6,6 +6,11 @@
 \usage{
 writeformants(formants, path)
 }
+\arguments{
+\item{formants}{--.}
+
+\item{path}{--.}
+}
 \description{
 Write Fast Track formant objects
 }
