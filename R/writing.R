@@ -28,6 +28,8 @@ writecsvs <- function (csvs, path){
 
 
 #' Write Fast Track formant objects
+#' @param formants --.
+#' @param path --.
 #' @export
 writeformants <- function (formants, path){
 
