@@ -15,13 +15,14 @@
 #' @examples
 #' \dontrun{
 #' sound = readWave2("yoursound.wav")
-#' ffs = analyze (sound, timestep = 0.002)
-#' plotffs (ffs)
+#' ffs1 = analyze (sound, timestep = 0.002)
+#' ffs2 = trackformants (sound, timestep = 0.002)
+#' plotffs (ffs2)
 #' plotffs (ffs[[2]])
 #' }
 
 analyze = function (sound, from = 4800, to = 6800, nsteps=12, windowlength = 0.05,
-                    timestep = 0.0025, path = NA, showprogress=TRUE){
+                    timestep = 0.002, path = NA, showprogress=TRUE){
 
   # if there is a list of file names read them all in
   if (length(path)>1) sound = lapply (path, readWave2)
@@ -72,6 +73,7 @@ analyze.internal = function (tmp_snd, from = 4800, to = 6800, nsteps=12,
 
   for (i in rev(maxformants)){
     tmp_snd = downsample (tmp_snd, maxformant = i)
+    tmp_snd@left = tmp_snd@left / max(tmp_snd@left)
     ffs[[count]] = trackformants (tmp_snd,maxformant = i,timestep=timestep)
     count = count - 1
   }
