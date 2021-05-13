@@ -1,0 +1,8 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+README.md
+^.*\.pdf$
+tmp
+docs
+.github
+_pkgdown.yml
