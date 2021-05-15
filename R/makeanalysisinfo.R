@@ -1,5 +1,0 @@
-
-#makeanalysisinfo <- function (path){
-
-
-#}

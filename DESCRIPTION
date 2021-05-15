@@ -1,7 +1,7 @@
 Package: fasttrackr
 Type: Package
 Title: Fast Track integration in R
-Version: 0.1.0
+Version: 0.0.1
 Authors@R: 
   c(person(given = "Santiago",
            family = "Barreda",

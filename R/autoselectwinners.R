@@ -92,8 +92,3 @@ autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
   output
 }
 
-
-makepredictors = function (n, order){
-  x = (0:(n-1)) / n
-  xs = sapply (seq (0,order/2,.5), function (f) cos (f*2*pi*x))
-}

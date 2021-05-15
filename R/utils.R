@@ -43,19 +43,19 @@ extractWave2 = function (sound,from,to, filename){
 
 
 
-#' Downsample
-#'
-#'
-#' @param sound a numeric vector representing the sound to be analyzed.
-#' @param maxformant the desired maximum analysis frequency (i.e., the new Nyquist/2).
-#' @param precision the number of neighbors used to interpolate.
-#' @return A numeric vector representing the downsampled sound. The new sampling frequency is maxformant*2.
-#' @export
-#' @examples
-#' \dontrun{
-#' sound = readWave2 ("yoursound.wav")
-#' tmp_snd = downsample (snd, maxformant = 5000)
-#' }
+# #' Downsample
+# #'
+# #'
+# #' @param sound a numeric vector representing the sound to be analyzed.
+# #' @param maxformant the desired maximum analysis frequency (i.e., the new Nyquist/2).
+# #' @param precision the number of neighbors used to interpolate.
+# #' @return A numeric vector representing the downsampled sound. The new sampling frequency is maxformant*2.
+# #' @export
+# #' @examples
+# #' \dontrun{
+# #' sound = readWave2 ("yoursound.wav")
+# #' tmp_snd = downsample (snd, maxformant = 5000)
+# #' }
 
 downsample = function (sound, maxformant = 5000, precision = 50){
 
@@ -111,6 +111,13 @@ progressbar = function (i, n){
     message = paste0 ("Progress: [", paste(rep("*", progress),collapse=""),paste(rep(" ", 50-progress),collapse=""), "]")
     cat (message, "\n")
   }
+}
+
+
+
+makepredictors = function (n, order){
+  x = (0:(n-1)) / n
+  xs = sapply (seq (0,order/2,.5), function (f) cos (f*2*pi*x))
 }
 
 
