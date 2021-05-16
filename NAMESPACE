@@ -3,7 +3,6 @@
 export(aggregatedata)
 export(analyze)
 export(autoselectwinners)
-export(downsample)
 export(extractvowels)
 export(ft.arrows)
 export(ft.lines)
