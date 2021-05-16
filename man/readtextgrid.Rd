@@ -10,10 +10,10 @@ readtextgrid(path)
 \item{path}{the path to the Praat textgrid file you want to read.}
 }
 \value{
-A list of dataframes, one containing the data from each interval tier in the textgrid. Each dataframe is named after the tier.
+A list of dataframes, one containing the data from each interval tier in the textgrid. Each list element is named after the tier.
 }
 \description{
-Create a list of dataframes from a textgrid. Each list element is a dataframe representing information from a different interval tier. Each dataframe contains the interval label, start time, end time, and duration (all in milliseconds).
+Creates a list of dataframes from a textgrid. Each list element is a dataframe representing information from a different interval tier. Each dataframe contains the interval label, start time, end time, and duration (all in milliseconds).
 }
 \examples{
 \dontrun{
