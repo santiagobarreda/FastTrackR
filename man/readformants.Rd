@@ -18,7 +18,9 @@ This function reads in all the files contained in the "/formants" folder within 
 \details{
 The data is stored in data frames containing formant frequencies and bandwidths for the first 3-4 formants. These values are rounded, which makes display easier and makes the resulting object much smaller in memory (and on your hard drive). Every data frame representing a single Praat formant object needs to have some information associated with it, and this is done using attributes for the object. The attributes for every dataframe representing a formant object are: timestep (the analysis time step, in ms), w1 (the location of the first analysis window, in ms), maxformant (the maximum formant frequency, in Hz), and filename, containing the label used for the formant object (relating to the wav file filename). 
 
-The dataframes corresponding to alternative analyses for a single sound file are stored in a list. This list has the same filename attribute as each of the dataframes contained within it. Finally, all of the lists (each of which represents a single sound) are stored within one overall list. This final list contains an attribute representing the maximum formant frequencies used for all of the analyses represented by the formants files.
+The dataframes corresponding to alternative analyses for a single sound file are stored in a list. This list has the same filename attribute as each of the dataframes contained within it. Finally, all of the lists (each of which represents a single sound) are stored within one overall list. This final list contains an attribute representing the maximum formant frequencies used for all of the analyses represented by the formants files. 
+
+Eventually I think both kinds of lists need to turned into S3 classes with at least print statements.
 }
 \examples{
 \dontrun{
