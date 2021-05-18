@@ -28,7 +28,7 @@ aggregatedata <- function (csvs, bins = 5, nf = NA, method = "median"){
 
   aggregated = data.frame (matrix (0, length(tmp_csvs), bins*nf))
   duration = matrix (0, length(tmp_csvs), 1)
-  colnames (aggregated) = paste0 ("f",rep(1:4,bins),rep(1:bins,each=nf))
+  colnames (aggregated) = paste0 ("f",rep(1:nf,bins),rep(1:bins,each=nf))
 
   for (i in 1:length (tmp_csvs)){
     n = nrow (tmp_csvs[[i]])
