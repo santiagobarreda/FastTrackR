@@ -12,6 +12,7 @@ Authors@R:
            role = c("aut"),
 		   email = "joey_stanley@byu.edu"))
 Maintainer: Santiago Barreda <sbarreda@ucdavis.edu>, Joey Stanley <joey_stanley@byu.edu>
+URL: https://santiagobarreda.github.io/FastTrackR/, https://github.com/santiagobarreda/FastTrackR
 Description: Facilitation of integration with Fast Track formant data generated using Praat, including alternate analysis selection, outlier detection, normalization, plotting, etc. 
 License: MIT + file LICENSE
 Encoding: UTF-8
