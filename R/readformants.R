@@ -26,7 +26,7 @@ readformants <- function (path){
   cutoffs = as.numeric (strsplit (info[5], split=" ")[[1]])
 
   files = list.files (paste0(path,"/formants"),full.names=TRUE)
-  ord = unlist (strsplit (basename (files), "_"))[c(T,T,F,F)]
+  ord = unlist (strsplit (basename (files), "_"))[c(T,T,F)]
   ord = matrix (ord, length(ord)/2, 2, byrow=TRUE)
   ord[,2] = addzeros(ord[,2])
   ord = paste0 (ord[,1],"_", ord[,2])
