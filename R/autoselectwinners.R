@@ -19,45 +19,19 @@
 autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
                                outputpath = NA, subset = NA){
 
-  n = length (formants)
-  nsteps = length (formants[[1]])
-  nf = ncol (formants[[1]][[1]])/2
-
-  steps = 1:nsteps
-  if (!is.na(subset[1])) steps = subset
-
-  files = sapply (formants, attr, "filename")
-
-  errors = array (0, dim = c(n, nsteps, nf))
-  coefficients = array (0, dim = c(n, nsteps, nf, order+1))
-
-  for (i in 1:n){
-    for (j in steps){
-      y = as.matrix(formants[[i]][[j]][,1:nf])
-      xs = makepredictors (nrow (y), order = order)
-      mod = stats::lm (y ~ 0 + xs)
-
-      errors[i,j,] = errors[i,j,] + apply (mod$residuals,2,stats::sd)
-      coefficients[i,j,,] = t(mod$coefficients)
-    }
-  }
-
-  total_errors = apply (errors,c(1,2), sum)
-  winners = apply (total_errors, 1, which.min)
-  winners = steps[winners]
-
-  errors = round (errors,1)
-  total_errors = round (total_errors,1)
-  coefficients = round (coefficients,1)
-
-  output = data.frame (file = files, winner = winners, F1=winners,
-                       F2=winners, F3=winners)
-
-  if (nf==4) output[["F4"]] = winners
-
+  if (method=="classic")
+    output = autoselect.classic (formants, order = order, nf = nf, subset = subset)
+  if (method!="classic")
+    stop("Method not supported.")
+  
+  winners_csv = output$winners_csv  
+  errors = output$errors  
+  total_errors = output$total_errors  
+  coefficients = output$coefficients  
+ 
   if (!is.na (outputpath) & is.na (subset[1])){
     if (outputpath == "working") outputpath = getwd()
-    utils::write.csv (output, outputpath %+% "/winners.csv", row.names=FALSE)
+    utils::write.csv (winners_csv, outputpath %+% "/winners.csv", row.names=FALSE)
 
     colnames(total_errors) = paste0("e",1:ncol(total_errors))
     colnames(coefficients) = paste0("a",1:dim(coefficients)[2])
@@ -89,6 +63,6 @@ autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
       }
     }
   }
-  output
+  winners_csv
 }
 
