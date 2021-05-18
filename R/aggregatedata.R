@@ -37,7 +37,7 @@ aggregatedata <- function (path, csvs, bins = 5, n_formants = NA, method = "medi
   
   # If the file exists already, read it in instead and be done
   aggregated_path = paste0(path, "/processed_data/aggregated_data.csv")
-  if (file.exists(aggregated_path) & !defined(csvs)) {
+  if (file.exists(aggregated_path) & missing(csvs)) {
     aggregated = utils::read.csv(aggregated_path)
     return(aggregated)
   }
