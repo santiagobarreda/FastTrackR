@@ -4,9 +4,11 @@
 \alias{aggregatedata}
 \title{Aggregate analysis data}
 \usage{
-aggregatedata(csvs, bins = 5, nf = NA, method = "median")
+aggregatedata(path, csvs, bins = 5, nf = NA, method = "median")
 }
 \arguments{
+\item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
+
 \item{csvs}{--.}
 
 \item{bins}{--.}
