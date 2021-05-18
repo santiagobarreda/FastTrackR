@@ -4,27 +4,43 @@
 \alias{aggregatedata}
 \title{Aggregate analysis data}
 \usage{
-aggregatedata(path, csvs, bins = 5, nf = NA, method = "median")
+aggregatedata(path, csvs, bins = 5, n_formants = NA, method = "median")
 }
 \arguments{
-\item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
+\item{path}{a string. The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.#'}
 
-\item{csvs}{--.}
+\item{csvs}{An object from the output of \code{readcsvs()}.}
 
-\item{bins}{--.}
+\item{bins}{an integer. How many timepoints do you want formant data from? By default, you'll get formant samples at five points along the duration of each vowel.}
 
-\item{nf}{--.}
+\item{n_formants}{an integer. By default, \code{aggregatedata} will use the number of formants as is contained in \code{csvs} or in the .csv files. However, if you want to, for example, only aggregated data from F1, F2, and F3 even though you have data from F4, you can do so by setting \code{n_formants} to \code{3}.}
 
-\item{method}{--.}
+\item{method}{a string. Median by default. Other functions to come later.}
 }
 \value{
---.
+A dataframe containing formant measurements and various other information for each file (=vowel token)
 }
 \description{
-Aggregate analysis data
+Aggregate the .csv files contained in the csvs folder in a Fast Track directory. These files contain formant measurements at every 2ms, and there is one file per vowel token, so this function summarizes that data into a single dataframe with one row per token and measurements at a specified number of bins.
+}
+\details{
+Note that if a file called aggregated_data.csv exists in the processed_data directory, this function will read that in instead—but only if the \code{csvs} object is not specified. If the file exists, but you want to process the data yourself (say, into 11 bins instead of 5), then include the \code{csvs} object in the function call. See the examples below.
 }
 \examples{
 \dontrun{
-csvs = readcsvs (asone=TRUE)
+path <- "path/to/fasttrack/data"
+
+# Read in the aggregated data
+aggregatedata(path)
+
+# Aggregated the csv files. This generates a spreadsheet identical to the one produced by Praat.
+csvs <- readcsvs(path)
+aggregatedata(path, csvs)
+
+# Reprocess existing csv data. When I analyzed the audio in Praat, I only had the data binned into 5 timepoints. Now, I want 11 timepoints, so I'll generate a new version of the aggregated data here.
+aggregatedata(path, csvs, bins = 11)
+
+# Only process the first three formants even though four are in the original csvs.
+aggregatedata(path, csvs, n_formants = 3)
 }
 }
