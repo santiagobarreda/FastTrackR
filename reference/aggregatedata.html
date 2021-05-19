@@ -133,14 +133,21 @@
     <p>Aggregate the .csv files contained in the csvs folder in a Fast Track directory. These files contain formant measurements at every 2ms, and there is one file per vowel token, so this function summarizes that data into a single dataframe with one row per token and measurements at a specified number of bins.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>aggregatedata</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>csvs</span>, bins <span class='op'>=</span> <span class='fl'>5</span>, n_formants <span class='op'>=</span> <span class='cn'>NA</span>, method <span class='op'>=</span> <span class='st'>"median"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>aggregatedata</span><span class='op'>(</span>
+  <span class='va'>path</span>,
+  <span class='va'>csvs</span>,
+  bins <span class='op'>=</span> <span class='fl'>5</span>,
+  f0_bins <span class='op'>=</span> <span class='fl'>1</span>,
+  n_formants <span class='op'>=</span> <span class='cn'>NA</span>,
+  method <span class='op'>=</span> <span class='st'>"median"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path</th>
-      <td><p>a string. The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.#'</p></td>
+      <td><p>a string. The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.</p></td>
     </tr>
     <tr>
       <th>csvs</th>
@@ -148,7 +155,11 @@
     </tr>
     <tr>
       <th>bins</th>
-      <td><p>an integer. How many timepoints do you want formant data from? By default, you'll get formant samples at five points along the duration of each vowel.</p></td>
+      <td><p>an integer (default = 5). How many timepoints do you want formant data from? By default, you'll get formant samples at five points along the duration of each vowel.</p></td>
+    </tr>
+    <tr>
+      <th>f0_bins</th>
+      <td><p>an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value <code>"same"</code> will set this value equal to the <code>"bins"</code> argument. See examples below.</p></td>
     </tr>
     <tr>
       <th>n_formants</th>
@@ -156,13 +167,13 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>a string. Median by default. Other functions to come later.</p></td>
+      <td><p>a string (default = <code>"median"</code>). Other functions to come later.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe containing formant measurements and various other information for each file (=vowel token)</p>
+    <p>A dataframe containing formant measurements and various other information for each file (= vowel token). The column called <code>f12</code> is the F1 measurement in the second bin. If only one F0 measurement is returned, the column will be named <code>f0</code>. Otherwise, it will follow the same convention (i.e. the F0 measurement for the third bin will be called <code>f03</code>).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Note that if a file called aggregated_data.csv exists in the processed_data directory, this function will read that in instead—but only if the <code>csvs</code> object is not specified. If the file exists, but you want to process the data yourself (say, into 11 bins instead of 5), then include the <code>csvs</code> object in the function call. See the examples below.</p>
@@ -186,6 +197,12 @@
 
 <span class='co'># Only process the first three formants even though four are in the original csvs.</span>
 <span class='fu'>aggregatedata</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>csvs</span>, n_formants <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+
+<span class='co'># Get two F0 measurements per vowel token</span>
+<span class='fu'>aggregatedata</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>csvs</span>, f0_bins <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+
+<span class='co'># Get 11 measurements for all formants and F0.</span>
+<span class='fu'>aggregatedata</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>csvs</span>, bins <span class='op'>=</span> <span class='fl'>11</span>, f0_bins <span class='op'>=</span> <span class='st'>"same"</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
