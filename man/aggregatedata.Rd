@@ -33,11 +33,14 @@ path <- "path/to/fasttrack/data"
 # Read in the aggregated data
 aggregatedata(path)
 
-# Aggregate the csv files. This generates a spreadsheet identical to the one produced by Praat.
+# Aggregate the csv files. 
+# This generates a spreadsheet identical to the one produced by Praat.
 csvs <- readcsvs(path)
 aggregatedata(path, csvs)
 
-# Reprocess existing csv data. Let's say that when I first analyzed the audio in Praat using Fast Track, I only had the data binned into 5 timepoints. Now, I want 11 timepoints, so I'll generate a new version of the aggregated data here.
+# Reprocess existing csv data. Let's say that when I first analyzed the audio 
+# in Praat using Fast Track, I only had the data binned into 5 timepoints. 
+# Now, I want 11 timepoints, so I'll generate a new version of the aggregated data here.
 aggregatedata(path, csvs, bins = 11)
 
 # Only process the first three formants even though four are in the original csvs.
