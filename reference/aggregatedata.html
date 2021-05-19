@@ -174,11 +174,14 @@
 <span class='co'># Read in the aggregated data</span>
 <span class='fu'>aggregatedata</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
 
-<span class='co'># Aggregate the csv files. This generates a spreadsheet identical to the one produced by Praat.</span>
+<span class='co'># Aggregate the csv files. </span>
+<span class='co'># This generates a spreadsheet identical to the one produced by Praat.</span>
 <span class='va'>csvs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='readcsvs.html'>readcsvs</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
 <span class='fu'>aggregatedata</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>csvs</span><span class='op'>)</span>
 
-<span class='co'># Reprocess existing csv data. Let's say that when I first analyzed the audio in Praat using Fast Track, I only had the data binned into 5 timepoints. Now, I want 11 timepoints, so I'll generate a new version of the aggregated data here.</span>
+<span class='co'># Reprocess existing csv data. Let's say that when I first analyzed the audio </span>
+<span class='co'># in Praat using Fast Track, I only had the data binned into 5 timepoints. </span>
+<span class='co'># Now, I want 11 timepoints, so I'll generate a new version of the aggregated data here.</span>
 <span class='fu'>aggregatedata</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>csvs</span>, bins <span class='op'>=</span> <span class='fl'>11</span><span class='op'>)</span>
 
 <span class='co'># Only process the first three formants even though four are in the original csvs.</span>
