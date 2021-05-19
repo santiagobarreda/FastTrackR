@@ -4,21 +4,30 @@
 \alias{aggregatedata}
 \title{Aggregate analysis data}
 \usage{
-aggregatedata(path, csvs, bins = 5, n_formants = NA, method = "median")
+aggregatedata(
+  path,
+  csvs,
+  bins = 5,
+  f0_bins = 1,
+  n_formants = NA,
+  method = "median"
+)
 }
 \arguments{
-\item{path}{a string. The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.#'}
+\item{path}{a string. The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
 \item{csvs}{An object from the output of \code{readcsvs()}.}
 
-\item{bins}{an integer. How many timepoints do you want formant data from? By default, you'll get formant samples at five points along the duration of each vowel.}
+\item{bins}{an integer (default = 5). How many timepoints do you want formant data from? By default, you'll get formant samples at five points along the duration of each vowel.}
+
+\item{f0_bins}{an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value \code{"same"} will set this value equal to the \code{"bins"} argument. See examples below.}
 
 \item{n_formants}{an integer. By default, \code{aggregatedata} will use the number of formants as is contained in \code{csvs} or in the .csv files. However, if you want to, for example, only aggregated data from F1, F2, and F3 even though you have data from F4, you can do so by setting \code{n_formants} to \code{3}.}
 
-\item{method}{a string. Median by default. Other functions to come later.}
+\item{method}{a string (default = \code{"median"}). Other functions to come later.}
 }
 \value{
-A dataframe containing formant measurements and various other information for each file (=vowel token)
+A dataframe containing formant measurements and various other information for each file (= vowel token). The column called \code{f12} is the F1 measurement in the second bin. If only one F0 measurement is returned, the column will be named \code{f0}. Otherwise, it will follow the same convention (i.e. the F0 measurement for the third bin will be called \code{f03}).
 }
 \description{
 Aggregate the .csv files contained in the csvs folder in a Fast Track directory. These files contain formant measurements at every 2ms, and there is one file per vowel token, so this function summarizes that data into a single dataframe with one row per token and measurements at a specified number of bins.
@@ -45,5 +54,11 @@ aggregatedata(path, csvs, bins = 11)
 
 # Only process the first three formants even though four are in the original csvs.
 aggregatedata(path, csvs, n_formants = 3)
+
+# Get two F0 measurements per vowel token
+aggregatedata(path, csvs, f0_bins = 2)
+
+# Get 11 measurements for all formants and F0.
+aggregatedata(path, csvs, bins = 11, f0_bins = "same")
 }
 }
