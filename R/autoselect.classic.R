@@ -1,4 +1,10 @@
 
+# thoughts on organization:
+# actually finds the winners given the formant file. 
+# one function for each method, called by the user controlled function
+# output is a list containing all the information needed in other places: 
+#  the winners table, information about all errors and information about all regression coefficients. 
+
 autoselect.classic <- function (formants, order = 5, nf = 4, subset = NA){
   
   n = length (formants)

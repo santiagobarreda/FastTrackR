@@ -17,7 +17,7 @@
 #' }
 
 autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
-                               outputpath = NA, subset = NA,...){
+                               outputpath = NA, subset = NA){
 
   if (method=="classic")
     output = autoselect.classic (formants, order = order, nf = nf, subset = subset)
@@ -30,6 +30,6 @@ autoselectwinners <- function (formants, order = 5, nf = 4, method = "classic",
     autoselect.write (outputpath, output)
   }
   
-  winners_csv
+  output$winners_csv
 }
 
