@@ -1,11 +1,23 @@
 
-# thoughts on organization:
-# actually finds the winners given the formant file. 
-# one function for each method, called by the user controlled function
-# output is a list containing all the information needed in other places: 
-#  the winners table, information about all errors and information about all regression coefficients. 
+#' Automatically select winners
+#' 
+#' Select the best analyses using the 'classic' Fast Track method from Praat.
+#'
+#' @param formants a list of formant data read in with the readformants function.
+#' @param order the order of the prediction model.
+#' @param n_formants the number of formants to optimize for.
+#' @param outputpath --.
+#' @param subset a vector indicating a subset of the analyses to be considered.
+#' @return A vector with the winning analysis for each file.
+#' @export
+#' @examples
+#' \dontrun{
+#' formants = readformants ()
+#' winners = autoselect.classic (formants, outputpath="working")
+#' }
 
-autoselect.classic <- function (formants, order = 5, n_formants = 4, subset = NA){
+autoselect.classic <- function (formants, order = 5, n_formants = 4, 
+                                outputpath = NA, subset = NA){
   
   n_files = length (formants)
   n_steps = length (formants[[1]])
@@ -43,12 +55,19 @@ autoselect.classic <- function (formants, order = 5, n_formants = 4, subset = NA
   total_errors = round (total_errors,1)
   coefficients = round (coefficients,1)
   winners_csv = data.frame (file = files, winner = winners, F1=winners,
-                       F2=winners, F3=winners)
+                            F2=winners, F3=winners)
   if (n_formants==4) winners_csv[["F4"]] = winners
- 
+  
   output = list (winners_csv=winners_csv,
                  errors=errors,total_errors=total_errors,
                  coefficients=coefficients)
   output
+  
+  if (!is.na (outputpath) & is.na (subset[1])){
+    if (outputpath == "working") outputpath = getwd()
+    autoselect.write (outputpath, output)
+  }
+  
+  output$winners_csv
 }
 

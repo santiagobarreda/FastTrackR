@@ -2,7 +2,7 @@
 
 export(aggregatedata)
 export(analyze)
-export(autoselectwinners)
+export(autoselect.classic)
 export(extractvowels)
 export(ft.arrows)
 export(ft.lines)
