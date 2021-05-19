@@ -7,7 +7,7 @@
 autoselectwinners(
   formants,
   order = 5,
-  nf = 4,
+  n_formants = 4,
   method = "classic",
   outputpath = NA,
   subset = NA
@@ -18,7 +18,7 @@ autoselectwinners(
 
 \item{order}{the order of the prediction model.}
 
-\item{nf}{the number of formants to optimize for.}
+\item{n_formants}{the number of formants to optimize for.}
 
 \item{method}{method of selecting the winning analysis.}
 
