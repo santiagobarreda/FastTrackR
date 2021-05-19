@@ -13,6 +13,7 @@
 #' }
 
 readcsvs <- function (path, asone = TRUE){
+  
   if (missing(path)) path = getwd()
   files = list.files (paste0(path,"/csvs"),full.names=TRUE)
   file_names = list.files (paste0(path,"/csvs"))
@@ -20,7 +21,7 @@ readcsvs <- function (path, asone = TRUE){
 
   csvs = list()
   for (i in 1:length(files)){
-    csvs[[i]] = utils::read.csv (files[i])
+    csvs[[i]] = utils::read.csv (files[i], na.strings = "0")
     if (!asone) names (csvs)[i] = file_names[i]
     if (asone) csvs[[i]]$file = file_names[i]
   }

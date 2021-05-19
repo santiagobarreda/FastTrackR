@@ -72,7 +72,7 @@ aggregatedata <- function (path, csvs, bins = 5, f0_bins = 1, n_formants = NA, m
   
   # Create empty data frames (and name their columns)
   aggregated = data.frame (matrix (0, length(tmp_csvs), bins*n_formants))
-  colnames (aggregated) = paste0 ("f",rep(1:n_formants,bins),rep(1:bins,each=n_formants))
+  colnames (aggregated) = paste0 ("f",rep(1:n_formants,bins),if(bins>1)rep(1:bins,each=n_formants))
   f0 = data.frame (matrix (0, length(tmp_csvs), f0_bins))
   colnames (f0) = paste0 ("f0",if(f0_bins>1)1:f0_bins) # only add the number if >1 bins
   duration = matrix (0, length(tmp_csvs), 1)
@@ -90,7 +90,7 @@ aggregatedata <- function (path, csvs, bins = 5, f0_bins = 1, n_formants = NA, m
     
     # Aggregate the other measurements
     aggregated[i,] = round (c(t(tmp_agg[,-1])))
-    f0[i,] = stats::aggregate (f0 ~ f0_ntime, tmp_csvs[[i]], method)$f0
+    f0[i,] = stats::aggregate (f0 ~ f0_ntime, tmp_csvs[[i]], method, na.omit = TRUE, na.action = na.pass)$f0
     duration[i] = diff(range(tmp_csvs[[i]]$time))
   }
   
