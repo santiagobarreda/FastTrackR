@@ -90,7 +90,7 @@ aggregatedata <- function (path, csvs, bins = 5, f0_bins = 1, n_formants = NA, m
     
     # Aggregate the other measurements
     aggregated[i,] = round (c(t(tmp_agg[,-1])))
-    f0[i,] = stats::aggregate (f0 ~ f0_ntime, tmp_csvs[[i]], method, na.omit = TRUE, na.action = na.pass)$f0
+    f0[i,] = stats::aggregate (f0 ~ f0_ntime, tmp_csvs[[i]], method, na.omit = TRUE, na.action = stats::na.pass)$f0
     duration[i] = diff(range(tmp_csvs[[i]]$time))
   }
   
