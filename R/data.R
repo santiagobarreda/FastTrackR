@@ -55,3 +55,22 @@
 
 "vowelstoextract"
 
+#' Boundaries for acceptable formants 
+#'
+#' A default set of formant boundaries for winner selection .
+#'
+#' @section Columns:
+#' \describe{
+#' \item{label}{the vowel label in the file_information file. }
+#' \item{f1lower}{the highest acceptable midpoint F1 frequency for a vowel.}
+#' \item{f1upper}{the lowest acceptable midpoint F1 frequency for a vowel.}
+#' \item{f2lower}{the highest acceptable midpoint F2 frequency for a vowel.}
+#' \item{f2upper}{the lowest acceptable midpoint F2 frequency for a vowel.}
+#' \item{f3lower}{the highest acceptable midpoint F3 frequency for a vowel.}
+#' \item{f3upper}{the lowest acceptable midpoint F3 frequency for a vowel.}
+#' }
+#' @source \url{https://github.com/santiagobarreda/FastTrackR}
+
+"formantbounds"
+
+
