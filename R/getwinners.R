@@ -19,6 +19,7 @@ getwinners <- function (path, winners, formants, asone = TRUE, write = FALSE){
   if (missing(path)) path = getwd()
 
   # read in data
+  ## stop if files dont exist, check for both
   if (missing(winners)) winners = utils::read.csv (path %+% "/winners.csv")
   if (missing(formants)) formants = readformants (path)
 
