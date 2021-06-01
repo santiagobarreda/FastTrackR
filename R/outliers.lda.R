@@ -32,10 +32,11 @@ ourliers.lda <- function (aggregated_data){
   ldamod = MASS::lda (aggregated_data$label ~ ffs, method = 't')
   #ldamod
   
-  ldapred = predict (ldamod)
+  ldapred = stats::predict (ldamod)
   
   file = aggregated_data$file
-  label = as.numeric(ldapred$class == aggregated_data$label)
+  label = aggregated_data$label
+  correct = as.numeric(ldapred$class == aggregated_data$label)
   winner = ldapred$class
   posterior = apply (ldapred$posterior,1,max)
   posterior = round (posterior, 4)
