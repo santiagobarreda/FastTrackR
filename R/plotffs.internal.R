@@ -24,9 +24,9 @@ plotffs.internal = function(ffs,xlim=NA,ylim=NA,xlab=NA,ylab=NA,cex=NA,lwd=NA,pc
 
   if (length(pch)==1) pch = rep (pch, 4)
 
-  if (is.na(xlim)) xlim = range(time)
-  if (is.na(ylim) & nf==3) ylim =c(100,max (ffs$f3)+500)
-  if (is.na(ylim) & nf==4) ylim =c(100,max (ffs$f4)+500)
+  if (is.na(xlim[1])) xlim = range(time)
+  if (is.na(ylim[1]) & nf==3) ylim =c(100,max (ffs$f3)+500)
+  if (is.na(ylim[1]) & nf==4) ylim =c(100,max (ffs$f4)+500)
 
   if (!add) plot (0, type="n", xlim=xlim, ylim=ylim, xlab=xlab,
                   ylab=ylab,main=main, ...)
