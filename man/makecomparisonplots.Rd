@@ -19,13 +19,21 @@ makecomparisonplots(
 \arguments{
 \item{formants_plot}{--.}
 
+\item{path}{--.}
+
+\item{height}{--.}
+
+\item{width}{--.}
+
+\item{pointsize}{--.}
+
 \item{winners}{--.}
+
+\item{spectrogram_timestep}{--.}
 
 \item{showprogressbar}{--.}
 
-\item{resolution}{--.}
-
-\item{formants}{--.}
+\item{...}{--.}
 }
 \description{
 Make images comparing alternative analysies
@@ -33,6 +41,6 @@ Make images comparing alternative analysies
 \examples{
 \dontrun{
 makecomparisonplots(formants[1:10])
-makecomparisonplots(formants[1:100], winners = winners$winners_csv[1:100,])
+makecomparisonplots(formants[1:10], winners = winners$winners_csv[1:10,])
 }
 }

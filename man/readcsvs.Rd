@@ -4,12 +4,14 @@
 \alias{readcsvs}
 \title{Load Fast Track csv files}
 \usage{
-readcsvs(path, asone = TRUE)
+readcsvs(path, asone = TRUE, progressbar = FALSE)
 }
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
 \item{asone}{If TRUE (the default), the csv files are combined into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.}
+
+\item{progressbar}{--}
 }
 \value{
 A dataframe or list of dataframes, as determined by the \code{asone} parameter.

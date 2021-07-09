@@ -4,14 +4,28 @@
 \alias{makewinnerplots}
 \title{Make images for winning analysies}
 \usage{
-makewinnerplots(path, resolution = 1000, csvs = NA, showprogressbar = FALSE)
+makewinnerplots(
+  path = NA,
+  csvs = NA,
+  height = 1000,
+  width = 1400,
+  pointsize = 20,
+  number_of_lines = 250,
+  showprogressbar = TRUE
+)
 }
 \arguments{
 \item{path}{--.}
 
-\item{resolution}{--.}
-
 \item{csvs}{--.}
+
+\item{height}{--.}
+
+\item{width}{--.}
+
+\item{pointsize}{--.}
+
+\item{number_of_lines}{--.}
 
 \item{showprogressbar}{--.}
 }
@@ -22,5 +36,6 @@ Make images for winning analysies
 \dontrun{
 # nothing yet
 system.time (makewinnerplots(showprogressbar=TRUE))
+makewinnerplots(csvs = csvs[1:20])
 }
 }
