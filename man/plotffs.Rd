@@ -6,6 +6,7 @@
 \usage{
 plotffs(
   ffs,
+  winner = NA,
   xlim = NA,
   ylim = NA,
   xlab = NA,
@@ -22,6 +23,8 @@ plotffs(
 }
 \arguments{
 \item{ffs}{a dataframe containing formant tracks for a single file, or a list of dataframes comparing multiple analyses for a single file.}
+
+\item{winner}{an optional dataframe representing the winners file.}
 
 \item{xlim}{an optional user-specified x-axis range.}
 
