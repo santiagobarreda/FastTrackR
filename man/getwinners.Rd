@@ -26,5 +26,6 @@ This function will read winning analyses into R based on the content of the 'win
 \examples{
 \dontrun{
 getwinners ()
+tmp = getwinners (getwd(), winners$winners, formants, write = TRUE)
 }
 }

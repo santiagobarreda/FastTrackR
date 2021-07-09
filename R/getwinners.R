@@ -13,6 +13,7 @@
 #' @examples
 #' \dontrun{
 #' getwinners ()
+#' tmp = getwinners (getwd(), winners$winners, formants, write = TRUE)
 #' }
 
 getwinners <- function (path, winners, formants, asone = TRUE, write = FALSE){
