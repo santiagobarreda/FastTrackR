@@ -26,9 +26,12 @@ readformants <- function (path){
   cutoffs = as.numeric (strsplit (info[5], split=" ")[[1]])
 
   files = list.files (paste0(path,"/formants"),full.names=TRUE)
-  ord = unlist (strsplit (basename (files), "_"))[c(T,T,F)]
-  ord = matrix (ord, length(ord)/2, 2, byrow=TRUE)
+  ord = unlist (strsplit (basename (files), "_"))
+  ord = matrix(ord, length(files),length(ord)/length(files),byrow=TRUE)
+  nc = ncol (ord)
+  ord = ord[,(nc-2):(nc-1)]
   ord[,2] = addzeros(ord[,2])
+
   ord = paste0 (ord[,1],"_", ord[,2])
   ord = order (ord)
 
@@ -57,8 +60,12 @@ readformants <- function (path){
       attr(tmp, "timestep") = as.numeric (timestep)
       attr(tmp, "w1") = as.numeric(w1)
       attr(tmp, "maxformant") = cutoffs[j]
-      attr(tmp, "filename") = strsplit(basename(files[ord[count]]),split="_")[[1]][1]
 
+      tmp_fname = tools::file_path_sans_ext(basename(files[ord[count]]))
+      tmp_fname = strsplit(tmp_fname,split="_")[[1]]
+      tmp_fname = tmp_fname[-length(tmp_fname)]
+      attr(tmp, "filename") = paste (tmp_fname, collapse="_")
+   
       formants[[i]][[j]] = round (tmp)
     }
     #attr(formants[[i]], "object") = "filetracks"
