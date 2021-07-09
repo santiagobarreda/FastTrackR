@@ -11,7 +11,7 @@
 #'  # coming soon
 #' }
 
-ourliers.lan <- function (aggregated_data){
+outliers.lan <- function (aggregated_data){
   
   colnms = colnames(aggregated_data)
   start = which(colnms=="f11")
