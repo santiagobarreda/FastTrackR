@@ -3,15 +3,19 @@
 #' Make images comparing alternative analysies
 #'
 #' @param formants_plot --.
-#' @param resolution --.
-#' @param formants --.
+#' @param path --.
+#' @param height --.
+#' @param width --.
+#' @param pointsize --.
 #' @param winners --.
+#' @param spectrogram_timestep --.
 #' @param showprogressbar --.
+#' @param ... --.
 #' @export
 #' @examples
 #' \dontrun{
 #' makecomparisonplots(formants[1:10])
-#' makecomparisonplots(formants[1:100], winners = winners$winners_csv[1:100,])
+#' makecomparisonplots(formants[1:10], winners = winners$winners_csv[1:10,])
 #' }
 
 
