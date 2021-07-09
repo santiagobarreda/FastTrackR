@@ -24,57 +24,68 @@ readformants <- function (path){
   nsteps = as.numeric (info[3])
   nf = as.numeric (info[9])
   cutoffs = as.numeric (strsplit (info[5], split=" ")[[1]])
+  n_files = length(files)
 
   files = list.files (paste0(path,"/formants"),full.names=TRUE)
   ord = unlist (strsplit (basename (files), "_"))
-  ord = matrix(ord, length(files),length(ord)/length(files),byrow=TRUE)
+  ord = matrix(ord, n_files,length(ord)/n_files,byrow=TRUE)
   nc = ncol (ord)
   ord = ord[,(nc-2):(nc-1)]
-  ord[,2] = addzeros(ord[,2])
-
-  ord = paste0 (ord[,1],"_", ord[,2])
-  ord = order (ord)
+  #ord[,2] = addzeros(ord[,2])
+  #ord = paste0 (ord[,1],"_", ord[1:nsteps,2])
+  ord = as.numeric(ord[1:nsteps,2])
 
   count = 0
-  formants = list()
-  for (i in 1:(length(files)/nsteps)){
-    formants[[i]] = list()
-    for (j in 1:nsteps){
-      count = count + 1
-      tmp = utils::read.csv (files[ord[count]])[,1]
-      w1 = tmp[6]
-      timestep = tmp[5]
-      tmp = tmp[-c(1:7)]
-      len1 = which (nchar (tmp)==1)
-      tmp = as.numeric (tmp)
+  tmp_formants = vector(mode = "list", length = )
+  cat ("There are ", n_files, "files to read. \n")
+  
+  tmp_formants = lapply (1:n_files, function (j){
+    progressbar (j,n_files)
+    
+    tmp = utils::read.csv (files[j])[,1]
+    w1 = tmp[6]
+    timestep = tmp[5]
+    tmp = tmp[-c(1:7)]
+    len1 = which (nchar (tmp)==1)
+    tmp = as.numeric (tmp)
 
-      if (nf==3)
-        tmp = data.frame (f1=tmp[len1+1],f2=tmp[len1+3],f3=tmp[len1+5],
-                          b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6])
+    if (nf==3)
+      tmp = data.frame (f1=tmp[len1+1],f2=tmp[len1+3],f3=tmp[len1+5],
+                        b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6])
 
-      if (nf==4)
-        tmp = data.frame (f1=tmp[len1+1],f2=tmp[len1+3],f3=tmp[len1+5],f4=tmp[len1+7],
-                          b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6],b4=tmp[len1+8])
+    if (nf==4)
+      tmp = data.frame (f1=tmp[len1+1],f2=tmp[len1+3],f3=tmp[len1+5],f4=tmp[len1+7],
+                        b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6],b4=tmp[len1+8])
 
-      #attr(tmp, "object") = "tracks"
-      attr(tmp, "timestep") = as.numeric (timestep)
-      attr(tmp, "w1") = as.numeric(w1)
-      attr(tmp, "maxformant") = cutoffs[j]
+    #attr(tmp, "object") = "tracks"
+    attr(tmp, "timestep") = as.numeric (timestep)
+    attr(tmp, "w1") = as.numeric(w1)
+    attr(tmp, "maxformant") = rep(cutoffs, n_files/nsteps)[j]
 
-      tmp_fname = tools::file_path_sans_ext(basename(files[ord[count]]))
-      tmp_fname = strsplit(tmp_fname,split="_")[[1]]
-      tmp_fname = tmp_fname[-length(tmp_fname)]
-      attr(tmp, "filename") = paste (tmp_fname, collapse="_")
-   
-      formants[[i]][[j]] = round (tmp)
-    }
-    #attr(formants[[i]], "object") = "filetracks"
-    attr(formants[[i]], "filename") = strsplit(basename(files[ord[count]]),split="_")[[1]][1]
+    tmp_fname = tools::file_path_sans_ext(basename(files[j]))
+    tmp_fname = strsplit(tmp_fname,split="_")[[1]]
+    tmp_fname = tmp_fname[-length(tmp_fname)]
+    attr(tmp, "filename") = paste (tmp_fname, collapse="_")
+    
+    round (tmp)
+    #tmp_formants[[j]] = round (tmp)
+    })
+  
+  formants = vector(mode = "list", length = n_files / nsteps)
+  count = 1
+  for (i in seq(1,n_files,16)){
+    formants[count] = list(tmp_formants[i:(i+nsteps-1)])
+    attr(formants[[count]], "filename") = attr(tmp_formants[[i]], "filename")
+    #attr(formants, "object") = "formants"
+    attr(formants[[count]], "cutoffs") = cutoffs
+    count = count + 1
   }
-  #attr(formants, "object") = "formants"
-  attr(formants, "cutoffs") = cutoffs
+  
   return (formants)
 }
+
+
+
 
 
 
