@@ -4,7 +4,7 @@
 \alias{trackformants}
 \title{Track formants}
 \usage{
-trackformants(sound, maxformant = 5000, windowlength = 0.05, timestep = 0.0025)
+trackformants(sound, maxformant = 7000, windowlength = 0.05, timestep = 0.002)
 }
 \arguments{
 \item{sound}{a numeric vector representing the sound to be analyzed.}
@@ -24,6 +24,7 @@ Track formants
 \examples{
 \dontrun{
 sound = readWave2("yoursound.wav")
-trackformants (sound, maxformant = 5000)
+trackformants (sound, maxformant = 5300)
+sound = readWave2("C:/Users/santi/Desktop/JSdata/melissa/sounds/WS005-Melissa_0001.wav")
 }
 }

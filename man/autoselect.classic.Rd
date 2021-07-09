@@ -27,11 +27,12 @@ autoselect.classic(
 A vector with the winning analysis for each file.
 }
 \description{
-Select the best analyses using the 'classic' Fast Track method from Praat.
+Select the best analyses using the 'classic' Fast Track method from Praat. Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now).
 }
 \examples{
 \dontrun{
 formants = readformants ()
+winners = autoselect.classic (formants)
 winners = autoselect.classic (formants, outputpath="working")
 }
 }

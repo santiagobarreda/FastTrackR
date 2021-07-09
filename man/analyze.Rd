@@ -41,9 +41,9 @@ Analyze sounds
 \examples{
 \dontrun{
 sound = readWave2("yoursound.wav")
-ffs1 = analyze (sound, timestep = 0.002)
+ffs1 = analyze (sound, timestep = 0.002, from = 4800, to = 6800, nsteps=12)
 ffs2 = trackformants (sound, timestep = 0.002)
-plotffs (ffs2)
-plotffs (ffs[[2]])
+plotffs (ffs1)
+plotffs (ffs1[[2]])
 }
 }
