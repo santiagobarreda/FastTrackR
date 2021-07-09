@@ -1,7 +1,7 @@
 
 #' Automatically select winners
 #' 
-#' Select the best analyses using the 'classic' Fast Track method from Praat.
+#' Select the best analyses using the 'classic' Fast Track method from Praat. Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now). 
 #'
 #' @param formants a list of formant data read in with the readformants function.
 #' @param order the order of the prediction model.
@@ -13,12 +13,12 @@
 #' @examples
 #' \dontrun{
 #' formants = readformants ()
+#' winners = autoselect.classic (formants)
 #' winners = autoselect.classic (formants, outputpath="working")
 #' }
 
 autoselect.classic <- function (formants, order = 5, n_formants = 4, 
                                 outputpath = NA, subset = NA){
-  
   n_files = length (formants)
   n_steps = length (formants[[1]])
   n_formants = ncol (formants[[1]][[1]])/2
@@ -38,6 +38,7 @@ autoselect.classic <- function (formants, order = 5, n_formants = 4,
   
   # for each file and analysis step
   for (i in 1:n_files){
+    progressbar (i,n_files)
     for (j in steps){
       y = as.matrix(formants[[i]][[j]][,1:n_formants])
       xs = makepredictors (nrow (y), order = order)
@@ -61,13 +62,16 @@ autoselect.classic <- function (formants, order = 5, n_formants = 4,
   output = list (winners_csv=winners_csv,
                  errors=errors,total_errors=total_errors,
                  coefficients=coefficients)
-  output
   
   if (!is.na (outputpath) & is.na (subset[1])){
     if (outputpath == "working") outputpath = getwd()
+    cat ("\nWriting data files... \n")
     autoselect.write (outputpath, output)
+    cat ("\nDone. \n")
+    
   }
-  
-  output$winners_csv
+  return (output)
+  #output$winners_csv
 }
+
 
