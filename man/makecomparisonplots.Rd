@@ -5,29 +5,34 @@
 \title{Make images comparing alternative analysies}
 \usage{
 makecomparisonplots(
-  path,
-  resolution = 1000,
-  formants = NA,
+  formants_plot,
+  path = NA,
+  height = 1000,
+  width = 1400,
+  pointsize = 20,
   winners = NA,
-  showprogressbar = FALSE
+  spectrogram_timestep = 0.0015,
+  showprogressbar = TRUE,
+  ...
 )
 }
 \arguments{
-\item{path}{--.}
-
-\item{resolution}{--.}
-
-\item{formants}{--.}
+\item{formants_plot}{--.}
 
 \item{winners}{--.}
 
 \item{showprogressbar}{--.}
+
+\item{resolution}{--.}
+
+\item{formants}{--.}
 }
 \description{
 Make images comparing alternative analysies
 }
 \examples{
 \dontrun{
-system.time (makecomparisonplots(showprogressbar=TRUE))
+makecomparisonplots(formants[1:10])
+makecomparisonplots(formants[1:100], winners = winners$winners_csv[1:100,])
 }
 }

@@ -2,7 +2,7 @@
 
 #' Make images comparing alternative analysies
 #'
-#' @param path --.
+#' @param formants_plot --.
 #' @param resolution --.
 #' @param formants --.
 #' @param winners --.
@@ -10,40 +10,33 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' system.time (makecomparisonplots(showprogressbar=TRUE))
+#' makecomparisonplots(formants[1:10])
+#' makecomparisonplots(formants[1:100], winners = winners$winners_csv[1:100,])
 #' }
 
-makecomparisonplots <- function (path, resolution = 1000, formants = NA, winners = NA, showprogressbar = FALSE){
 
-  if (missing (path)) path = getwd()
+makecomparisonplots <- function (formants_plot, path = NA, height = 1000, width = 1400, pointsize = 20, winners = NA, 
+                                 spectrogram_timestep = 0.0015, showprogressbar = TRUE,...){
 
-  if (is.na(formants) & length(list.files (path %+% "/formants"))==0)
-    stop ("No formants available or provided.")
-  if (is.na(formants) & length(list.files (path %+% "/formants"))>0)
-    formants = readformants (path)
-
-  if (is.na(winners) & !file.exists("winners.csv"))
-    stop ("No winners file in working directory.")
-  if (is.na(winners) & file.exists("winners.csv"))
-    winners = utils::read.csv ("winners.csv")
-
+  if (is.na (path)) path = getwd()
   dir.create(path %+% "/images_comparison", showWarnings = FALSE)
 
-  filenames = sapply (formants, attr, "filename")
+  for (i in 1:length (formants_plot)){
+    
+    if (showprogressbar & length (formants_plot) > 9) progressbar(i,length (formants_plot))
+    
+    if (!is.na(winners)[1]) winner = winners$winner[i]
+    base_filename = attr (formants_plot[[i]], "filename")
+    image_filename = path %+% "/images_comparison/" %+% base_filename %+% ".png"
+    grDevices::png (image_filename, height = height, width = width, pointsize = 16)
 
-  for (i in 1:length (filenames)){
-    filename = path %+% "/images_comparison/" %+% filenames[i] %+% ".png"
-    grDevices::png (filename, height = 1000, width = 1400, pointsize = 16)
-
-    sound = tuneR::readWave (path %+% "/sounds/" %+% filenames[i] %+% ".wav")
+    sound = tuneR::readWave (path %+% "/sounds/" %+% base_filename %+% ".wav")
     # spectrogram resolution should relate to image resolution
-    spect = spectrogram (sound, plot = FALSE, padding = 1, timestep = 0.005)
-    plotffs (formants[[i]], spect = spect)
+    spect = spectrogram (sound, plot = FALSE, padding = 1, timestep = spectrogram_timestep)
+    plotffs (formants_plot[[i]], spect = spect, lwd=3, pch=16, winner = winner, ...)
 
     grDevices::dev.off()
-    if (showprogressbar) progressbar(i, length (filenames))
   }
-
 
 }
 
