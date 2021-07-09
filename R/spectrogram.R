@@ -31,7 +31,8 @@ spectrogram = function (sound, maxformant = 5000, windowlength = 0.005, timestep
 
   n = length (tmp_snd)
   duration = n / (fs)
-  spots = round(seq (1/fs,duration-windowlength, timestep)*fs)
+  if (timestep < 1) spots = round(seq (1/fs,duration-windowlength, timestep)*fs)
+  if (timestep > 1) spots = round(seq (1/fs,duration-windowlength, length.out = timestep)*fs)
 
   windowlength_pts <- round(windowlength * fs)
   window <- phonTools::windowfunc(windowlength_pts, "gaussian")
