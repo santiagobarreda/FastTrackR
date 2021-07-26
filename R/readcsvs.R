@@ -25,9 +25,9 @@ readcsvs <- function (path, asone = TRUE, progressbar = FALSE){
   n_files = length(files)
   csvs = lapply (1:n_files, function(i){
     if (progressbar) progressbar(i,n_files)
-    csvs[[i]] = utils::read.csv (files[i], na.strings = "0")
-    if (!asone) names (csvs)[i] = file_names[i]
-    if (asone) csvs[[i]]$file = file_names[i]
+    tmp = utils::read.csv (files[i], na.strings = "0")
+    if (asone) tmp$file = file_names[i]
+    tmp
   })
   if (asone) csvs = do.call (rbind, csvs)
 
