@@ -134,8 +134,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>aggregatedata</span><span class='op'>(</span>
-  <span class='va'>path</span>,
-  <span class='va'>csvs</span>,
+  path <span class='op'>=</span> <span class='cn'>NA</span>,
+  csvs <span class='op'>=</span> <span class='cn'>NA</span>,
   bins <span class='op'>=</span> <span class='fl'>5</span>,
   f0_bins <span class='op'>=</span> <span class='fl'>1</span>,
   n_formants <span class='op'>=</span> <span class='cn'>NA</span>,
@@ -159,7 +159,7 @@
     </tr>
     <tr>
       <th>f0_bins</th>
-      <td><p>an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value <code>"same"</code> will set this value equal to the <code>"bins"</code> argument. See examples below.</p></td>
+      <td><p>an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value <code>"same"</code> will set this value equal to the <code>"bins"</code> argument. A value of 0 will result in no calculation of f0. See examples below.</p></td>
     </tr>
     <tr>
       <th>n_formants</th>
