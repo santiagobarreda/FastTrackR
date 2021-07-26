@@ -9,7 +9,8 @@ autoselect.classic(
   order = 5,
   n_formants = 4,
   outputpath = NA,
-  subset = NA
+  subset = NA,
+  progressbar = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ autoselect.classic(
 \item{outputpath}{--.}
 
 \item{subset}{a vector indicating a subset of the analyses to be considered.}
+
+\item{progressbar}{if TRUE, a progress bar prints out in the console.}
 }
 \value{
 A vector with the winning analysis for each file.

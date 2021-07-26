@@ -8,6 +8,7 @@
 #' @param n_formants the number of formants to optimize for.
 #' @param outputpath --.
 #' @param subset a vector indicating a subset of the analyses to be considered.
+#' @param progressbar if TRUE, a progress bar prints out in the console.
 #' @return A vector with the winning analysis for each file.
 #' @export
 #' @examples
@@ -18,7 +19,7 @@
 #' }
 
 autoselect.classic <- function (formants, order = 5, n_formants = 4, 
-                                outputpath = NA, subset = NA){
+                                outputpath = NA, subset = NA, progressbar = FALSE){
   n_files = length (formants)
   n_steps = length (formants[[1]])
   n_formants = ncol (formants[[1]][[1]])/2
@@ -38,7 +39,7 @@ autoselect.classic <- function (formants, order = 5, n_formants = 4,
   
   # for each file and analysis step
   for (i in 1:n_files){
-    progressbar (i,n_files)
+    if (progressbar) progressbar (i,n_files)
     for (j in steps){
       y = as.matrix(formants[[i]][[j]][,1:n_formants])
       xs = makepredictors (nrow (y), order = order)
