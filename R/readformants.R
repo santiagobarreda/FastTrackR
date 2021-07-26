@@ -24,9 +24,10 @@ readformants <- function (path){
   nsteps = as.numeric (info[3])
   nf = as.numeric (info[9])
   cutoffs = as.numeric (strsplit (info[5], split=" ")[[1]])
-  n_files = length(files)
 
   files = list.files (paste0(path,"/formants"),full.names=TRUE)
+  n_files = length(files)
+
   ord = unlist (strsplit (basename (files), "_"))
   ord = matrix(ord, n_files,length(ord)/n_files,byrow=TRUE)
   nc = ncol (ord)
