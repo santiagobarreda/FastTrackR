@@ -11,6 +11,7 @@
 #' Eventually I think both kinds of lists need to turned into S3 classes with at least print statements. 
 #'
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
+#' @param progressbar if TRUE, a progress bar prints out in the console.
 #' @return A list of lists of dataframes. The "external" list is as long as number of files that were analyzed. For each "external" list element there are \emph{n} "internal" list elements for \emph{n} analysis steps. For example, \code{formant[[32]][[3]]} contains information regarding the 3rd analysis option for the 32nd file.
 #' @export
 #' @examples
@@ -18,7 +19,7 @@
 #' formants = readformants ()
 #' }
 
-readformants <- function (path){
+readformants <- function (path, progressbar = FALSE){
   if (missing(path)) path = getwd()
   info = readLines (list.files (paste0(path,"/infos"),full.names=TRUE)[1])
   nsteps = as.numeric (info[3])
@@ -41,7 +42,7 @@ readformants <- function (path){
   cat ("There are ", n_files, "files to read. \n")
   
   tmp_formants = lapply (1:n_files, function (j){
-    progressbar (j,n_files)
+    if (progressbar) progressbar (j,n_files)
     
     tmp = utils::read.csv (files[j])[,1]
     w1 = tmp[6]
