@@ -5,8 +5,8 @@
 \title{Aggregate analysis data}
 \usage{
 aggregatedata(
-  path,
-  csvs,
+  path = NA,
+  csvs = NA,
   bins = 5,
   f0_bins = 1,
   n_formants = NA,
@@ -20,7 +20,7 @@ aggregatedata(
 
 \item{bins}{an integer (default = 5). How many timepoints do you want formant data from? By default, you'll get formant samples at five points along the duration of each vowel.}
 
-\item{f0_bins}{an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value \code{"same"} will set this value equal to the \code{"bins"} argument. See examples below.}
+\item{f0_bins}{an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value \code{"same"} will set this value equal to the \code{"bins"} argument. A value of 0 will result in no calculation of f0. See examples below.}
 
 \item{n_formants}{an integer. By default, \code{aggregatedata} will use the number of formants as is contained in \code{csvs} or in the .csv files. However, if you want to, for example, only aggregated data from F1, F2, and F3 even though you have data from F4, you can do so by setting \code{n_formants} to \code{3}.}
 

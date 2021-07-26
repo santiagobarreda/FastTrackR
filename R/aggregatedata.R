@@ -8,7 +8,7 @@
 #' @param path a string. The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
 #' @param csvs An object from the output of \code{readcsvs()}. 
 #' @param bins an integer (default = 5). How many timepoints do you want formant data from? By default, you'll get formant samples at five points along the duration of each vowel. 
-#' @param f0_bins an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value \code{"same"} will set this value equal to the \code{"bins"} argument. See examples below.
+#' @param f0_bins an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value \code{"same"} will set this value equal to the \code{"bins"} argument. A value of 0 will result in no calculation of f0. See examples below.
 #' @param n_formants an integer. By default, \code{aggregatedata} will use the number of formants as is contained in \code{csvs} or in the .csv files. However, if you want to, for example, only aggregated data from F1, F2, and F3 even though you have data from F4, you can do so by setting \code{n_formants} to \code{3}.
 #' @param method a string (default = \code{"median"}). Determines what kind of summarization function is used when aggregating data. Other functions to come later.
 #' 
@@ -41,21 +41,29 @@
 #' aggregatedata(path, csvs, bins = 11, f0_bins = "same")
 #' }
 
-aggregatedata <- function (path, csvs, bins = 5, f0_bins = 1, n_formants = NA, method = "median"){
+aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants = NA, method = "median"){
+  
+  # Autofill parameters
+  if (is.na(path)) path = getwd()
+  if (f0_bins == "same") f0_bins = bins
+
+  f0present = FALSE
+  if (sum(colnames(csvs)=="f0") > 0) f0present = TRUE
+  
+  if (all(is.na(csvs))){
+    csvs = readcsvs(path)
+  } 
   
   # If the file exists already, read it in instead and be done
   aggregated_path = paste0(path, "/processed_data/aggregated_data.csv")
-  if (file.exists(aggregated_path) & missing(csvs)) {
+  if (file.exists(aggregated_path) & all(is.na(csvs))) {
     aggregated = utils::read.csv(aggregated_path)
     return(aggregated)
   }
   
-  # Autofill parameters
-  if (missing(path)) path = getwd()
-  if (f0_bins == "same") f0_bins = bins
-  
   # Make sure the csvs object is correct
-  if ((class(csvs)!="data.frame") | (attr(csvs,"object")!="csvs")) stop ("Please load csvs using the readcsv function and set asone=TRUE.")
+  if ((class(csvs)!="data.frame") | (attr(csvs,"object")!="csvs")) 
+    stop ("Please load csvs using the readcsv function and set asone=TRUE.")
   
   # How many formants to process?
   if (is.na (n_formants)) {
@@ -66,40 +74,59 @@ aggregatedata <- function (path, csvs, bins = 5, f0_bins = 1, n_formants = NA, m
   # What method should be used?
   if (method=="median") method = stats::median
   
-  # Create function-internal objects
+  # Split csvs and get filenames
   tmp_csvs = split (csvs, csvs$file)
   files = names (tmp_csvs)
   
-  # Create empty data frames (and name their columns)
-  aggregated = data.frame (matrix (0, length(tmp_csvs), bins*n_formants))
+  # internal function to quickly calculate duration and bins
+  tmp_csvs = lapply (tmp_csvs, function (x){
+    tmp_time = x$time
+    tmp_time = tmp_time - min(tmp_time)
+    x$dur = max (tmp_time)
+    tmp_time = tmp_time / max (tmp_time)
+    tmp_time = 1+floor(tmp_time*(bins-.001))
+    x$bin = tmp_time
+    x
+  })
+  # rejoining data
+  tmp_csvs = do.call (rbind, tmp_csvs)
+  
+  if (n_formants==3) tmp_agg = stats::aggregate (cbind (f1,f2,f3) ~ bin+file, tmp_csvs, method)  
+  if (n_formants==4) tmp_agg = stats::aggregate (cbind (f1,f2,f3,f4) ~ bin, tmp_csvs, method)
+
+  # aggregated bins into matrix for output
+  aggregated = c(t(tmp_agg[,3:5]))
+  aggregated =  data.frame(matrix (aggregated,length (files),bins*n_formants, byrow = TRUE))
   colnames (aggregated) = paste0 ("f",rep(1:n_formants,bins),if(bins>1)rep(1:bins,each=n_formants))
-  f0 = data.frame (matrix (0, length(tmp_csvs), f0_bins))
-  colnames (f0) = paste0 ("f0",if(f0_bins>1)1:f0_bins) # only add the number if >1 bins
-  duration = matrix (0, length(tmp_csvs), 1)
+  rownames (aggregated) = 1:nrow(aggregated)
   
-  # Loop through the files and populate that matrix with formant measurements
-  for (i in 1:length (tmp_csvs)){
-    # Create the bins
-    n = nrow (tmp_csvs[[i]])
-    tmp_csvs[[i]]$ntime = ceiling((1:n)/n*bins)
-    tmp_csvs[[i]]$f0_ntime = ceiling((1:n)/n*f0_bins) # independent bins for f0
-    
-    # Aggregate the formant data
-    if (n_formants==3) tmp_agg = stats::aggregate (cbind (f1,f2,f3) ~ ntime, tmp_csvs[[i]], method)
-    if (n_formants==4) tmp_agg = stats::aggregate (cbind (f1,f2,f3,f4) ~ ntime, tmp_csvs[[i]], method)
-    
-    # Aggregate the other measurements
-    aggregated[i,] = round (c(t(tmp_agg[,-1])))
-    f0[i,] = stats::aggregate (f0 ~ f0_ntime, tmp_csvs[[i]], method, na.omit = TRUE, na.action = stats::na.pass)$f0
-    duration[i] = diff(range(tmp_csvs[[i]]$time))
-  }
+  # find duration
+  duration = tapply (tmp_csvs$dur, tmp_csvs$file, max)
   
-  # Add the filename, F0, and duration to the formants
+  # put parts together
   aggregated = cbind (file = files, f0, duration, aggregated)
   
-  # Add in information from the other file
-  fileinfo = utils::read.csv(paste0(path, "/file_information.csv"))
-  fileinfo$file = gsub("\\.wav", "", fileinfo$file) # strip off .wav
-  aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
+  # calculation of f0 if it applies
+  if (f0_bins > 0 & f0present){
+    f0 = stats::aggregate (f0 ~ bin+file, tmp_csvs, FUN = method, na.omit = TRUE, na.action = stats::na.pass)  
+    f0 = data.frame (matrix (f0$f0, length(files), bins, byrow = TRUE))
+    colnames (f0) = paste0 ("f0",if(f0_bins>1)1:f0_bins) # only add the number if >1 bins
+    
+    aggregated = cbind (aggregated, f0)
+  }
   
+  # Add in information from the other file if it exists
+  if (file.exists(paste0(path, "/file_information.csv"))){
+    fileinfo = utils::read.csv(paste0(path, "/file_information2.csv"))
+    fileinfo$file = gsub("\\.wav", "", fileinfo$file) # strip off .wav
+    aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
+  }
+  
+  aggregated
 }
+
+
+
+
+
+
