@@ -10,8 +10,8 @@ ft.plot(
   yformant = 2,
   revaxes = FALSE,
   logaxes = FALSE,
-  xlab,
-  ylab,
+  xlab = NA,
+  ylab = NA,
   add = FALSE,
   ...
 )

@@ -17,17 +17,17 @@ makecomparisonplots(
 )
 }
 \arguments{
-\item{formants_plot}{--.}
+\item{formants_plot}{The formant data to be used for making plots. Read in using the readformants function in this package.}
 
-\item{path}{--.}
+\item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
-\item{height}{--.}
+\item{height}{height of each plot in pixels.}
 
-\item{width}{--.}
+\item{width}{width of each plot in pixels.}
 
-\item{pointsize}{--.}
+\item{pointsize}{point size for plotting.}
 
-\item{winners}{--.}
+\item{winners}{.}
 
 \item{spectrogram_timestep}{--.}
 

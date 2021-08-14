@@ -20,14 +20,21 @@ autoselect.classic(
 
 \item{n_formants}{the number of formants to optimize for.}
 
-\item{outputpath}{--.}
+\item{outputpath}{if NA, nothing is written out. If "working", data is written out to the working directory. Any other path may also be specified.}
 
 \item{subset}{a vector indicating a subset of the analyses to be considered.}
 
 \item{progressbar}{if TRUE, a progress bar prints out in the console.}
 }
 \value{
-A vector with the winning analysis for each file.
+A list containing information about the selection of the winners. The list elements are:
+
+1) winners_csv: A dataframe containing the same information as the winners.csv file. 
+
+2) errors: A 3d array containing information about the RMS error for each analysis for each formant. Dimensions are [file, analysis, formant]. 
+
+3) total_errors: A 2d array containing information about the total RMS error for each analysis. Dimensions are [file, analysis]. 
+4) coefficients: A 4d array containing information about regression coefficients for prediction of each formant for each analysis. Dimensions are [file, analysis, formant, coefficient]. Coefficients are arranged in terms of increasing order (i.e., intercept, linear term, quadratric term,...).
 }
 \description{
 Select the best analyses using the 'classic' Fast Track method from Praat. Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now).
@@ -35,7 +42,7 @@ Select the best analyses using the 'classic' Fast Track method from Praat. Gener
 \examples{
 \dontrun{
 formants = readformants ()
-winners = autoselect.classic (formants)
+winners = autoselect.classic (formants, progressbar = TRUE)
 winners = autoselect.classic (formants, outputpath="working")
 }
 }
