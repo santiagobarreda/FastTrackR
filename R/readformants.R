@@ -2,13 +2,12 @@
 
 #' Load Fast Track formant objects
 #'
-#' This function reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time for all the data to be read in if there are many tokens that were analyzed in that directory.
+#' This function reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time (1-2 minutes per thousand files) for all the data to be read in if there are many tokens that were analyzed in that directory.
 #' 
 #' The data is stored in data frames containing formant frequencies and bandwidths for the first 3-4 formants. These values are rounded, which makes display easier and makes the resulting object much smaller in memory (and on your hard drive). Every data frame representing a single Praat formant object needs to have some information associated with it, and this is done using attributes for the object. The attributes for every dataframe representing a formant object are: timestep (the analysis time step, in ms), w1 (the location of the first analysis window, in ms), maxformant (the maximum formant frequency, in Hz), and filename, containing the label used for the formant object (relating to the wav file filename). 
 #' 
 #' The dataframes corresponding to alternative analyses for a single sound file are stored in a list. This list has the same filename attribute as each of the dataframes contained within it. Finally, all of the lists (each of which represents a single sound) are stored within one overall list. This final list contains an attribute representing the maximum formant frequencies used for all of the analyses represented by the formants files. 
 #' 
-#' Eventually I think both kinds of lists need to turned into S3 classes with at least print statements. 
 #'
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
 #' @param progressbar if TRUE, a progress bar prints out in the console.
@@ -16,10 +15,11 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' formants = readformants ()
+#' formants = readformants (progressbar = TRUE)
 #' }
 
 readformants <- function (path, progressbar = FALSE){
+  
   if (missing(path)) path = getwd()
   info = readLines (list.files (paste0(path,"/infos"),full.names=TRUE)[1])
   nsteps = as.numeric (info[3])
@@ -75,19 +75,49 @@ readformants <- function (path, progressbar = FALSE){
   
   formants = vector(mode = "list", length = n_files / nsteps)
   count = 1
-  for (i in seq(1,n_files,16)){
+  for (i in seq(1,n_files,nsteps)){
     formants[count] = list(tmp_formants[i:(i+nsteps-1)])
     attr(formants[[count]], "filename") = attr(tmp_formants[[i]], "filename")
     #attr(formants, "object") = "formants"
     attr(formants[[count]], "cutoffs") = cutoffs
+    attr(formants[[count]], "class") = "formants_single"
     count = count + 1
   }
+  formants
+  attr(formants, "path") = path
+  attr(formants, "nfiles") = length (formants)
+  attr(formants, "cutoffs") = cutoffs
+  attr(formants, "ncutoffs") = length (cutoffs)
+  attr(formants, "class") = "formants"
   
   return (formants)
 }
 
 
+#' @export
+print.formants = function (x, ...){
+  cat ("\nFormant information for data in working directory: \n")
+  cat (attributes (x)$path, "\n\n")
+  
+  cat ("A list with", attributes (x)$nfiles, "elements (e.g., formants[[1]]).\n\n")
+  
+  cat ("Each list element contains a list of", length(x[[1]]), "dataframes (e.g., formants[[1]][[1]]).\n\n")
 
+  cat ("Cutoff frequencies equal to: \n")
+  cat (attributes (x)$cutoffs, "\n\n")
+}
+
+
+
+#' @export
+print.formants_single = function (x, ...){
+  cat ("\nFormant information for file:",attributes (x)$filename, "\n\n")
+
+  cat ("A list of", length(x), "dataframes (e.g., formants[[1]]).\n\n")
+  
+  cat ("Cutoff frequencies equal to: \n")
+  cat (attributes (x)$cutoffs, "\n\n")
+}
 
 
 
