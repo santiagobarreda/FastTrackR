@@ -10,6 +10,7 @@
 #' 
 #'
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
+#' @param fileinformation --.
 #' @param progressbar if TRUE, a progress bar prints out in the console.
 #' @return A list of lists of dataframes. The "external" list is as long as number of files that were analyzed. For each "external" list element there are \emph{n} "internal" list elements for \emph{n} analysis steps. For example, \code{formant[[32]][[3]]} contains information regarding the 3rd analysis option for the 32nd file.
 #' @export
@@ -18,9 +19,17 @@
 #' formants = readformants (progressbar = TRUE)
 #' }
 
-readformants <- function (path, progressbar = FALSE){
+readformants <- function (path, fileinformation = NA, progressbar = FALSE){
   
   if (missing(path)) path = getwd()
+  
+  if (is.na(fileinformation)){
+    if (file.exists (path %+% "/file_information.csv")){
+      fileinformation = utils::read.csv (path %+% "/file_information.csv")
+      fileinformation_exists = TRUE
+    }
+  }
+
   info = readLines (list.files (paste0(path,"/infos"),full.names=TRUE)[1])
   nsteps = as.numeric (info[3])
   nf = as.numeric (info[9])
@@ -64,6 +73,8 @@ readformants <- function (path, progressbar = FALSE){
     attr(tmp, "w1") = as.numeric(w1)
     attr(tmp, "maxformant") = rep(cutoffs, n_files/nsteps)[j]
 
+    if (fileinformation_exists) attr(tmp, "label") = fileinformation$label[j]
+    
     tmp_fname = tools::file_path_sans_ext(basename(files[j]))
     tmp_fname = strsplit(tmp_fname,split="_")[[1]]
     tmp_fname = tmp_fname[-length(tmp_fname)]
@@ -72,7 +83,6 @@ readformants <- function (path, progressbar = FALSE){
     round (tmp)
     #tmp_formants[[j]] = round (tmp)
     })
-  
   formants = vector(mode = "list", length = n_files / nsteps)
   count = 1
   for (i in seq(1,n_files,nsteps)){
@@ -81,8 +91,10 @@ readformants <- function (path, progressbar = FALSE){
     #attr(formants, "object") = "formants"
     attr(formants[[count]], "cutoffs") = cutoffs
     attr(formants[[count]], "class") = "formants_single"
+    if (fileinformation_exists) attr(formants[[count]], "label") = fileinformation$label[j]
     count = count + 1
   }
+  
   formants
   attr(formants, "path") = path
   attr(formants, "nfiles") = length (formants)
