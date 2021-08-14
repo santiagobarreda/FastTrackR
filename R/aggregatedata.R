@@ -11,7 +11,6 @@
 #' @param f0_bins an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value \code{"same"} will set this value equal to the \code{"bins"} argument. A value of 0 will result in no calculation of f0. See examples below.
 #' @param n_formants an integer. By default, \code{aggregatedata} will use the number of formants as is contained in \code{csvs} or in the .csv files. However, if you want to, for example, only aggregated data from F1, F2, and F3 even though you have data from F4, you can do so by setting \code{n_formants} to \code{3}.
 #' @param method a string (default = \code{"median"}). Determines what kind of summarization function is used when aggregating data. Other functions to come later.
-#' 
 #' @return A dataframe containing formant measurements and various other information for each file (= vowel token). The column called \code{f12} is the F1 measurement in the second bin. If only one F0 measurement is returned, the column will be named \code{f0}. Otherwise, it will follow the same convention (i.e. the F0 measurement for the third bin will be called \code{f03}).
 #' @export
 #' @examples
@@ -47,12 +46,12 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   if (is.na(path)) path = getwd()
   if (f0_bins == "same") f0_bins = bins
 
-  f0present = FALSE
-  if (sum(colnames(csvs)=="f0") > 0) f0present = TRUE
-  
   if (all(is.na(csvs))){
     csvs = readcsvs(path)
   } 
+  
+  f0present = FALSE
+  if (sum(colnames(csvs)=="f0") > 0) f0present = TRUE
   
   # If the file exists already, read it in instead and be done
   aggregated_path = paste0(path, "/processed_data/aggregated_data.csv")
@@ -104,12 +103,36 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   duration = tapply (tmp_csvs$dur, tmp_csvs$file, max)
   
   # put parts together
-  aggregated = cbind (file = files, f0, duration, aggregated)
+  aggregated = cbind (file = files, duration, aggregated)
   
   # calculation of f0 if it applies
-  if (f0_bins > 0 & f0present){
-    f0 = stats::aggregate (f0 ~ bin+file, tmp_csvs, FUN = method, na.omit = TRUE, na.action = stats::na.pass)  
-    f0 = data.frame (matrix (f0$f0, length(files), bins, byrow = TRUE))
+  if (f0_bins == 1 & f0present){
+    f0 = stats::aggregate (f0 ~ file, tmp_csvs, FUN = method, na.rm = TRUE, na.action = stats::na.pass)  
+    aggregated = cbind (aggregated, f0 = f0$f0)
+  }
+  
+  # calculation of f0 if it applies
+  if ((f0_bins) > 1 & f0present){
+    
+    # Split csvs and get filenames
+    tmp_csvs = split (csvs, csvs$file)
+    files = names (tmp_csvs)
+    
+    # internal function to quickly calculate duration and bins
+    tmp_csvs = lapply (tmp_csvs, function (x){
+      tmp_time = x$time
+      tmp_time = tmp_time - min(tmp_time)
+      x$dur = max (tmp_time)
+      tmp_time = tmp_time / max (tmp_time)
+      tmp_time = 1+floor(tmp_time*(f0_bins-.001))
+      x$bin = tmp_time
+      x
+    })
+    # rejoining data
+    tmp_csvs = do.call (rbind, tmp_csvs)
+    
+    f0 = stats::aggregate (f0 ~ bin+file, tmp_csvs, FUN = method, na.rm = TRUE, na.action = stats::na.pass)  
+    f0 = data.frame (matrix (f0$f0, length(files), f0_bins, byrow = TRUE))
     colnames (f0) = paste0 ("f0",if(f0_bins>1)1:f0_bins) # only add the number if >1 bins
     
     aggregated = cbind (aggregated, f0)
@@ -117,7 +140,7 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   
   # Add in information from the other file if it exists
   if (file.exists(paste0(path, "/file_information.csv"))){
-    fileinfo = utils::read.csv(paste0(path, "/file_information2.csv"))
+    fileinfo = utils::read.csv(paste0(path, "/file_information.csv"))
     fileinfo$file = gsub("\\.wav", "", fileinfo$file) # strip off .wav
     aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
   }
