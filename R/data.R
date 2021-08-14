@@ -73,4 +73,18 @@
 
 "formantbounds"
 
+#' Vowel plotting label information
+#'
+#' A dataframe containing ARPABET and IPA information for vowel symbols.
+#'
+#' @section Columns:
+#' \describe{
+#' \item{IPA}{the IPA symbol for each vowel. }
+#' \item{arpabet}{the ARPABET representation for each vowel. }
+#' \item{unicode}{the unicode representation for each vowel. }
+#' \item{description}{A verbal description of the vowel sound. }
+#' }
+
+"vowels"
+
 
