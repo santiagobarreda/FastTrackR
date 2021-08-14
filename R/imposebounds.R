@@ -20,7 +20,7 @@ imposebounds <- function (path, boundaries=NA, n_formants = 3, fileinformation =
   if (missing(path)) path = getwd()
 
   # or put in some default ones?
-  if (is.na(boundaries)) stop ("No boundaries provided.")
+  if (is.na(boundaries)) stop ("No boundaries provided. see data(formantbounds) for a template.")
   
   if (is.na(fileinformation)){
     if (!file.exists (path %+% "/file_information.csv")) stop ("No file information file available.")
