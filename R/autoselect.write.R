@@ -47,24 +47,28 @@ autoselect.write <- function (outputpath, output){
 
     # writeLines (tmp_info, outputpath %+% "/regression_infos/" %+% info_files[i])
     
-    #reg_files
-    #base = tools::file_path_sans_ext(reg_files[i])
+    reg_files
+    base = tools::file_path_sans_ext(reg_files[i])
     
-    # regression information text file output coming soon.
-    # tmp_reg = list("Regression analysis information for: " %+% base,
-    #             "number of formants: " %+% nf,
-    #             "number of coefficients: " %+% tmp_info[7])
-    # count = 4
-    # for (j in 1:as.numeric(tmp_info[3])){
-    #   tmp_reg[[count]] = paste (errors[i,j,], collapse =" ")
-    #   count = count + 1
-    #   tmp_reg[[count]] = t(coefficients[i,j,,])
-    #   count = count + 1
-    # }
-    # write(tmp_reg[[1]],"test2.txt", append=FALSE)
-    # lapply(tmp_reg[-1], write, "test2.txt", append=TRUE)
+    # regression information text file output 
+    tmp_reg = list("Regression analysis information for: " %+% base,
+               "number of formants: " %+% nf,
+               "number of coefficients: " %+% tmp_info[7])
+    count = 4
+    for (j in 1:as.numeric(tmp_info[3])){
+      tmp_reg[[count]] = paste (errors[i,j,], collapse =" ")
+      count = count + 1
+      tmp_reg[[count]] = t(coefficients[i,j,,])
+      count = count + 1
+    }
+    tmp_reg[[count]] = paste ("winner is: ", winners_csv[i,2])
+    
+    write(tmp_reg[[1]],"test2.txt", append=FALSE)
+    lapply(2:length(tmp_reg), function(x){ write(tmp_reg[[x]], "test2.txt", append=TRUE,ncolumns=nrow(tmp_reg[[5]]))})
   }
 }
+
+
 
 
 
