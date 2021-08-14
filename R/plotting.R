@@ -14,11 +14,11 @@
 #' @export
 
 ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
-                    logaxes=FALSE, xlab, ylab, add=FALSE,...){
+                    logaxes=FALSE, xlab=NA, ylab=NA, add=FALSE,...){
 
   n = nrow (aggregated_data)
-  nf = as.numeric (substr (utils::tail(colnames(aggregated_data),1),2,2))
-  ntimes = as.numeric (substr (utils::tail(colnames(aggregated_data),1),3,3))
+  nf = suppressWarnings(max(as.numeric(substr (colnames(aggregated_data),2,2)), na.rm=TRUE))
+  ntimes = suppressWarnings(max(as.numeric(substr (colnames(aggregated_data),3,3)), na.rm=TRUE))
 
   #expected_colnames = paste0("f", rep(1:nf,ntimes),rep(1:ntimes, each=nf))
   if (ncol(aggregated_data) < (7+nf*ntimes))
@@ -41,8 +41,8 @@ ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   if (revaxes){ xrange = rev (xrange); yrange = rev (yrange) }
   log=""
   if (logaxes) log="xy"
-  if (missing (xlab)) xlab = paste0 ("F",xformant," (Hz)")
-  if (missing (ylab)) ylab = paste0 ("F",yformant," (Hz)")
+  if (is.na (xlab)) xlab = paste0 ("F",xformant," (Hz)")
+  if (is.na (ylab)) ylab = paste0 ("F",yformant," (Hz)")
 
   if (!add) plot (0,type='n',xlim=xrange,ylim=yrange,xlab=xlab,ylab=ylab,log=log,...)
 
