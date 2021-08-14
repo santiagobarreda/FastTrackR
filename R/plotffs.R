@@ -47,7 +47,7 @@ plotffs = function(ffs,winner=NA,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
     plotffs.internal(ffs,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,
                        main=main,colors=colors,cex=cex,lwd=lwd,pch=pch,add=add, ...)
   }
-  if (class (ffs)=="list"){
+  if (class (ffs)=="formants_single"){
     tmp_par = graphics::par(no.readonly = TRUE)
 
     n = length (ffs)
