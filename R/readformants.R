@@ -2,11 +2,13 @@
 
 #' Load Fast Track formant objects
 #'
-#' This function reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time (1-2 minutes per thousand files) for all the data to be read in if there are many tokens that were analyzed in that directory.
+#' This function reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time (1-2 minutes per thousand sound files) for all the data to be read in if there are many tokens that were analyzed in that directory.
 #' 
-#' The data is stored in data frames containing formant frequencies and bandwidths for the first 3-4 formants. These values are rounded, which makes display easier and makes the resulting object much smaller in memory (and on your hard drive). Every data frame representing a single Praat formant object needs to have some information associated with it, and this is done using attributes for the object. The attributes for every dataframe representing a formant object are: timestep (the analysis time step, in ms), w1 (the location of the first analysis window, in ms), maxformant (the maximum formant frequency, in Hz), and filename, containing the label used for the formant object (relating to the wav file filename). 
+#' Each individual analysis is stored in a data frame containing formant frequencies and bandwidths for the first 3-4 formants. These values are rounded, which makes display easier and makes the resulting object much smaller in memory (and on your hard drive). Every data frame representing a single Praat formant object needs to have some information associated with it, and this is done using attributes for the object. The attributes for every dataframe representing a formant object are: timestep (the analysis time step, in ms), w1 (the location of the first analysis window, in ms), maxformant (the maximum formant frequency, in Hz), and filename, containing the label used for the formant object (relating to the wav file filename). 
 #' 
 #' The dataframes corresponding to alternative analyses for a single sound file are stored in a list. This list has the same filename attribute as each of the dataframes contained within it. Finally, all of the lists (each of which represents a single sound) are stored within one overall list. This final list contains an attribute representing the maximum formant frequencies used for all of the analyses represented by the formants files. 
+#' 
+#' So, if you read in your analysis into an object called 'formants', then 'formants[[2]][[3]]' represents the dataframe containing the third analysis for the second sound file. 'formants[[2]]' is a list containing all of the dataframes for the second sound file and 'formants' is a list containing each of the list of dataframes for all the sound files. 
 #' 
 #'
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
@@ -23,13 +25,23 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
   
   if (missing(path)) path = getwd()
   
+  if (!is.na(fileinformation)) fileinformation_exists = TRUE
+  
   if (is.na(fileinformation)){
+    fileinformation_exists = FALSE
     if (file.exists (path %+% "/file_information.csv")){
       fileinformation = utils::read.csv (path %+% "/file_information.csv")
       fileinformation_exists = TRUE
     }
   }
-
+  
+  labels = NA
+  if (fileinformation_exists){
+    labels = fileinformation$label
+    names (labels) = fileinformation$file
+    label_vector = rep(fileinformation$label,each=nsteps)
+  }
+  
   info = readLines (list.files (paste0(path,"/infos"),full.names=TRUE)[1])
   nsteps = as.numeric (info[3])
   nf = as.numeric (info[9])
@@ -73,7 +85,7 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
     attr(tmp, "w1") = as.numeric(w1)
     attr(tmp, "maxformant") = rep(cutoffs, n_files/nsteps)[j]
 
-    if (fileinformation_exists) attr(tmp, "label") = fileinformation$label[j]
+    if (fileinformation_exists) attr(tmp, "label") = label_vector[j]
     
     tmp_fname = tools::file_path_sans_ext(basename(files[j]))
     tmp_fname = strsplit(tmp_fname,split="_")[[1]]
@@ -91,16 +103,17 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
     #attr(formants, "object") = "formants"
     attr(formants[[count]], "cutoffs") = cutoffs
     attr(formants[[count]], "class") = "formants_single"
-    if (fileinformation_exists) attr(formants[[count]], "label") = fileinformation$label[j]
+    if (fileinformation_exists) attr(formants[[count]], "label") = labels[count]
     count = count + 1
   }
   
-  formants
   attr(formants, "path") = path
   attr(formants, "nfiles") = length (formants)
   attr(formants, "cutoffs") = cutoffs
   attr(formants, "ncutoffs") = length (cutoffs)
   attr(formants, "class") = "formants"
+  attr(formants, "labels") = labels
+  
   
   return (formants)
 }

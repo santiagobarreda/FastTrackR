@@ -4,22 +4,14 @@
 \alias{imposebounds}
 \title{Impose boundaries on formants}
 \usage{
-imposebounds(
-  path,
-  boundaries = NA,
-  n_formants = 3,
-  fileinformation = NA,
-  write = FALSE
-)
+imposebounds(path, boundaries = NA, selectioninfo = NA, write = TRUE)
 }
 \arguments{
 \item{path}{the path to the working directory for the Fast Track project. If no path is provided this is the working directory.}
 
 \item{boundaries}{a dataframe representing the boundaries for your formants for each vowel.}
 
-\item{n_formants}{--.}
-
-\item{fileinformation}{--.}
+\item{selectioninfo}{--.}
 
 \item{write}{if TRUE, a new winners file will be written to your folder.}
 }

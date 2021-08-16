@@ -4,12 +4,10 @@
 \alias{readselectioninfo}
 \title{Load information about the selection of the winning analyses}
 \usage{
-readselectioninfo(path = NA, justcsv = FALSE)
+readselectioninfo(path = NA)
 }
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
-
-\item{justcsv}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 }
 \value{
 A dataframe containing information about winning analyses.
@@ -19,6 +17,6 @@ This function reads in the winners.csv file from a specified path, or assumes it
 }
 \examples{
 \dontrun{
-winners <- readwinners()
+winners <- readselectioninfo()
 }
 }

@@ -5,8 +5,7 @@
 #'
 #' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
 #' @param boundaries a dataframe representing the boundaries for your formants for each vowel.
-#' @param n_formants --.
-#' @param fileinformation --.
+#' @param selectioninfo --.
 #' @param write if TRUE, a new winners file will be written to your folder. 
 #' @return A dataframe or list of dataframes, as per the asone parameter.
 #' @export
@@ -16,36 +15,34 @@
 #' }
 
 
-imposebounds <- function (path, boundaries=NA, n_formants = 3, fileinformation = NA, write = FALSE){
+imposebounds <- function (path, boundaries=NA, selectioninfo = NA, write = TRUE){
   if (missing(path)) path = getwd()
 
   # or put in some default ones?
   if (is.na(boundaries)) stop ("No boundaries provided. see data(formantbounds) for a template.")
-  
-  if (is.na(fileinformation)){
-    if (!file.exists (path %+% "/file_information.csv")) stop ("No file information file available.")
-    fileinformation = utils::read.csv (path %+% "/file_information.csv")
-  }
 
-  winners = data.frame (file = basename(fileinformation$file), F1=0,F2=0,F3=0)
-  if (n_formants==4) winners$F4 = 0
+  if (!is.na(selectioninfo))
+    if (class(selectioninfo) != "selection_info") 
+      stop ("Invalid selectioninfo object. Please read in using the readselectioninfo function.")
   
-  # read in intercepts and stop if they dont exist
-  if (!file.exists (path %+% "/infos_aggregated/all_errors.csv") |
-      !file.exists (path %+% "/infos_aggregated/all_f1.csv") |
-      !file.exists (path %+% "/infos_aggregated/all_f2.csv") |
-      !file.exists (path %+% "/infos_aggregated/all_f3.csv"))
-    stop ("Analysis files are missing from the \'infos_aggregated\' folder. 
-          Did you run the autoselectwinners step?")
+  if (is.na(selectioninfo)){
+    selectioninfo <- readselectioninfo()
+  }
   
-  errors = utils::read.csv (path %+% "/infos_aggregated/all_errors.csv") 
-  f1s = utils::read.csv  (path %+% "/infos_aggregated/all_f1s.csv") 
-  f2s = utils::read.csv  (path %+% "/infos_aggregated/all_f2s.csv") 
-  f3s = utils::read.csv  (path %+% "/infos_aggregated/all_f3s.csv")
+  n_formants = dim(selectioninfo$errors)[3]
   
-  for (i in 1:nrow (winners)){
+  f1s = selectioninfo$coefficients[,,1,1]
+  f2s = selectioninfo$coefficients[,,2,1]
+  f3s = selectioninfo$coefficients[,,3,1]
+  if (n_formants==4) f4s = selectioninfo$coefficients[,,4,1]
+  
+  errors = selectioninfo$total_errors 
+ 
+  penalties = selectioninfo$penalties
+  
+  for (i in 1:nrow (penalties)){
     # see if sound label is in boundary information
-    spot = which (fileinformation$label[i] == boundaries$label)
+    spot = which (selectioninfo$label[i] == boundaries$label)
     # if yes:
     if (length(spot) > 0){
       # check if each analysis falls within the bounds
@@ -57,27 +54,15 @@ imposebounds <- function (path, boundaries=NA, n_formants = 3, fileinformation =
               boundaries$f3upper[spot] < f3s[i,]
       
       # only consider those which do not defy the bounds
-      use = !(f1out | f2out | f3out)
-
-      # if there is at least one usable one:
-      if (sum (use) > 0){
-        # find ranking of analyses
-        ord = order (errors[i,])
-        # take first useable one
-        winners[i,2:(2+n_formants)] = ord[use][1]
-      }
-      if (sum (use) == 0)
-        winners[i,2:(2+n_formants)] = order (errors[i,])[1]
-      
+      penalties[i,] = penalties[i,] + as.numeric(f1out | f2out | f3out)
     }
-    if (length(spot) == 0)
-      # take lowest error
-      winners[i,2:(2+n_formants)] = order (errors[i,])[1]
-  }
+   }
+  
+  selectioninfo$penalties = penalties
   
   # write out if user desires
-  if (write) utils::read.csv (winners, path %+% "/winners.csv")
+  if (write) utils::write.csv (penalties, path %+% "/penalties.csv")
   
-  invisible (winners)
+  invisible (selectioninfo)
 }
 

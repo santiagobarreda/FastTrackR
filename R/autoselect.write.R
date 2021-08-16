@@ -5,9 +5,11 @@ autoselect.write <- function (outputpath, output){
   errors = output$errors  
   total_errors = output$total_errors  
   coefficients = output$coefficients  
+  penalties = output$penalties  
   
   utils::write.csv (winners_csv, outputpath %+% "/winners.csv", row.names=FALSE)
   utils::write.csv (winners_csv, outputpath %+% "/winners_backup.csv", row.names=FALSE)
+  utils::write.csv (penalties, outputpath %+% "/penalties.csv", row.names=FALSE)
   
   colnames(total_errors) = paste0("e",1:ncol(total_errors))
   colnames(coefficients) = paste0("a",1:dim(coefficients)[2])
@@ -47,7 +49,7 @@ autoselect.write <- function (outputpath, output){
 
     # writeLines (tmp_info, outputpath %+% "/regression_infos/" %+% info_files[i])
     
-    reg_files
+    #reg_files
     base = tools::file_path_sans_ext(reg_files[i])
     
     # regression information text file output 
@@ -63,8 +65,11 @@ autoselect.write <- function (outputpath, output){
     }
     tmp_reg[[count]] = paste ("winner is: ", winners_csv[i,2])
     
-    write(tmp_reg[[1]],"test2.txt", append=FALSE)
-    lapply(2:length(tmp_reg), function(x){ write(tmp_reg[[x]], "test2.txt", append=TRUE,ncolumns=nrow(tmp_reg[[5]]))})
+    write(tmp_reg[[1]],paste0(outputpath,"/",reg_files[i]), append=FALSE)
+    lapply(2:length(tmp_reg), 
+           function(x) 
+             write(tmp_reg[[x]], paste0(outputpath,"/",reg_files[i]), append=TRUE,ncolumns=nrow(tmp_reg[[5]]))
+          )
   }
 }
 
