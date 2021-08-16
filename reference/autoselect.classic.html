@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Automatically select winners — autoselect.classic" />
-<meta property="og:description" content="Select the best analyses using the 'classic' Fast Track method from Praat. Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now)." />
+<meta property="og:description" content="Select the best analyses using the 'classic' Fast Track method from Praat. Each formant is predicted using a regression model, and the analysis with the smallest . Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now)." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -130,7 +130,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Select the best analyses using the 'classic' Fast Track method from Praat. Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now).</p>
+    <p>Select the best analyses using the 'classic' Fast Track method from Praat. Each formant is predicted using a regression model, and the analysis with the smallest . Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now).</p>
     </div>
 
     <pre class="usage"><span class='fu'>autoselect.classic</span><span class='op'>(</span>
@@ -173,11 +173,13 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list containing information about the selection of the winners. The list elements are:</p>
+    <p>An object of the class "selection_info". A list containing information about the selection of the winners. The list elements are:</p>
 <p>1) winners_csv: A dataframe containing the same information as the winners.csv file.</p>
 <p>2) errors: A 3d array containing information about the RMS error for each analysis for each formant. Dimensions are [file, analysis, formant].</p>
 <p>3) total_errors: A 2d array containing information about the total RMS error for each analysis. Dimensions are [file, analysis]. 
 4) coefficients: A 4d array containing information about regression coefficients for prediction of each formant for each analysis. Dimensions are [file, analysis, formant, coefficient]. Coefficients are arranged in terms of increasing order (i.e., intercept, linear term, quadratric term,...).</p>
+<p>5) penalties: a 2d array representing the penalties applied to each analysis through boundary or heuristic violations. Penalties exclude an analysis from selection.</p>
+<p>6) labels: a vector indicating the label for each sound.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
