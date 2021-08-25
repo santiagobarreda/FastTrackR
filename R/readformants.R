@@ -62,7 +62,13 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
   tmp_formants = vector(mode = "list", length = )
   cat ("There are ", n_files, "files to read. \n")
   
-  tmp_formants = lapply (1:n_files, function (j){
+  
+  items = length (strsplit (files,"_")[[1]])
+  mat = matrix(unlist (strsplit (files,"_")), length (files), items, byrow = TRUE)
+  mat = mat[,(ncol(mat)-2):(ncol(mat)-1)]
+  ord = order (mat[,1],as.numeric(mat[,2]))
+  
+  tmp_formants = lapply (ord, function (j){
     if (progressbar) progressbar (j,n_files)
     
     tmp = utils::read.csv (files[j])[,1]
