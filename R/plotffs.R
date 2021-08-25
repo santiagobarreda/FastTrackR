@@ -52,6 +52,8 @@ plotffs = function(ffs,winner=NA,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
 
     n = length (ffs)
     rows = floor(n/4)
+    
+    ylim = c(0,max(attr(ffs,"cutoffs")))
 
     graphics::par (mfrow = c(4,rows), mar =c(1.5,1,2,1), oma = c(1,1,0,1))
     for (i in 1:n){
@@ -65,7 +67,7 @@ plotffs = function(ffs,winner=NA,xlim=NA,ylim=NA,xlab=NA,ylab=NA,
         }
       }
       plotffs.internal (ffs[[i]],xaxt='n',yaxt='n', add = add, main = main,
-                        colors=colors,cex=cex,lwd=lwd,pch=pch, ...)
+                        colors=colors,cex=cex,lwd=lwd,pch=pch,ylim=ylim, ...)
       if(!is.na(winner)) if (winner==i) graphics::box(lwd=3, col = 2)
     }
     graphics::par (tmp_par)
