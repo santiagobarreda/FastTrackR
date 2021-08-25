@@ -57,19 +57,20 @@ extractWave2 = function (sound,from,to, filename){
 # #' tmp_snd = downsample (snd, maxformant = 5000)
 # #' }
 
-downsample = function (sound, maxformant = 5000, precision = 50){
+
+downsample = function (sound, maxformant = 7000, precision = 50){
 
   if (!class(sound)=="Wave") stop ("Sound must be a Wave object read in using the tuneR package.")
 
   tmp_snd = sound@left
   fs = sound@samp.rate
 
-  ratio = (maxformant/fs)*2
+  ratio = maxformant/(fs/2)
   fs = maxformant*2
 
   #if (ratio > 1) stop ("Downsampling only, sorry!")
 
-  filter = signal::butter (13,ratio)
+  filter = signal::butter (5,ratio)
   tmp_snd = signal::filtfilt (filt = filter, x = tmp_snd)
 
   newtime = seq(1, length(tmp_snd) + 1, by = 1/ratio)
@@ -88,7 +89,7 @@ downsample = function (sound, maxformant = 5000, precision = 50){
 }
 
 
-getformants = function (coeffs, fs = 1, nreturn=4){
+solvelpc = function (coeffs, fs = 1, nreturn=4){
 
   roots = polyroot(rev(coeffs))
   angs = atan2(Im(roots), Re(roots))
@@ -97,7 +98,7 @@ getformants = function (coeffs, fs = 1, nreturn=4){
   formants = formants[nums]
   bws = -(fs/pi) * log(abs(roots[nums]))
   touse = (formants > 0)
-  out = c(formants[touse][1:4], bws[touse][1:4])
+  out = c(formants[touse][1:nreturn], bws[touse][1:nreturn])
   return (round(out))
 }
 
