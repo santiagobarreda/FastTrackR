@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot an aggregated file — plotffs • fasttrackr</title>
+<title>Plot formant tracks — plotffs • fasttrackr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Plot an aggregated file — plotffs" />
-<meta property="og:description" content="Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions." />
+<meta property="og:title" content="Plot formant tracks — plotffs" />
+<meta property="og:description" content="This function will plot formant tracks for single analyses (e.g., formants[[1]][[1]]) or comparing all candidate analyses for a single file (e.g., formants[[1]])." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -124,13 +124,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot an aggregated file</h1>
+    <h1>Plot formant tracks</h1>
     <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/plotffs.R'><code>R/plotffs.R</code></a></small>
     <div class="hidden name"><code>plotffs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions.</p>
+    <p>This function will plot formant tracks for single analyses (e.g., formants[[1]][[1]]) or comparing all candidate analyses for a single file (e.g., formants[[1]]).</p>
     </div>
 
     <pre class="usage"><span class='fu'>plotffs</span><span class='op'>(</span>
@@ -155,7 +155,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ffs</th>
-      <td><p>a dataframe containing formant tracks for a single file, or a list of dataframes comparing multiple analyses for a single file.</p></td>
+      <td><p>a dataframe containing formant tracks for a single analysis or a list of dataframes comparing multiple analyses for a single file.</p></td>
     </tr>
     <tr>
       <th>winner</th>
@@ -167,7 +167,7 @@
     </tr>
     <tr>
       <th>ylim</th>
-      <td><p>an optional user-specified x-axis range.</p></td>
+      <td><p>an optional user-specified y-axis range.</p></td>
     </tr>
     <tr>
       <th>xlab</th>
@@ -187,15 +187,15 @@
     </tr>
     <tr>
       <th>cex</th>
-      <td><p>--.</p></td>
+      <td><p>an optional user-specified character expansion.</p></td>
     </tr>
     <tr>
       <th>lwd</th>
-      <td><p>--.</p></td>
+      <td><p>an optional user-specified line width.</p></td>
     </tr>
     <tr>
       <th>pch</th>
-      <td><p>--.</p></td>
+      <td><p>an optional user-specified point size.</p></td>
     </tr>
     <tr>
       <th>add</th>
