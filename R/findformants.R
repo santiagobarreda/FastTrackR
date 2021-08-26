@@ -1,22 +1,20 @@
 
 #' Carry out LPC for sound
 #'
-#' @param sound a numeric vector representing the sound to be analyzed.
-#' @param n_formants --.
-#' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).
+#' @param sound a WAV file loaded in using the readwave2 function.
+#' @param n_formants the number of formant frequencies that should be returned.
+#' @param maxformant the maximum formant frequency (i.e., the Nyquist/2).
 #' @param windowlength the windowlength specified in seconds.
 #' @param timestep the analysis time step specified in seconds.
-#' @param preemphasis_frequency --.
-#' @param label --.
-#' @param returnsound --.
+#' @param preemphasis_frequency if NA, no preemphasis is applied.
+#' @param label if a label is provided, this is added to the formnt information.
+#' @param returnsound if TRUE, the downsampled sound object is returned in addition to the formant information.
 #' @return A matrix in which each row represents a different time point. The first four columns represent the frequencies of F1-F4, and columns 5-8 represent their bandwidths.
 #' @export
 #' @examples
 #' \dontrun{
 #' sound = readWave2("yoursound.wav")
 #' trackformants (sound, maxformant = 5300)
-#' sound = readWave2("C:/Users/santi/Desktop/JSdata/melissa-R/sounds/WS005-Melissa_2725.wav")
-#' sound = readWave2("C:/Users/santi/Desktop/JSdata/melissa-R/sounds/WS005-Melissa_0001_14000.wav")
 #' }
 
 findformants = function (sound, n_formants = 4, maxformant = 7000, windowlength = 0.05, 
@@ -24,6 +22,7 @@ findformants = function (sound, n_formants = 4, maxformant = 7000, windowlength 
                           label = NA, returnsound = FALSE){
 
   if (!class(sound)=="Wave") stop ("Sound must be a Wave object read in using the readwave2 function.")
+  if (is.null(attr (sound, "filename"))) stop ("Sound must be a Wave object read in using the readwave2 function.")
 
   tmp_sound = sound
   filename = tmp_sound@filename

@@ -10,11 +10,8 @@ trackformants.internal = function (snd, n_formants = 4, from = 5300, to = 7000, 
   count = nsteps
   maxformants = round(seq(from,to,length.out=nsteps))
 
-  #par (mfrow = c(4,4), mar = c(4,4,1,1))
-  
   tmp_snd = snd
   for (i in count:1){
-    #plot (tmp_snd@left, col = 1)
     if (i == count)
       tmp_analysis = findformants (tmp_snd,n_formants=n_formants,maxformant = maxformants[i],
                                     timestep=timestep,returnsound=TRUE, preemphasis_frequency=50, label=label)
@@ -24,7 +21,6 @@ trackformants.internal = function (snd, n_formants = 4, from = 5300, to = 7000, 
     ffs[[i]] = tmp_analysis[[1]]
     ffs[[i]][is.na(ffs[[i]])] = 0
     tmp_snd = tmp_analysis[[2]]
-    #plot (tmp_snd@left, col = 2)
   }
   
   attr(ffs, "filename") = substr (snd@filename,1,nchar(snd@filename)-4)

@@ -1,19 +1,19 @@
 
-#' Plot an aggregated file
+#' Plot formant tracks
 #'
-#' Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions.
+#' This function will plot formant tracks for single analyses (e.g., formants[[1]][[1]]) or comparing all candidate analyses for a single file (e.g., formants[[1]]). 
 #'
-#' @param ffs a dataframe containing formant tracks for a single file, or a list of dataframes comparing multiple analyses for a single file.
+#' @param ffs a dataframe containing formant tracks for a single analysis or a list of dataframes comparing multiple analyses for a single file.
 #' @param winner an optional dataframe representing the winners file.
 #' @param xlim an optional user-specified x-axis range.
-#' @param ylim an optional user-specified x-axis range.
+#' @param ylim an optional user-specified y-axis range.
 #' @param xlab an optional user-specified x-axis label.
 #' @param ylab an optional user-specified y-axis label.
 #' @param main an optional user-specified plot label.
 #' @param colors an optional vector of colors to use for the formant points/lines.
-#' @param cex --.
-#' @param lwd --.
-#' @param pch --.
+#' @param cex an optional user-specified character expansion.
+#' @param lwd an optional user-specified line width.
+#' @param pch an optional user-specified point size.
 #' @param add if FALSE, a new plot if created.
 #' @param spect an optional spectrogram to be shown behind the tracks.
 #' @param ... Additional arguments are passed to the internal call of 'plot'.

@@ -7,20 +7,12 @@
 saveformants(formants, filename = "formants", path = NA)
 }
 \arguments{
-\item{formants}{a list of formant data read in with the readformants function.}
+\item{formants}{a list of formant data read in with the readformants function, or created using the trackformants function.}
 
 \item{filename}{the name of the RDS file to save to, without the extension (e.g., "filename" not "filename.RDS").}
 
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 }
-\value{
-A dataframe containing information about winning analyses.
-}
 \description{
 This function saves the list containing all analyses for all files into a single RDS file in your working directory (or any other directory).
-}
-\examples{
-\dontrun{
-winners <- readwinners()
-}
 }

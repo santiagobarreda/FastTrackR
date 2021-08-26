@@ -22,23 +22,23 @@
 #' }
 #'
 
-extractvowels = function (tgpath, sndpath,outputpath=NA, segmenttier="phone",wordtier=NA,
+extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier="phone",wordtier=NA,
                              commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA){
 
-  if (!missing(tgpath) & !missing(sndpath)){
+  if (!is.na(tgpath) & !is.na(sndpath)){
     if (length(tgpath) != length (sndpath)) stop ("Path lengths do not match.")
   }
-  if (!missing(tgpath) & missing(sndpath)){
+  if (!is.na(tgpath) & is.na(sndpath)){
     base = unlist (strsplit (basename (tgpath), split ="\\."))[c(T,F)]
     dirname = dirname (tgpath)
     sndpath = dirname %+% "/" %+% base %+% ".wav"
   }
-  if (missing(tgpath) & !missing(sndpath)){
+  if (is.na(tgpath) & !is.na(sndpath)){
     base = unlist (strsplit (basename (sndpath), split ="\\."))[c(T,F)]
     dirname = dirname (sndpath)
     tgpath = dirname %+% "/" %+% base %+% ".TextGrid"
   }
-  if (missing(tgpath) & missing(sndpath)) stop ("No paths provided.")
+  if (is.na(tgpath) & is.na(sndpath)) stop ("No paths provided.")
 
   n = length (tgpath)
   output = list()
@@ -52,7 +52,7 @@ extractvowels = function (tgpath, sndpath,outputpath=NA, segmenttier="phone",wor
     output[[i]][[1]] = cbind(source_file = base[i] %+% ".wav", output[[i]][[1]])
     segmentation_info = rbind(segmentation_info, output[[i]][[1]])
 
-    ## make file information in here too
+    ## make file information in here too (?)
   }
 
   if (!is.na (outputpath)){

@@ -12,7 +12,7 @@ writecsvs(csvs, path)
 \item{path}{the path to the working directory for the Fast Track project. If no path is provided this is the working directory.}
 }
 \description{
-Write Fast Track csv files
+Write internal formant data to csv files.
 }
 \examples{
 \dontrun{

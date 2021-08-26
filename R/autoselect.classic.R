@@ -3,7 +3,7 @@
 #' 
 #' Select the best analyses using the 'classic' Fast Track method from Praat. Each formant is predicted using a regression model, and the analysis with the smallest . Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now). 
 #'
-#' @param formants a list of formant data read in with the readformants function.
+#' @param formants a list of formant data read in with the readformants function, or created using the trackformants function.
 #' @param order the order of the prediction model.
 #' @param n_formants the number of formants to optimize for.
 #' @param outputpath if NA, nothing is written out. If "working", data is written out to the working directory. Any other path may also be specified.

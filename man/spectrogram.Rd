@@ -36,7 +36,7 @@ spectrogram(
 A matrix representing a spectrogram.
 }
 \description{
-Spectrogram
+Make a spectrogram of a sound.
 }
 \examples{
 \dontrun{

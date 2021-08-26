@@ -14,7 +14,7 @@ autoselect.classic(
 )
 }
 \arguments{
-\item{formants}{a list of formant data read in with the readformants function.}
+\item{formants}{a list of formant data read in with the readformants function, or created using the trackformants function.}
 
 \item{order}{the order of the prediction model.}
 

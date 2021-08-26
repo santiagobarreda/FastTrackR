@@ -24,7 +24,7 @@ readcsvs <- function (path, asone = TRUE, progressbar = FALSE){
 
   n_files = length(files)
   csvs = lapply (1:n_files, function(i){
-    if (progressbar) progressbar(i,n_files)
+    if (progressbar) progressbar(i,n_files, width = 10)
     tmp = utils::read.csv (files[i], na.strings = "0")
     if (asone) tmp$file = file_names[i]
     tmp

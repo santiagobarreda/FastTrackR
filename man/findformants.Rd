@@ -16,21 +16,21 @@ findformants(
 )
 }
 \arguments{
-\item{sound}{a numeric vector representing the sound to be analyzed.}
+\item{sound}{a WAV file loaded in using the readwave2 function.}
 
-\item{n_formants}{--.}
+\item{n_formants}{the number of formant frequencies that should be returned.}
 
-\item{maxformant}{the maximum analysis frequency (i.e., the Nyquist/2).}
+\item{maxformant}{the maximum formant frequency (i.e., the Nyquist/2).}
 
 \item{windowlength}{the windowlength specified in seconds.}
 
 \item{timestep}{the analysis time step specified in seconds.}
 
-\item{preemphasis_frequency}{--.}
+\item{preemphasis_frequency}{if NA, no preemphasis is applied.}
 
-\item{label}{--.}
+\item{label}{if a label is provided, this is added to the formnt information.}
 
-\item{returnsound}{--.}
+\item{returnsound}{if TRUE, the downsampled sound object is returned in addition to the formant information.}
 }
 \value{
 A matrix in which each row represents a different time point. The first four columns represent the frequencies of F1-F4, and columns 5-8 represent their bandwidths.
@@ -42,7 +42,5 @@ Carry out LPC for sound
 \dontrun{
 sound = readWave2("yoursound.wav")
 trackformants (sound, maxformant = 5300)
-sound = readWave2("C:/Users/santi/Desktop/JSdata/melissa-R/sounds/WS005-Melissa_2725.wav")
-sound = readWave2("C:/Users/santi/Desktop/JSdata/melissa-R/sounds/WS005-Melissa_0001_14000.wav")
 }
 }

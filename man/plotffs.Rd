@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotffs.R
 \name{plotffs}
 \alias{plotffs}
-\title{Plot an aggregated file}
+\title{Plot formant tracks}
 \usage{
 plotffs(
   ffs,
@@ -22,13 +22,13 @@ plotffs(
 )
 }
 \arguments{
-\item{ffs}{a dataframe containing formant tracks for a single file, or a list of dataframes comparing multiple analyses for a single file.}
+\item{ffs}{a dataframe containing formant tracks for a single analysis or a list of dataframes comparing multiple analyses for a single file.}
 
 \item{winner}{an optional dataframe representing the winners file.}
 
 \item{xlim}{an optional user-specified x-axis range.}
 
-\item{ylim}{an optional user-specified x-axis range.}
+\item{ylim}{an optional user-specified y-axis range.}
 
 \item{xlab}{an optional user-specified x-axis label.}
 
@@ -38,11 +38,11 @@ plotffs(
 
 \item{colors}{an optional vector of colors to use for the formant points/lines.}
 
-\item{cex}{--.}
+\item{cex}{an optional user-specified character expansion.}
 
-\item{lwd}{--.}
+\item{lwd}{an optional user-specified line width.}
 
-\item{pch}{--.}
+\item{pch}{an optional user-specified point size.}
 
 \item{add}{if FALSE, a new plot if created.}
 
@@ -51,7 +51,7 @@ plotffs(
 \item{...}{Additional arguments are passed to the internal call of 'plot'.}
 }
 \description{
-Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions.
+This function will plot formant tracks for single analyses (e.g., formants[[1]][[1]]) or comparing all candidate analyses for a single file (e.g., formants[[1]]).
 }
 \examples{
 \dontrun{

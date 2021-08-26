@@ -1,6 +1,8 @@
 
 
 #' Spectrogram
+#' 
+#' Make a spectrogram of a sound. 
 #'
 #' @param sound a numeric vector representing the sound to be analyzed.
 #' @param maxformant the maximum analysis frequency (i.e., the Nyquist/2).

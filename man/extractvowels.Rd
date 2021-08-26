@@ -5,8 +5,8 @@
 \title{Extract Vowels}
 \usage{
 extractvowels(
-  tgpath,
-  sndpath,
+  tgpath = NA,
+  sndpath = NA,
   outputpath = NA,
   segmenttier = "phone",
   wordtier = NA,

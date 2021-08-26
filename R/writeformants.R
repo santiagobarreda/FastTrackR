@@ -1,8 +1,12 @@
 
-#' Write Fast Track formant objects
-#' @param formants --.
-#' @param path --.
+#' Write Praat formant objects
+#' 
+#' This function writes out R internal formant data into text files that can be used in Praat. 
+#' 
+#' @param formants a list of formant data read in with the readformants function, or created using the trackformants function.
+#' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
 #' @export
+
 writeformants <- function (formants, path = NA){
 
   if (is.na (path)) path = getwd()

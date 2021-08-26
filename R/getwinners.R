@@ -2,6 +2,8 @@
 #' Get winning analyses
 #'
 #' This function will read winning analyses into R based on the content of the 'winners.csv' file. The required formant and csv data can be pre-loaded with the readformants() and readcsvs() functions provided in this package. Reading the formant data can be a bit slow so loading it once and passing it to the function will speed things up quite a bit if this function will be called repeatedly.
+#' 
+#' At the moment the function does not move copies of the winning formant files into a new folder (as with the Praat version) but that functionality is coming soon. 
 #'
 #' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
 #' @param winners an optional dataframe representing the data in the 'winners.csv' file.

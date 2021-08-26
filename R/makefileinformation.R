@@ -1,21 +1,12 @@
 
 #' Make a file information file
+#' 
+#' Make a file_information.csv file if none exists.
 #'
-#' @param path --.
-#' @param write --.
+#' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
+#' @param write if TRUE, the file is written to the indicated path(or working directory).
 #' @export
-#' @examples
-#' \dontrun{
-#' sound = readWave2("yoursound.wav")
-#' ffs = analyze (sound)
-#' spect = spectrogram (sound)
-#' plotffs (ffs[[9]])
-#' plotffs (ffs[[9]], spect = spect)
-#' plotffs (ffs)
-#' plotffs (ffs, spect = spect)
-#' }
-#' 
-#' 
+
 makefileinformation = function (path = NA, write=TRUE){
   
   if (is.na (path)) path = getwd()
@@ -34,7 +25,7 @@ makefileinformation = function (path = NA, write=TRUE){
                                 group = group, color = color)
   
   if (write)
-    write.csv (fileinformation, "fileinformation2.csv", row.names = FALSE,quote=FALSE)
+    write.csv (fileinformation, "file_information.csv", row.names = FALSE,quote=FALSE)
   
   fileinformation
   

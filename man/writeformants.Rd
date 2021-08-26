@@ -2,15 +2,15 @@
 % Please edit documentation in R/writeformants.R
 \name{writeformants}
 \alias{writeformants}
-\title{Write Fast Track formant objects}
+\title{Write Praat formant objects}
 \usage{
 writeformants(formants, path = NA)
 }
 \arguments{
-\item{formants}{--.}
+\item{formants}{a list of formant data read in with the readformants function, or created using the trackformants function.}
 
-\item{path}{--.}
+\item{path}{the path to the working directory for the Fast Track project. If no path is provided this is the working directory.}
 }
 \description{
-Write Fast Track formant objects
+This function writes out R internal formant data into text files that can be used in Praat.
 }
