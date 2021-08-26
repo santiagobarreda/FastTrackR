@@ -45,6 +45,8 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
   files = list.files (paste0(path,"/formants"),full.names=TRUE)
   n_files = length(files)
 
+  filename_vector = rep(names (labels),each=nsteps)
+    
   ord = unlist (strsplit (basename (files), "_"))
   ord = matrix(ord, n_files,length(ord)/n_files,byrow=TRUE)
   nc = ncol (ord)
@@ -80,7 +82,7 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
                         b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6],b4=tmp[len1+8])
     
     ## formant track attributes
-    attr(tmp, "filename") = tools::file_path_sans_ext(basename(fileinformation$file[j]))
+    attr(tmp, "filename") = tools::file_path_sans_ext(basename(filename_vector[j]))
     attr(tmp, "duration") = as.numeric(duration)
     attr(tmp, "timestep") = as.numeric (timestep)
     attr(tmp, "label") = label_vector[j]
@@ -97,7 +99,7 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
     ## attributes for object comparing analyses for single file
     attr(formants[[count]], "filename") = attr(tmp_formants[[i]], "filename")
     attr(formants[[count]], "duration") = attr(tmp_formants[[i]], "duration")
-    attr(formants[[count]], "timestep") = as.numeric (timestep)
+    attr(formants[[count]], "timestep") = attr(tmp_formants[[i]], "timestep")
     attr(formants[[count]], "label") = labels[count]
     attr(formants[[count]], "cutoffs") = cutoffs
     attr(formants[[count]], "class") = "formants_single"
