@@ -7,6 +7,7 @@
 #' @param to the highest analysis frequency.
 #' @param nsteps the number of steps between the lowest and highest analysis frequencies.
 #' @param windowlength the windowlength specified in seconds.
+#' @param write --.
 #' @param n_formants --.
 #' @param timestep the analysis time step specified in seconds.
 #' @param fileinformation --.
@@ -24,7 +25,7 @@
 
 #files = list.files ("C:/Users/santi/Desktop/JSdata/melissa-R/sounds", full.names = TRUE)
 
-trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowlength = 0.05,
+trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowlength = 0.05, write = TRUE,
                           n_formants = 3, timestep = 0.002, fileinformation = NA, estimateduration=TRUE){
 
   if (is.na (path)) path =  getwd()
@@ -62,12 +63,12 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
       start = Sys.time()
     }
     for (i in 1:n){
-      if (estimateduration & (n > 200) & (i %in% c(100,500,1000))){
+      if (estimateduration & (n > 200) & (i %in% c(50, 200,500,1000))){
         now = Sys.time()
         pred_duration = abs(((start - now)/i) * n)
         units = attr (pred_duration, "units")
         time = round (abs (pred_duration), 2)
-        cat ("Estimated total analysis duration:", time,units,"\n")
+        cat ("Estimated total analysis duration at",i,"tokens:", time,units,"\n")
       }
       sound = readWave2 (files[i])
       
@@ -84,6 +85,7 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
     attr(ffs, "labels") = labels[i]
     attr(ffs, "class") = "formants"
   }
+  if (write) saveRDS (ffs, "formants.RDS")
 
   ffs
 }
