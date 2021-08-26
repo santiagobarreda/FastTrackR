@@ -25,22 +25,17 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
   
   if (missing(path)) path = getwd()
   
-  if (!is.na(fileinformation)) fileinformation_exists = TRUE
-  
   if (is.na(fileinformation)){
-    fileinformation_exists = FALSE
-    if (file.exists (path %+% "/file_information.csv")){
+    if (file.exists (path %+% "/file_information.csv"))
       fileinformation = utils::read.csv (path %+% "/file_information.csv")
-      fileinformation_exists = TRUE
-    }
+
+    if (!file.exists (path %+% "/file_information.csv"))
+      stop ("No file information exists in your working directory (and none was provided).")
   }
   
-  labels = NA
-  if (fileinformation_exists){
-    labels = fileinformation$label
-    names (labels) = fileinformation$file
-    label_vector = rep(fileinformation$label,each=nsteps)
-  }
+  labels = fileinformation$label
+  names (labels) = fileinformation$file
+  label_vector = rep(fileinformation$label,each=nsteps)
   
   info = readLines (list.files (paste0(path,"/infos"),full.names=TRUE)[1])
   nsteps = as.numeric (info[3])
@@ -54,14 +49,11 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
   ord = matrix(ord, n_files,length(ord)/n_files,byrow=TRUE)
   nc = ncol (ord)
   ord = ord[,(nc-2):(nc-1)]
-  #ord[,2] = addzeros(ord[,2])
-  #ord = paste0 (ord[,1],"_", ord[1:nsteps,2])
   ord = as.numeric(ord[1:nsteps,2])
 
   count = 0
   tmp_formants = vector(mode = "list", length = )
   cat ("There are ", n_files, "files to read. \n")
-  
   
   items = length (strsplit (files,"_")[[1]])
   mat = matrix(unlist (strsplit (files,"_")), length (files), items, byrow = TRUE)
@@ -73,6 +65,7 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
     
     tmp = utils::read.csv (files[j])[,1]
     w1 = tmp[6]
+    duration = tmp[3]
     timestep = tmp[5]
     tmp = tmp[-c(1:7)]
     len1 = which (nchar (tmp)==1)
@@ -81,45 +74,43 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
     if (nf==3)
       tmp = data.frame (f1=tmp[len1+1],f2=tmp[len1+3],f3=tmp[len1+5],
                         b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6])
-
+    
     if (nf==4)
       tmp = data.frame (f1=tmp[len1+1],f2=tmp[len1+3],f3=tmp[len1+5],f4=tmp[len1+7],
                         b1=tmp[len1+2],b2=tmp[len1+4],b3=tmp[len1+6],b4=tmp[len1+8])
-
-    #attr(tmp, "object") = "tracks"
+    
+    ## formant track attributes
+    attr(tmp, "filename") = tools::file_path_sans_ext(basename(fileinformation$file[j]))
+    attr(tmp, "duration") = as.numeric(duration)
     attr(tmp, "timestep") = as.numeric (timestep)
+    attr(tmp, "label") = label_vector[j]
     attr(tmp, "w1") = as.numeric(w1)
     attr(tmp, "maxformant") = rep(cutoffs, n_files/nsteps)[j]
-
-    if (fileinformation_exists) attr(tmp, "label") = label_vector[j]
-    
-    tmp_fname = tools::file_path_sans_ext(basename(files[j]))
-    tmp_fname = strsplit(tmp_fname,split="_")[[1]]
-    tmp_fname = tmp_fname[-length(tmp_fname)]
-    attr(tmp, "filename") = paste (tmp_fname, collapse="_")
-    
     round (tmp)
-    #tmp_formants[[j]] = round (tmp)
-    })
+  })
+  
   formants = vector(mode = "list", length = n_files / nsteps)
   count = 1
   for (i in seq(1,n_files,nsteps)){
     formants[count] = list(tmp_formants[i:(i+nsteps-1)])
+    
+    ## attributes for object comparing analyses for single file
     attr(formants[[count]], "filename") = attr(tmp_formants[[i]], "filename")
-    #attr(formants, "object") = "formants"
+    attr(formants[[count]], "duration") = attr(tmp_formants[[i]], "duration")
+    attr(formants[[count]], "timestep") = as.numeric (timestep)
+    attr(formants[[count]], "label") = labels[count]
     attr(formants[[count]], "cutoffs") = cutoffs
     attr(formants[[count]], "class") = "formants_single"
-    if (fileinformation_exists) attr(formants[[count]], "label") = labels[count]
     count = count + 1
   }
   
+  ## attributes for object comparing all analyses for all files
   attr(formants, "path") = path
   attr(formants, "nfiles") = length (formants)
   attr(formants, "cutoffs") = cutoffs
   attr(formants, "ncutoffs") = length (cutoffs)
+  attr(formants, "labels") = unname(labels)
   attr(formants, "class") = "formants"
-  attr(formants, "labels") = labels
-  
   
   return (formants)
 }
