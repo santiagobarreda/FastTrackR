@@ -28,10 +28,14 @@ trackformants.internal = function (snd, n_formants = 4, from = 5300, to = 7000, 
   }
   
   attr(ffs, "filename") = substr (snd@filename,1,nchar(snd@filename)-4)
+  attr(ffs, "duration") = length(tmp_snd@left)/tmp_snd@samp.rate
+  attr(ffs, "timestep") = timestep
+  attr(ffs, "label") = label
   attr(ffs, "cutoffs") = maxformants
   attr(ffs, "class") = "formants_single"
-  attr(ffs, "label") = NA
   
   ffs
 }
+
+
 
