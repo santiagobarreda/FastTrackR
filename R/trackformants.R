@@ -28,24 +28,7 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
                           n_formants = 3, timestep = 0.002, fileinformation = NA, estimateduration=TRUE){
 
   if (is.na (path)) path =  getwd()
-  
-  
-  if (!is.na(fileinformation)) fileinformation_exists = TRUE
-  
-  if (is.na(fileinformation)){
-    fileinformation_exists = FALSE
-    if (file.exists (path %+% "/file_information.csv")){
-      fileinformation = utils::read.csv (path %+% "/file_information.csv")
-      fileinformation_exists = TRUE
-    }
-  }
-  
-  labels = NA
-  if (fileinformation_exists){
-    labels = fileinformation$label
-    names (labels) = fileinformation$file
-  }
-  
+
   # if there is a single file run it once
   if (class(path)=="Wave")
     ffs = trackformants.internal (path, from = from, to = to,n_formants = n_formants,
@@ -55,12 +38,27 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
 
   # if there is a list of wave objects analyze them
   if (class(path)=="character"){
+    if (is.na(fileinformation)){
+      if (file.exists (path %+% "/file_information.csv"))
+        fileinformation = utils::read.csv (path %+% "/file_information.csv")
+      
+      if (!file.exists (path %+% "/file_information.csv")){
+        cat ("No file information exists in your working directory (and none was provided).")
+        cat ("A default one was generated and saved in your working directory.")
+        #makefileinformation()
+      }
+    }
+    
     files = list.files (paste0 (getwd(), "/sounds"), full.names = TRUE)
     n = length(files)
+    
+    labels = fileinformation$label
+    names (labels) = fileinformation$file
+    
     ffs = list(rep(0, n))
     cat ("Analyzing ", n, " sounds.\n")
     if (estimateduration & n > 200){
-      cat ("Progress begun at:",format(Sys.time(), "%H:%M:%S"),"\n")
+      cat ("Progress begun at",format(Sys.time(), "%H:%M:%S"),"\n")
       start = Sys.time()
     }
     for (i in 1:n){
@@ -78,14 +76,17 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
                                    timestep = timestep, label = labels[i])
     }
 
-
+    ## attributes for object containing all analyses
     attr(ffs, "path") = path
     attr(ffs, "nfiles") = length (ffs)
     attr(ffs, "cutoffs") = attr(ffs[[1]], "cutoffs")
     attr(ffs, "ncutoffs") = length (attr(ffs[[1]], "cutoffs"))
+    attr(ffs, "labels") = labels[i]
     attr(ffs, "class") = "formants"
-    attr(ffs, "labels") = labels
   }
 
   ffs
 }
+
+
+
