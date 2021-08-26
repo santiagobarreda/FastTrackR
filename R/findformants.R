@@ -68,12 +68,12 @@ findformants = function (sound, n_formants = 4, maxformant = 7000, windowlength 
 
   ffs = data.frame(ffs)
 
-  attr(ffs, "object") = "ffs"
+  attr(ffs, "filename") = substr (filename,1,nchar(filename)-4)
+  attr(ffs, "duration") = duration
   attr(ffs, "timestep") = timestep
+  attr(ffs, "label") = label
   attr(ffs, "w1") = windowlength/2
   attr(ffs, "maxformant") = maxformant
-  attr(ffs, "label") = label
-  attr(ffs, "filename") = substr (filename,1,nchar(filename)-4)
   
   if(!returnsound) return (ffs)
   if(returnsound) return (list (ffs=ffs, sound=tmp_sound))
