@@ -23,13 +23,12 @@ findformants = function (sound, n_formants = 4, maxformant = 7000, windowlength 
                           timestep = 0.002, preemphasis_frequency = 50, 
                           label = NA, returnsound = FALSE){
 
-  if (!class(sound)=="Wave") stop ("Sound must be a Wave object read in using the tuneR package.")
+  if (!class(sound)=="Wave") stop ("Sound must be a Wave object read in using the readwave2 function.")
 
   tmp_sound = sound
   filename = tmp_sound@filename
   fs = tmp_sound@samp.rate
   
-  #if (maxformant*2 < fs)  tmp_sound = tuneR::downsample (tmp_sound, maxformant*2)
   if (maxformant*2 < fs)  tmp_sound = downsample (sound, maxformant)
 
   sound_samples = tmp_sound@left
@@ -48,13 +47,10 @@ findformants = function (sound, n_formants = 4, maxformant = 7000, windowlength 
   duration = n / fs
   spots = round(seq (1/fs,duration-windowlength, timestep)*fs)
   
+  # change window type here
   window = phonTools::windowfunc(windowlength_pts, "gaussian")
   snd_matrix = (sapply (spots, function (x) sound_samples[x:(x+windowlength_pts-1)]*window))
-  
-  #nfft = 2^(ceiling(log2(windowlength_pts)))
-  #zeros = matrix (0, nfft-windowlength_pts, ncol (snd_matrix))
-  #snd_matrix = rbind (snd_matrix, zeros)
-  
+
   spect = stats::mvfft(snd_matrix)
   spect = abs(spect)^2
   r = Re(stats::mvfft(spect,inverse=TRUE))
