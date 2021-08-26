@@ -10,6 +10,7 @@ trackformants(
   to = 6800,
   nsteps = 12,
   windowlength = 0.05,
+  write = TRUE,
   n_formants = 3,
   timestep = 0.002,
   fileinformation = NA,
@@ -26,6 +27,8 @@ trackformants(
 \item{nsteps}{the number of steps between the lowest and highest analysis frequencies.}
 
 \item{windowlength}{the windowlength specified in seconds.}
+
+\item{write}{--.}
 
 \item{n_formants}{--.}
 

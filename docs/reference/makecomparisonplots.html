@@ -93,7 +93,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +107,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/santiagobarreda/FastTrackR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -134,34 +134,54 @@
     </div>
 
     <pre class="usage"><span class='fu'>makecomparisonplots</span><span class='op'>(</span>
-  <span class='va'>path</span>,
-  resolution <span class='op'>=</span> <span class='fl'>1000</span>,
-  formants <span class='op'>=</span> <span class='cn'>NA</span>,
+  <span class='va'>formants_plot</span>,
+  path <span class='op'>=</span> <span class='cn'>NA</span>,
+  height <span class='op'>=</span> <span class='fl'>1000</span>,
+  width <span class='op'>=</span> <span class='fl'>1400</span>,
+  pointsize <span class='op'>=</span> <span class='fl'>20</span>,
   winners <span class='op'>=</span> <span class='cn'>NA</span>,
-  showprogressbar <span class='op'>=</span> <span class='cn'>FALSE</span>
+  spectrogram_timestep <span class='op'>=</span> <span class='fl'>0.0015</span>,
+  showprogressbar <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>formants_plot</th>
+      <td><p>The formant data to be used for making plots. Read in using the readformants function in this package.</p></td>
+    </tr>
+    <tr>
       <th>path</th>
-      <td><p>--.</p></td>
+      <td><p>The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.</p></td>
     </tr>
     <tr>
-      <th>resolution</th>
-      <td><p>--.</p></td>
+      <th>height</th>
+      <td><p>height of each plot in pixels.</p></td>
     </tr>
     <tr>
-      <th>formants</th>
-      <td><p>--.</p></td>
+      <th>width</th>
+      <td><p>width of each plot in pixels.</p></td>
+    </tr>
+    <tr>
+      <th>pointsize</th>
+      <td><p>point size for plotting.</p></td>
     </tr>
     <tr>
       <th>winners</th>
+      <td><p>.</p></td>
+    </tr>
+    <tr>
+      <th>spectrogram_timestep</th>
       <td><p>--.</p></td>
     </tr>
     <tr>
       <th>showprogressbar</th>
+      <td><p>--.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
       <td><p>--.</p></td>
     </tr>
     </table>
@@ -169,7 +189,8 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span> <span class='op'>(</span><span class='fu'>makecomparisonplots</span><span class='op'>(</span>showprogressbar<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>makecomparisonplots</span><span class='op'>(</span><span class='va'>formants</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span>
+<span class='fu'>makecomparisonplots</span><span class='op'>(</span><span class='va'>formants</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>, winners <span class='op'>=</span> <span class='va'>winners</span><span class='op'>$</span><span class='va'>winners_csv</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

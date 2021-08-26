@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot arrows — ft.arrows • fasttrackr</title>
+<title>Automatically select winners — autoselect.classic • fasttrackr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Plot arrows — ft.arrows" />
-<meta property="og:description" content="Add arrows to the end of contours made by the ft.contour function. Colors are taken from the 'color' column in the data." />
+<meta property="og:title" content="Automatically select winners — autoselect.classic" />
+<meta property="og:description" content="Select the best analyses using the 'classic' Fast Track method from Praat. Each formant is predicted using a regression model, and the analysis with the smallest . Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now)." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -124,74 +124,70 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot arrows</h1>
-    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/plotting.R'><code>R/plotting.R</code></a></small>
-    <div class="hidden name"><code>ft.arrows.Rd</code></div>
+    <h1>Automatically select winners</h1>
+    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/autoselect.classic.R'><code>R/autoselect.classic.R</code></a></small>
+    <div class="hidden name"><code>autoselect.classic.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Add arrows to the end of contours made by the ft.contour function. Colors are taken from the 'color' column in the data.</p>
+    <p>Select the best analyses using the 'classic' Fast Track method from Praat. Each formant is predicted using a regression model, and the analysis with the smallest . Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ft.arrows</span><span class='op'>(</span>
-  <span class='va'>aggregated_data</span>,
-  xformant <span class='op'>=</span> <span class='fl'>1</span>,
-  yformant <span class='op'>=</span> <span class='fl'>2</span>,
-  revaxes <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  logaxes <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  lwd <span class='op'>=</span> <span class='fl'>2</span>,
-  length <span class='op'>=</span> <span class='fl'>0.1</span>,
-  add <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>
+    <pre class="usage"><span class='fu'>autoselect.classic</span><span class='op'>(</span>
+  <span class='va'>formants</span>,
+  order <span class='op'>=</span> <span class='fl'>5</span>,
+  n_formants <span class='op'>=</span> <span class='fl'>4</span>,
+  outputpath <span class='op'>=</span> <span class='cn'>NA</span>,
+  subset <span class='op'>=</span> <span class='cn'>NA</span>,
+  progressbar <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>aggregated_data</th>
-      <td><p>A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.</p></td>
+      <th>formants</th>
+      <td><p>a list of formant data read in with the readformants function.</p></td>
     </tr>
     <tr>
-      <th>xformant</th>
-      <td><p>an integer indicating which formant number should be plotted on the x axis.</p></td>
+      <th>order</th>
+      <td><p>the order of the prediction model.</p></td>
     </tr>
     <tr>
-      <th>yformant</th>
-      <td><p>an integer indicating which formant number should be plotted on the y axis.</p></td>
+      <th>n_formants</th>
+      <td><p>the number of formants to optimize for.</p></td>
     </tr>
     <tr>
-      <th>revaxes</th>
-      <td><p>if TRUE, axis ranges are inverted so that they go high &gt; low.</p></td>
+      <th>outputpath</th>
+      <td><p>if NA, nothing is written out. If "working", data is written out to the working directory. Any other path may also be specified.</p></td>
     </tr>
     <tr>
-      <th>logaxes</th>
-      <td><p>if TRUE, axes are logarithmic.</p></td>
+      <th>subset</th>
+      <td><p>a vector indicating a subset of the analyses to be considered.</p></td>
     </tr>
     <tr>
-      <th>lwd</th>
-      <td><p>an integer determining arrow line width.</p></td>
-    </tr>
-    <tr>
-      <th>length</th>
-      <td><p>the length of the arrow lines.</p></td>
-    </tr>
-    <tr>
-      <th>add</th>
-      <td><p>if FALSE, a new plot if created.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments are passed to the internal call of 'arrows'.</p></td>
+      <th>progressbar</th>
+      <td><p>if TRUE, a progress bar prints out in the console.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An object of the class "selection_info". A list containing information about the selection of the winners. The list elements are:</p>
+<p>1) winners_csv: A dataframe containing the same information as the winners.csv file.</p>
+<p>2) errors: A 3d array containing information about the RMS error for each analysis for each formant. Dimensions are [file, analysis, formant].</p>
+<p>3) total_errors: A 2d array containing information about the total RMS error for each analysis. Dimensions are [file, analysis]. 
+4) coefficients: A 4d array containing information about regression coefficients for prediction of each formant for each analysis. Dimensions are [file, analysis, formant, coefficient]. Coefficients are arranged in terms of increasing order (i.e., intercept, linear term, quadratric term,...).</p>
+<p>5) penalties: a 2d array representing the penalties applied to each analysis through boundary or heuristic violations. Penalties exclude an analysis from selection.</p>
+<p>6) labels: a vector indicating the label for each sound.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>aggregated_data</span><span class='op'>)</span>
-<span class='fu'><a href='ft.lines.html'>ft.lines</a></span> <span class='op'>(</span><span class='va'>aggregated_data</span>, xformant<span class='op'>=</span><span class='fl'>2</span>,yformant<span class='op'>=</span><span class='fl'>1</span>,revaxes<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'>ft.arrows</span> <span class='op'>(</span><span class='va'>aggregated_data</span>, xformant<span class='op'>=</span><span class='fl'>2</span>,yformant<span class='op'>=</span><span class='fl'>1</span>,revaxes<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='img'><img src='ft.arrows-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>formants</span> <span class='op'>=</span> <span class='fu'><a href='readformants.html'>readformants</a></span> <span class='op'>(</span><span class='op'>)</span>
+<span class='va'>winners</span> <span class='op'>=</span> <span class='fu'>autoselect.classic</span> <span class='op'>(</span><span class='va'>formants</span>, progressbar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>winners</span> <span class='op'>=</span> <span class='fu'>autoselect.classic</span> <span class='op'>(</span><span class='va'>formants</span>, outputpath<span class='op'>=</span><span class='st'>"working"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

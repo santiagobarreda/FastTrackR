@@ -4,7 +4,7 @@
 \alias{writeformants}
 \title{Write Fast Track formant objects}
 \usage{
-writeformants(formants, path)
+writeformants(formants, path = NA)
 }
 \arguments{
 \item{formants}{--.}

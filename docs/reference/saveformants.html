@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot arrows — ft.arrows • fasttrackr</title>
+<title>Save formant information in a single RDS file — saveformants • fasttrackr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Plot arrows — ft.arrows" />
-<meta property="og:description" content="Add arrows to the end of contours made by the ft.contour function. Colors are taken from the 'color' column in the data." />
+<meta property="og:title" content="Save formant information in a single RDS file — saveformants" />
+<meta property="og:description" content="This function saves the list containing all analyses for all files into a single RDS file in your working directory (or any other directory)." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -124,74 +124,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot arrows</h1>
-    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/plotting.R'><code>R/plotting.R</code></a></small>
-    <div class="hidden name"><code>ft.arrows.Rd</code></div>
+    <h1>Save formant information in a single RDS file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/saveformants.R'><code>R/saveformants.R</code></a></small>
+    <div class="hidden name"><code>saveformants.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Add arrows to the end of contours made by the ft.contour function. Colors are taken from the 'color' column in the data.</p>
+    <p>This function saves the list containing all analyses for all files into a single RDS file in your working directory (or any other directory).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ft.arrows</span><span class='op'>(</span>
-  <span class='va'>aggregated_data</span>,
-  xformant <span class='op'>=</span> <span class='fl'>1</span>,
-  yformant <span class='op'>=</span> <span class='fl'>2</span>,
-  revaxes <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  logaxes <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  lwd <span class='op'>=</span> <span class='fl'>2</span>,
-  length <span class='op'>=</span> <span class='fl'>0.1</span>,
-  add <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>saveformants</span><span class='op'>(</span><span class='va'>formants</span>, filename <span class='op'>=</span> <span class='st'>"formants"</span>, path <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>aggregated_data</th>
-      <td><p>A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.</p></td>
+      <th>formants</th>
+      <td><p>a list of formant data read in with the readformants function.</p></td>
     </tr>
     <tr>
-      <th>xformant</th>
-      <td><p>an integer indicating which formant number should be plotted on the x axis.</p></td>
+      <th>filename</th>
+      <td><p>the name of the RDS file to save to, without the extension (e.g., "filename" not "filename.RDS").</p></td>
     </tr>
     <tr>
-      <th>yformant</th>
-      <td><p>an integer indicating which formant number should be plotted on the y axis.</p></td>
-    </tr>
-    <tr>
-      <th>revaxes</th>
-      <td><p>if TRUE, axis ranges are inverted so that they go high &gt; low.</p></td>
-    </tr>
-    <tr>
-      <th>logaxes</th>
-      <td><p>if TRUE, axes are logarithmic.</p></td>
-    </tr>
-    <tr>
-      <th>lwd</th>
-      <td><p>an integer determining arrow line width.</p></td>
-    </tr>
-    <tr>
-      <th>length</th>
-      <td><p>the length of the arrow lines.</p></td>
-    </tr>
-    <tr>
-      <th>add</th>
-      <td><p>if FALSE, a new plot if created.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments are passed to the internal call of 'arrows'.</p></td>
+      <th>path</th>
+      <td><p>The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A dataframe containing information about winning analyses.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>aggregated_data</span><span class='op'>)</span>
-<span class='fu'><a href='ft.lines.html'>ft.lines</a></span> <span class='op'>(</span><span class='va'>aggregated_data</span>, xformant<span class='op'>=</span><span class='fl'>2</span>,yformant<span class='op'>=</span><span class='fl'>1</span>,revaxes<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'>ft.arrows</span> <span class='op'>(</span><span class='va'>aggregated_data</span>, xformant<span class='op'>=</span><span class='fl'>2</span>,yformant<span class='op'>=</span><span class='fl'>1</span>,revaxes<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='img'><img src='ft.arrows-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>winners</span> <span class='op'>&lt;-</span> <span class='fu'><a href='readwinners.html'>readwinners</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Load Fast Track formant objects — readformants" />
-<meta property="og:description" content="This function reads in all the files contained in the &quot;/formants&quot; folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time for all the data to be read in if there are many tokens that were analyzed in that directory." />
+<meta property="og:description" content="This function reads in all the files contained in the &quot;/formants&quot; folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time (1-2 minutes per thousand sound files) for all the data to be read in if there are many tokens that were analyzed in that directory." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -93,7 +93,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +107,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/santiagobarreda/FastTrackR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -130,10 +130,10 @@
     </div>
 
     <div class="ref-description">
-    <p>This function reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time for all the data to be read in if there are many tokens that were analyzed in that directory.</p>
+    <p>This function reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time (1-2 minutes per thousand sound files) for all the data to be read in if there are many tokens that were analyzed in that directory.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readformants</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>readformants</span><span class='op'>(</span><span class='va'>path</span>, fileinformation <span class='op'>=</span> <span class='cn'>NA</span>, progressbar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,6 +142,14 @@
       <th>path</th>
       <td><p>The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.</p></td>
     </tr>
+    <tr>
+      <th>fileinformation</th>
+      <td><p>--.</p></td>
+    </tr>
+    <tr>
+      <th>progressbar</th>
+      <td><p>if TRUE, a progress bar prints out in the console.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -149,13 +157,13 @@
     <p>A list of lists of dataframes. The "external" list is as long as number of files that were analyzed. For each "external" list element there are <em>n</em> "internal" list elements for <em>n</em> analysis steps. For example, <code>formant[[32]][[3]]</code> contains information regarding the 3rd analysis option for the 32nd file.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The data is stored in data frames containing formant frequencies and bandwidths for the first 3-4 formants. These values are rounded, which makes display easier and makes the resulting object much smaller in memory (and on your hard drive). Every data frame representing a single Praat formant object needs to have some information associated with it, and this is done using attributes for the object. The attributes for every dataframe representing a formant object are: timestep (the analysis time step, in ms), w1 (the location of the first analysis window, in ms), maxformant (the maximum formant frequency, in Hz), and filename, containing the label used for the formant object (relating to the wav file filename).</p>
+    <p>Each individual analysis is stored in a data frame containing formant frequencies and bandwidths for the first 3-4 formants. These values are rounded, which makes display easier and makes the resulting object much smaller in memory (and on your hard drive). Every data frame representing a single Praat formant object needs to have some information associated with it, and this is done using attributes for the object. The attributes for every dataframe representing a formant object are: timestep (the analysis time step, in ms), w1 (the location of the first analysis window, in ms), maxformant (the maximum formant frequency, in Hz), and filename, containing the label used for the formant object (relating to the wav file filename).</p>
 <p>The dataframes corresponding to alternative analyses for a single sound file are stored in a list. This list has the same filename attribute as each of the dataframes contained within it. Finally, all of the lists (each of which represents a single sound) are stored within one overall list. This final list contains an attribute representing the maximum formant frequencies used for all of the analyses represented by the formants files.</p>
-<p>Eventually I think both kinds of lists need to turned into S3 classes with at least print statements.</p>
+<p>So, if you read in your analysis into an object called 'formants', then 'formants[[2]][[3]]' represents the dataframe containing the third analysis for the second sound file. 'formants[[2]]' is a list containing all of the dataframes for the second sound file and 'formants' is a list containing each of the list of dataframes for all the sound files.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>formants</span> <span class='op'>=</span> <span class='fu'>readformants</span> <span class='op'>(</span><span class='op'>)</span>
+<span class='va'>formants</span> <span class='op'>=</span> <span class='fu'>readformants</span> <span class='op'>(</span>progressbar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Track formants — trackformants • fasttrackr</title>
+<title>Track formants for a sound or folder of sounds — trackformants • fasttrackr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Track formants — trackformants" />
-<meta property="og:description" content="Track formants" />
+<meta property="og:title" content="Track formants for a sound or folder of sounds — trackformants" />
+<meta property="og:description" content="Track formants for a sound or folder of sounds" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -93,7 +93,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +107,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/santiagobarreda/FastTrackR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -124,46 +124,84 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Track formants</h1>
+    <h1>Track formants for a sound or folder of sounds</h1>
     <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/trackformants.R'><code>R/trackformants.R</code></a></small>
     <div class="hidden name"><code>trackformants.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Track formants</p>
+    <p>Track formants for a sound or folder of sounds</p>
     </div>
 
-    <pre class="usage"><span class='fu'>trackformants</span><span class='op'>(</span><span class='va'>sound</span>, maxformant <span class='op'>=</span> <span class='fl'>5000</span>, windowlength <span class='op'>=</span> <span class='fl'>0.05</span>, timestep <span class='op'>=</span> <span class='fl'>0.0025</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>trackformants</span><span class='op'>(</span>
+  path <span class='op'>=</span> <span class='cn'>NA</span>,
+  from <span class='op'>=</span> <span class='fl'>4800</span>,
+  to <span class='op'>=</span> <span class='fl'>6800</span>,
+  nsteps <span class='op'>=</span> <span class='fl'>12</span>,
+  windowlength <span class='op'>=</span> <span class='fl'>0.05</span>,
+  write <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  n_formants <span class='op'>=</span> <span class='fl'>3</span>,
+  timestep <span class='op'>=</span> <span class='fl'>0.002</span>,
+  fileinformation <span class='op'>=</span> <span class='cn'>NA</span>,
+  estimateduration <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sound</th>
-      <td><p>a numeric vector representing the sound to be analyzed.</p></td>
+      <th>path</th>
+      <td><p>a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of paths to wave files on your hard drive can be provided instead using the path parameter.</p></td>
     </tr>
     <tr>
-      <th>maxformant</th>
-      <td><p>the maximum analysis frequency (i.e., the Nyquist/2).</p></td>
+      <th>from</th>
+      <td><p>the lowest analysis frequency.</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p>the highest analysis frequency.</p></td>
+    </tr>
+    <tr>
+      <th>nsteps</th>
+      <td><p>the number of steps between the lowest and highest analysis frequencies.</p></td>
     </tr>
     <tr>
       <th>windowlength</th>
       <td><p>the windowlength specified in seconds.</p></td>
     </tr>
     <tr>
+      <th>write</th>
+      <td><p>--.</p></td>
+    </tr>
+    <tr>
+      <th>n_formants</th>
+      <td><p>--.</p></td>
+    </tr>
+    <tr>
       <th>timestep</th>
       <td><p>the analysis time step specified in seconds.</p></td>
+    </tr>
+    <tr>
+      <th>fileinformation</th>
+      <td><p>--.</p></td>
+    </tr>
+    <tr>
+      <th>estimateduration</th>
+      <td><p>--.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A matrix in which each row represents a different time point. The first four columns represent the frequencies of F1-F4, and columns 5-8 represent their bandwidths.</p>
+    <p>A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='va'>sound</span> <span class='op'>=</span> <span class='fu'>readWave2</span><span class='op'>(</span><span class='st'>"yoursound.wav"</span><span class='op'>)</span>
-<span class='fu'>trackformants</span> <span class='op'>(</span><span class='va'>sound</span>, maxformant <span class='op'>=</span> <span class='fl'>5000</span><span class='op'>)</span>
+<span class='va'>ffs1</span> <span class='op'>=</span> <span class='fu'>analyze</span> <span class='op'>(</span><span class='va'>sound</span>, timestep <span class='op'>=</span> <span class='fl'>0.002</span>, from <span class='op'>=</span> <span class='fl'>4800</span>, to <span class='op'>=</span> <span class='fl'>6800</span>, nsteps<span class='op'>=</span><span class='fl'>12</span><span class='op'>)</span>
+<span class='va'>ffs2</span> <span class='op'>=</span> <span class='fu'>trackformants</span> <span class='op'>(</span><span class='va'>sound</span>, timestep <span class='op'>=</span> <span class='fl'>0.002</span><span class='op'>)</span>
+<span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs1</span><span class='op'>)</span>
+<span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs1</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
