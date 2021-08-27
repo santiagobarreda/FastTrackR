@@ -11,8 +11,8 @@ makecomparisonplots(
   width = 1400,
   pointsize = 20,
   winners = NA,
-  spectrogram_timestep = 0.0015,
-  showprogressbar = TRUE,
+  number_of_lines = 0.0015,
+  progressbar = TRUE,
   ...
 )
 }
@@ -27,13 +27,13 @@ makecomparisonplots(
 
 \item{pointsize}{point size for plotting.}
 
-\item{winners}{.}
+\item{winners}{if you want winners to be highlighted, provide a dataframe with the information in the winners.csv file.}
 
-\item{spectrogram_timestep}{--.}
+\item{number_of_lines}{the number of pixels along the x axis for each spectrogram. Consider in relation to image width.}
 
-\item{showprogressbar}{--.}
+\item{progressbar}{if TRUE, information about estimated analysis time is printed.}
 
-\item{...}{--.}
+\item{...}{additional parameters are passed to the internal call of plotffs.}
 }
 \description{
 Make images comparing alternative analysies

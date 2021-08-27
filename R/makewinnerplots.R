@@ -2,12 +2,12 @@
 #' Make images for winning analysies
 #'
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
-#' @param csvs .
-#' @param height --.
-#' @param width --.
-#' @param pointsize --.
-#' @param number_of_lines --.
-#' @param showprogressbar --.
+#' @param csvs csv data loaded using the readcsvs function. In NA, data is read in from the 'csvs' folder in the path directory. 
+#' @param height the desired height of the image in pixels.
+#' @param width the desired width of the image in pixels.
+#' @param pointsize point size for plotting.
+#' @param number_of_lines the number of pixels along the x axis for each spectrogram. Consider in relation to image width. 
+#' @param progressbar if TRUE, information about estimated analysis time is displayed. 
 #' @export
 #' @examples
 #' \dontrun{
@@ -18,7 +18,7 @@
 
 makewinnerplots <- function (path=NA, csvs = NA, height=1000, width = 1400, 
                              pointsize = 20, number_of_lines = 250, 
-                             showprogressbar = TRUE){
+                             progressbar = TRUE){
 
   if (is.na(path)) path = getwd()
 
@@ -32,7 +32,8 @@ makewinnerplots <- function (path=NA, csvs = NA, height=1000, width = 1400,
   dir.create(path %+% "/images_winners", showWarnings = FALSE)
 
   filenames = names (csvs)
-
+  
+  start = Sys.time()
   if (length(filenames)>1){
     for (i in 1:length (filenames)){
       
@@ -47,7 +48,7 @@ makewinnerplots <- function (path=NA, csvs = NA, height=1000, width = 1400,
       graphics::title (filenames[i], cex = 0.9)
   
       grDevices::dev.off()
-      if (showprogressbar) progressbar(i, length (filenames))
+      if (progressbar) progressbar(i, length (filenames),start)
     }
   }
   if (length(filenames)==1){

@@ -11,23 +11,23 @@ makewinnerplots(
   width = 1400,
   pointsize = 20,
   number_of_lines = 250,
-  showprogressbar = TRUE
+  progressbar = TRUE
 )
 }
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
-\item{csvs}{.}
+\item{csvs}{csv data loaded using the readcsvs function. In NA, data is read in from the 'csvs' folder in the path directory.}
 
-\item{height}{--.}
+\item{height}{the desired height of the image in pixels.}
 
-\item{width}{--.}
+\item{width}{the desired width of the image in pixels.}
 
-\item{pointsize}{--.}
+\item{pointsize}{point size for plotting.}
 
-\item{number_of_lines}{--.}
+\item{number_of_lines}{the number of pixels along the x axis for each spectrogram. Consider in relation to image width.}
 
-\item{showprogressbar}{--.}
+\item{progressbar}{if TRUE, information about estimated analysis time is displayed.}
 }
 \description{
 Make images for winning analysies

@@ -96,7 +96,6 @@ autoselect.classic <- function (formants, order = 5, n_formants = 4,
     cat ("Writing data files... \n")
     autoselect.write (outputpath, output)
     cat ("\nDone. \n")
-    
   }
   return (output)
 }
