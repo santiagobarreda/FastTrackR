@@ -137,7 +137,7 @@ progressbar = function (i, n, start = NA, width=20){
     }
     
     cat (paste0 ("\r", message1, message2))
-    flush.console() 
+    utils::flush.console() 
   }
 }
 

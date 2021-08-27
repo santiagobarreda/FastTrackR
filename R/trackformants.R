@@ -12,7 +12,7 @@
 #' @param timestep the analysis time step specified in seconds.
 #' @param fileinformation a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory. 
 #' @param progressbar if TRUE, information about estimated analysis time is printed. 
-#' @param writeinfos if TRUE, analysis info text files are written out as in Praat. 
+#' @param write_infos if TRUE, analysis info text files are written out as in Praat. 
 #' @return A dataframe containing information about the formant tracks for the file.
 #' @export
 #' @examples
@@ -27,7 +27,7 @@
 
 trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowlength = 0.05, 
                           write = TRUE, n_formants = 3, timestep = 0.002, fileinformation = NA, 
-                          progressbar=TRUE, writeinfos = FALSE){
+                          progressbar=TRUE, write_infos = FALSE){
 
   if (is.na (path)) path =  getwd()
 

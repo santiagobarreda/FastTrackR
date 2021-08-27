@@ -11,7 +11,7 @@ makefileinformation = function (path = NA, write=TRUE){
   
   if (is.na (path)) path = getwd()
   
-  file = list.files (paste0(path,"/sounds"))
+  files = list.files (paste0(path,"/sounds"))
   n_files = length(files)
   
   number = 1:n_files
@@ -21,11 +21,11 @@ makefileinformation = function (path = NA, write=TRUE){
                  "Lime","Purple","Teal","Navy","Pink",
                  "Maroon","Olive","Grey","Red"), length.out = n_files)
   
-  fileinformation = data.frame (number = number, file = file,label=label, 
+  fileinformation = data.frame (number = number, file = files,label=label, 
                                 group = group, color = color)
   
   if (write)
-    write.csv (fileinformation, "file_information.csv", row.names = FALSE,quote=FALSE)
+    utils::write.csv (fileinformation, "file_information.csv", row.names = FALSE,quote=FALSE)
   
   fileinformation
   

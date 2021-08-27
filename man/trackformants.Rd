@@ -15,7 +15,7 @@ trackformants(
   timestep = 0.002,
   fileinformation = NA,
   progressbar = TRUE,
-  writeinfos = FALSE
+  write_infos = FALSE
 )
 }
 \arguments{
@@ -39,7 +39,7 @@ trackformants(
 
 \item{progressbar}{if TRUE, information about estimated analysis time is printed.}
 
-\item{writeinfos}{if TRUE, analysis info text files are written out as in Praat.}
+\item{write_infos}{if TRUE, analysis info text files are written out as in Praat.}
 }
 \value{
 A dataframe containing information about the formant tracks for the file.
