@@ -143,7 +143,8 @@
   n_formants <span class='op'>=</span> <span class='fl'>3</span>,
   timestep <span class='op'>=</span> <span class='fl'>0.002</span>,
   fileinformation <span class='op'>=</span> <span class='cn'>NA</span>,
-  estimateduration <span class='op'>=</span> <span class='cn'>TRUE</span>
+  progressbar <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  writeinfos <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -171,11 +172,11 @@
     </tr>
     <tr>
       <th>write</th>
-      <td><p>--.</p></td>
+      <td><p>if TRUE, the result of the analysis is saved as an RDS file.</p></td>
     </tr>
     <tr>
       <th>n_formants</th>
-      <td><p>--.</p></td>
+      <td><p>the number of formants returned (5.5. are always tracked).</p></td>
     </tr>
     <tr>
       <th>timestep</th>
@@ -183,25 +184,28 @@
     </tr>
     <tr>
       <th>fileinformation</th>
-      <td><p>--.</p></td>
+      <td><p>a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory.</p></td>
     </tr>
     <tr>
-      <th>estimateduration</th>
-      <td><p>--.</p></td>
+      <th>progressbar</th>
+      <td><p>if TRUE, information about estimated analysis time is printed.</p></td>
+    </tr>
+    <tr>
+      <th>writeinfos</th>
+      <td><p>if TRUE, analysis info text files are written out as in Praat.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.</p>
+    <p>A dataframe containing information about the formant tracks for the file.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='va'>sound</span> <span class='op'>=</span> <span class='fu'>readWave2</span><span class='op'>(</span><span class='st'>"yoursound.wav"</span><span class='op'>)</span>
-<span class='va'>ffs1</span> <span class='op'>=</span> <span class='fu'>analyze</span> <span class='op'>(</span><span class='va'>sound</span>, timestep <span class='op'>=</span> <span class='fl'>0.002</span>, from <span class='op'>=</span> <span class='fl'>4800</span>, to <span class='op'>=</span> <span class='fl'>6800</span>, nsteps<span class='op'>=</span><span class='fl'>12</span><span class='op'>)</span>
-<span class='va'>ffs2</span> <span class='op'>=</span> <span class='fu'>trackformants</span> <span class='op'>(</span><span class='va'>sound</span>, timestep <span class='op'>=</span> <span class='fl'>0.002</span><span class='op'>)</span>
-<span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs1</span><span class='op'>)</span>
-<span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs1</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>ffs</span> <span class='op'>=</span> <span class='fu'>trackformants</span> <span class='op'>(</span><span class='va'>sound</span>, timestep <span class='op'>=</span> <span class='fl'>0.002</span><span class='op'>)</span>
+<span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs</span><span class='op'>)</span>
+<span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

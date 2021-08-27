@@ -133,7 +133,7 @@
     <p>This function reads in all the files contained in the "/formants" folder within a Fast Track directory. Since Fast Track exports one formant object per analysis option per token, there are usually a large number of files stored in that directory. This function makes it easy to read all that information in at once. Note that it may take a bit of time (1-2 minutes per thousand sound files) for all the data to be read in if there are many tokens that were analyzed in that directory.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readformants</span><span class='op'>(</span><span class='va'>path</span>, fileinformation <span class='op'>=</span> <span class='cn'>NA</span>, progressbar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>readformants</span><span class='op'>(</span><span class='va'>path</span>, fileinformation <span class='op'>=</span> <span class='cn'>NA</span>, progressbar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,7 +144,7 @@
     </tr>
     <tr>
       <th>fileinformation</th>
-      <td><p>--.</p></td>
+      <td><p>a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory.</p></td>
     </tr>
     <tr>
       <th>progressbar</th>
