@@ -4,7 +4,20 @@
 #' This function reads in the winners.csv file from a specified path, or assumes it is located in the working directory if not path is specified. 
 #' 
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
-#' @return A dataframe containing information about winning analyses.
+#' @return A dataframe containing information about winning analyses. The list elements are:
+#' 
+#' 1) winners_csv: A dataframe containing the same information as the winners.csv file. 
+#' 
+#' 2) errors: A 3d array containing information about the RMS error for each analysis for each formant. Dimensions are [file, analysis, formant]. 
+#' 
+#' 3) total_errors: A 2d array containing information about the total RMS error for each analysis. Dimensions are [file, analysis]. 
+
+#' 4) coefficients: A 4d array containing information about regression coefficients for prediction of each formant for each analysis. Dimensions are [file, analysis, formant, coefficient]. Coefficients are arranged in terms of increasing order (i.e., intercept, linear term, quadratric term,...). 
+#' 
+#' 5) penalties: a 2d array representing the penalties applied to each analysis through boundary or heuristic violations. Penalties exclude an analysis from selection. 
+#' 
+#' 6) labels: a vector indicating the label for each sound. 
+#' 
 #' @export
 #' @examples
 #' \dontrun{

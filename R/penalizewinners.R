@@ -28,12 +28,6 @@ penalizewinners <- function (path, selectioninfo = NA, write = FALSE){
   errors = selectioninfo$total_errors 
   winners = selectioninfo$winners 
   
-  
-  if (is.na(fileinformation)){
-    if (!file.exists (path %+% "/file_information.csv")) stop ("No file information file available.")
-    fileinformation = utils::read.csv (path %+% "/file_information.csv")
-  }
-  
   winners = selectioninfo$winners_csv
   
   for (i in 1:nrow ()){

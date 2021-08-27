@@ -2,7 +2,7 @@
 #' Make images for winning analysies
 #'
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
-#' @param csvs --.
+#' @param csvs .
 #' @param height --.
 #' @param width --.
 #' @param pointsize --.

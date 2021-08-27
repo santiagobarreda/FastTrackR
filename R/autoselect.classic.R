@@ -9,30 +9,30 @@
 #' @param outputpath if NA, nothing is written out. If "working", data is written out to the working directory. Any other path may also be specified.
 #' @param subset a vector indicating a subset of the analyses to be considered.
 #' @param progressbar if TRUE, a progress bar prints out in the console.
-#' @return An object of the class "selection_info". A list containing information about the selection of the winners. The list elements are:
-#' 
-#' 1) winners_csv: A dataframe containing the same information as the winners.csv file. 
-#' 
-#' 2) errors: A 3d array containing information about the RMS error for each analysis for each formant. Dimensions are [file, analysis, formant]. 
-#' 
-#' 3) total_errors: A 2d array containing information about the total RMS error for each analysis. Dimensions are [file, analysis]. 
-
-#' 4) coefficients: A 4d array containing information about regression coefficients for prediction of each formant for each analysis. Dimensions are [file, analysis, formant, coefficient]. Coefficients are arranged in terms of increasing order (i.e., intercept, linear term, quadratric term,...). 
-#' 
-#' 5) penalties: a 2d array representing the penalties applied to each analysis through boundary or heuristic violations. Penalties exclude an analysis from selection. 
-#' 
-#' 6) labels: a vector indicating the label for each sound. 
+#' @return An object of the class "selection_info". A list containing information about the selection of the winners. See the documentation for readselectioninfo for more information. 
 
 #' @export
 #' @examples
 #' \dontrun{
+#' # load a previous analysis from Praat
 #' formants = readformants ()
+#' 
+#' # or load a previous analysis saved from R
+#' formants = readRDS ('formants.RDS')
+#' 
+#' # or track the formants using R
+#' formants = trackformants ()
+#' 
+#' # keep results in R
 #' winners = autoselect.classic (formants, progressbar = TRUE)
+#' 
+#' # generate Praat compliant data files
 #' winners = autoselect.classic (formants, outputpath="working")
 #' }
 
 autoselect.classic <- function (formants, order = 5, n_formants = 4, 
                                 outputpath = NA, subset = NA, progressbar = FALSE){
+
   n_files = length (formants)
   n_steps = length (formants[[1]])
   n_formants = ncol (formants[[1]][[1]])/2
@@ -49,11 +49,11 @@ autoselect.classic <- function (formants, order = 5, n_formants = 4,
   # empty 4d array for analysis regression coefficients 
   # d1 = file, d2 = analysis, d3 = formant, d4 = coefficient
   coefficients = array (0, dim = c(n_files, n_steps, n_formants, order+1))
-  
+  start = Sys.time()
   cat ("\nSelecting best Analyses... \n")
   # for each file and analysis step
   for (i in 1:n_files){
-    if (progressbar) progressbar (i,n_files)
+    if (progressbar) progressbar (i,n_files,start)
     for (j in steps){
       y = as.matrix(formants[[i]][[j]][,1:n_formants])
       xs = makepredictors (nrow (y), order = order)

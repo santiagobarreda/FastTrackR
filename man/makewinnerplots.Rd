@@ -17,7 +17,7 @@ makewinnerplots(
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
-\item{csvs}{--.}
+\item{csvs}{.}
 
 \item{height}{--.}
 

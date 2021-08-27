@@ -1,7 +1,7 @@
 
 #' Find outliers using Log-Additive Normalization 
 #'
-#' 
+#'  This is mostly a placeholder.
 #'
 #' @param aggregated_data --.
 #' @return --.

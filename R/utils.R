@@ -103,17 +103,43 @@ solvelpc = function (coeffs, fs = 1, nreturn=4){
 }
 
 
-progressbar = function (i, n, width=25){
+progressbar = function (i, n, start = NA, width=20){
 
+  if (is.na(start)) stop ("No start time provided.")
+    
   previous = round (width*((i-1)/n))
   progress = round (width*(i/n))
 
   if (previous!=progress){
-    message = paste0 ("Progress: [", paste(rep("*", progress),collapse=""),paste(rep(" ", width-progress),collapse=""), "]")
-    cat (message, "\n")
+    
+    now = Sys.time()
+    time_diff = abs (difftime(now, start, units='mins'))
+    unit = "minutes"
+    
+    if (time_diff < 2){
+      time_diff = abs (difftime(now, start, units='secs'))
+      unit = "seconds"
+    }
+    if (time_diff > 120){
+      time_diff = abs (difftime(now, start, units='hours'))
+      unit = "hours"
+    }
+    
+    pred_duration = (time_diff/i) * n
+    pred_remaining = pred_duration * (1 - i/n)
+    
+    message1 = paste0 ("Progress: [", paste(rep("*", progress),collapse=""),paste(rep(" ", width-progress),collapse=""), "]")
+    message2 = paste ("   Estimated time left:", round (pred_remaining,1),unit,"                           ")
+    
+    if (progress == width){
+      time_diff = abs (difftime(now, start, units='mins'))
+      message2 = paste ("   Total duration:", round (time_diff,1)," minutes.                             ")
+    }
+    
+    cat (paste0 ("\r", message1, message2))
+    flush.console() 
   }
 }
-
 
 
 makepredictors = function (n, order){

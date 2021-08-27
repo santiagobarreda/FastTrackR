@@ -14,7 +14,8 @@ trackformants(
   n_formants = 3,
   timestep = 0.002,
   fileinformation = NA,
-  estimateduration = TRUE
+  progressbar = TRUE,
+  writeinfos = FALSE
 )
 }
 \arguments{
@@ -28,18 +29,20 @@ trackformants(
 
 \item{windowlength}{the windowlength specified in seconds.}
 
-\item{write}{--.}
+\item{write}{if TRUE, the result of the analysis is saved as an RDS file.}
 
-\item{n_formants}{--.}
+\item{n_formants}{the number of formants returned (5.5. are always tracked).}
 
 \item{timestep}{the analysis time step specified in seconds.}
 
-\item{fileinformation}{--.}
+\item{fileinformation}{a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory.}
 
-\item{estimateduration}{--.}
+\item{progressbar}{if TRUE, information about estimated analysis time is printed.}
+
+\item{writeinfos}{if TRUE, analysis info text files are written out as in Praat.}
 }
 \value{
-A list of lists of dataframes. The 'external' list is as long as number of files that were analyzed. For each 'external' list element there are N 'internal' list elements, for N analysis steps. For example, 'formant[[32]][[3]]' contains information regarding the 3rd analysis option for the 32nd file.
+A dataframe containing information about the formant tracks for the file.
 }
 \description{
 Track formants for a sound or folder of sounds
@@ -47,9 +50,8 @@ Track formants for a sound or folder of sounds
 \examples{
 \dontrun{
 sound = readWave2("yoursound.wav")
-ffs1 = analyze (sound, timestep = 0.002, from = 4800, to = 6800, nsteps=12)
-ffs2 = trackformants (sound, timestep = 0.002)
-plotffs (ffs1)
-plotffs (ffs1[[2]])
+ffs = trackformants (sound, timestep = 0.002)
+plotffs (ffs)
+plotffs (ffs[[2]])
 }
 }

@@ -1,7 +1,7 @@
 
 #' Find outliers using Linear Discriminant Analysis 
 #'
-#' 
+#'  This is mostly a placeholder.
 #'
 #' @param aggregated_data --.
 #' @return --.

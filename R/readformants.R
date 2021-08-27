@@ -11,7 +11,7 @@
 #' 
 #'
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
-#' @param fileinformation --.
+#' @param fileinformation a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory. 
 #' @param progressbar if TRUE, a progress bar prints out in the console.
 #' @return A list of lists of dataframes. The "external" list is as long as number of files that were analyzed. For each "external" list element there are \emph{n} "internal" list elements for \emph{n} analysis steps. For example, \code{formant[[32]][[3]]} contains information regarding the 3rd analysis option for the 32nd file.
 #' @export
@@ -20,16 +20,19 @@
 #' formants = readformants (progressbar = TRUE)
 #' }
 
-readformants <- function (path, fileinformation = NA, progressbar = FALSE){
+readformants <- function (path, fileinformation = NA, progressbar = TRUE){
   
   if (missing(path)) path = getwd()
   
   if (is.na(fileinformation)){
     if (file.exists (path %+% "/file_information.csv"))
       fileinformation = utils::read.csv (path %+% "/file_information.csv")
-
-    if (!file.exists (path %+% "/file_information.csv"))
-      stop ("No file information exists in your working directory (and none was provided).")
+    
+    if (!file.exists (path %+% "/file_information.csv")){
+      cat ("No file information exists in your working directory (and none was provided).")
+      cat ("A default one was generated and saved in your working directory.")
+      fileinformation = makefileinformation(path)
+    }
   }
   
   labels = fileinformation$label
@@ -61,8 +64,9 @@ readformants <- function (path, fileinformation = NA, progressbar = FALSE){
   mat = mat[,(ncol(mat)-2):(ncol(mat)-1)]
   ord = order (mat[,1],as.numeric(mat[,2]))
   
+  start = Sys.time()
   tmp_formants = lapply (ord, function (j){
-    if (progressbar) progressbar (j,n_files)
+    if (progressbar) progressbar (j,n_files,start)
     
     tmp = utils::read.csv (files[j])[,1]
     w1 = tmp[6]

@@ -13,7 +13,7 @@ outliers.lda(aggregated_data)
 --.
 }
 \description{
-Find outliers using Linear Discriminant Analysis
+This is mostly a placeholder.
 }
 \examples{
 \dontrun{

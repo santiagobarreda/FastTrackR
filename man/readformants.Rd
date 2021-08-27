@@ -4,12 +4,12 @@
 \alias{readformants}
 \title{Load Fast Track formant objects}
 \usage{
-readformants(path, fileinformation = NA, progressbar = FALSE)
+readformants(path, fileinformation = NA, progressbar = TRUE)
 }
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
-\item{fileinformation}{--.}
+\item{fileinformation}{a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory.}
 
 \item{progressbar}{if TRUE, a progress bar prints out in the console.}
 }

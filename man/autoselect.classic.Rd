@@ -27,26 +27,26 @@ autoselect.classic(
 \item{progressbar}{if TRUE, a progress bar prints out in the console.}
 }
 \value{
-An object of the class "selection_info". A list containing information about the selection of the winners. The list elements are:
-
-1) winners_csv: A dataframe containing the same information as the winners.csv file. 
-
-2) errors: A 3d array containing information about the RMS error for each analysis for each formant. Dimensions are [file, analysis, formant]. 
-
-3) total_errors: A 2d array containing information about the total RMS error for each analysis. Dimensions are [file, analysis]. 
-4) coefficients: A 4d array containing information about regression coefficients for prediction of each formant for each analysis. Dimensions are [file, analysis, formant, coefficient]. Coefficients are arranged in terms of increasing order (i.e., intercept, linear term, quadratric term,...). 
-
-5) penalties: a 2d array representing the penalties applied to each analysis through boundary or heuristic violations. Penalties exclude an analysis from selection. 
-
-6) labels: a vector indicating the label for each sound.
+An object of the class "selection_info". A list containing information about the selection of the winners. See the documentation for readselectioninfo for more information.
 }
 \description{
 Select the best analyses using the 'classic' Fast Track method from Praat. Each formant is predicted using a regression model, and the analysis with the smallest . Generates identical output to the autoselect step in Praat, except for no regression information text files are written (for now).
 }
 \examples{
 \dontrun{
+# load a previous analysis from Praat
 formants = readformants ()
+
+# or load a previous analysis saved from R
+formants = readRDS ('formants.RDS')
+
+# or track the formants using R
+formants = trackformants ()
+
+# keep results in R
 winners = autoselect.classic (formants, progressbar = TRUE)
+
+# generate Praat compliant data files
 winners = autoselect.classic (formants, outputpath="working")
 }
 }

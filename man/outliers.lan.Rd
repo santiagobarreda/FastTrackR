@@ -13,7 +13,7 @@ outliers.lan(aggregated_data)
 --.
 }
 \description{
-Find outliers using Log-Additive Normalization
+This is mostly a placeholder.
 }
 \examples{
 \dontrun{
