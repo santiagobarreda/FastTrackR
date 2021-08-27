@@ -140,8 +140,8 @@
   width <span class='op'>=</span> <span class='fl'>1400</span>,
   pointsize <span class='op'>=</span> <span class='fl'>20</span>,
   winners <span class='op'>=</span> <span class='cn'>NA</span>,
-  spectrogram_timestep <span class='op'>=</span> <span class='fl'>0.0015</span>,
-  showprogressbar <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  number_of_lines <span class='op'>=</span> <span class='fl'>0.0015</span>,
+  progressbar <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -170,19 +170,19 @@
     </tr>
     <tr>
       <th>winners</th>
-      <td><p>.</p></td>
+      <td><p>if you want winners to be highlighted, provide a dataframe with the information in the winners.csv file.</p></td>
     </tr>
     <tr>
-      <th>spectrogram_timestep</th>
-      <td><p>--.</p></td>
+      <th>number_of_lines</th>
+      <td><p>the number of pixels along the x axis for each spectrogram. Consider in relation to image width.</p></td>
     </tr>
     <tr>
-      <th>showprogressbar</th>
-      <td><p>--.</p></td>
+      <th>progressbar</th>
+      <td><p>if TRUE, information about estimated analysis time is printed.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>--.</p></td>
+      <td><p>additional parameters are passed to the internal call of plotffs.</p></td>
     </tr>
     </table>
 
