@@ -17,12 +17,16 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' tgpath = "yoursound3.TextGrid"
-#' output = extractvowels (tgpath, wordtier="word", outputpath = "working")
+#' tgpath = "tuvesamisol.TextGrid"
+#' tgpath = "WS005-Melissa.TextGrid"
+#' 
+#' output = extractvowels (tgpath, segmenttier="phoneme", wordtier="word", outputpath = "working", stress = NA)
+#' output = extractvowels (tgpath, wordtier=NA)
+#' output = extractvowels (tgpath, wordtier=2)
 #' }
 #'
 
-extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier="phone",wordtier=NA,
+extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,wordtier=NA,
                              commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA){
 
   if (!is.na(tgpath) & !is.na(sndpath)){
@@ -54,6 +58,7 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier="phon
 
     ## make file information in here too (?)
   }
+  if (n==1) output = output[[1]]
 
   if (!is.na (outputpath)){
     if (outputpath == "working") outputpath = getwd()
