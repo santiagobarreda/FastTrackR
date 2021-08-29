@@ -8,7 +8,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' path = "tmp/yoursound2.TextGrid"
+#' path = "tuvesamisol.TextGrid"
+#'
+#' path = "testing.txt"
+#' path = "WS005-Melissa.TextGrid"
 #' readtextgrid (path)
 #' }
 
@@ -17,14 +20,21 @@ readtextgrid <- function (path){
   if (!file.exists(path)) stop ("File does not exist. The path is probably wrong.")
   
   # file is read in as a vector of lines
-  tg = readLines(path)
+  
+  tg = tryCatch({
+    suppresWarnings (read.delim(file(path, encoding = "UTF-8"),header=FALSE, blank.lines.skip=FALSE)[,1])
+  }, warning = function(warning_condition) {
+    read.delim(file(path, encoding = "UTF-16"),header=FALSE, blank.lines.skip=FALSE)[,1]
+  }, error = function(error_condition) {
+    read.delim(file(path, encoding = "UTF-16"),header=FALSE, blank.lines.skip=FALSE)[,1]
+  })
 
   # check to make sure it is a valid textgrid file
   # and check if it is in long or short format
   filetype = "neither"
-  if (tg[1] == "File type = \"ooTextFile\"") filetype = "long"
-  if (tg[1] == "File type = \"ooTextFile short\"") filetype = "short"
-  if (filetype == "neither") stop ("Not a valid Praat file.")
+  if (substr(tg[4],1,1) == "x") filetype = "long"
+  if (substr(tg[4],1,1) != "x") filetype = "short"
+  if (filetype == "neither") stop ("Not a valid TextGrid file.")
   filetype
 
   # get tier names and locations of tiers in vector
@@ -60,12 +70,12 @@ readtextgrid <- function (path){
     # long format processing
     if (filetype=="long"){
       start = (tiers[i]+5)
-      end = (tiers[i]+4+as.numeric(tier_n[i])*4)
+      end = (tiers[i]+4+as.numeric(tier_n[i])*3)
 
       # same as above but some more processing related to the extra 
       # text in the long format
-      output = matrix (tg[start:end],(end-start+1)/4,4,byrow=TRUE)
-      output = data.frame (output[,c(4,2,3)])
+      output = matrix (tg[start:end],(end-start+1)/3,3,byrow=TRUE)
+      output = data.frame (output[,c(3,1,2)])
       colnames(output) = c("label", "start", "end")
       output[,2] = as.numeric(gsub ("xmin = ", "", output[,2]))
       output[,3] = as.numeric(gsub ("xmax = ", "", output[,3]))
