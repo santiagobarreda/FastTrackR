@@ -22,11 +22,11 @@ readtextgrid <- function (path){
   # file is read in as a vector of lines
   
   tg = tryCatch({
-    suppresWarnings (read.delim(file(path, encoding = "UTF-8"),header=FALSE, blank.lines.skip=FALSE)[,1])
+    suppressWarnings (utils::read.delim(file(path, encoding = "UTF-8"),header=FALSE, blank.lines.skip=FALSE)[,1])
   }, warning = function(warning_condition) {
-    read.delim(file(path, encoding = "UTF-16"),header=FALSE, blank.lines.skip=FALSE)[,1]
+    utils::read.delim(file(path, encoding = "UTF-16"),header=FALSE, blank.lines.skip=FALSE)[,1]
   }, error = function(error_condition) {
-    read.delim(file(path, encoding = "UTF-16"),header=FALSE, blank.lines.skip=FALSE)[,1]
+    utils::read.delim(file(path, encoding = "UTF-16"),header=FALSE, blank.lines.skip=FALSE)[,1]
   })
 
   # check to make sure it is a valid textgrid file

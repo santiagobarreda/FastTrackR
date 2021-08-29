@@ -64,7 +64,7 @@ makewinnerplots <- function (path=NA, csvs = NA, height=1000, width = 1400,
   }
   if (class (csvs)=="data.frame"){
     graphics::par (mar =c(4,4,2,1))
-    sound = tuneR::readWave2 (path %+% "/sounds/" %+% filenames %+% ".wav")
+    sound = readWave2 (path %+% "/sounds/" %+% filenames %+% ".wav")
     # spectrogram resolution should relate to image resolution
     spect = spectrogram (sound, plot = FALSE, resolution = 50, timestep = number_of_lines)
     plotffs (csvs, spect = spect, lwd=3,pch=16,cex=1.25)
