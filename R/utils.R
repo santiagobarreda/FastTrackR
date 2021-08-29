@@ -133,7 +133,7 @@ progressbar = function (i, n, start = NA, width=20){
     
     if (progress == width){
       time_diff = abs (difftime(now, start, units='mins'))
-      message2 = paste ("   Total duration:", round (time_diff,1)," minutes.                             ")
+      message2 = paste ("   Total duration:", round (time_diff,2)," minutes.                             ")
     }
     
     cat (paste0 ("\r", message1, message2))
