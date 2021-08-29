@@ -15,23 +15,25 @@
 #' csvs <- readcsvs()
 #' }
 
-readcsvs <- function (path, asone = TRUE, progressbar = FALSE){
+readcsvs <- function (path, fileinformation = NA, asone = FALSE, progressbar = TRUE){
   
   if (missing(path)) path = getwd()
   files = list.files (paste0(path,"/csvs"),full.names=TRUE)
+  s_files = tools::file_path_sans_ext (list.files (paste0(path,"/csvs")))
   file_names = list.files (paste0(path,"/csvs"))
   file_names = substr (file_names,1, nchar(file_names)-4)
 
   n_files = length(files)
+  start = Sys.time()
   csvs = lapply (1:n_files, function(i){
-    if (progressbar) progressbar(i,n_files, width = 10)
+    if (progressbar) progressbar(i,n_files, start)
     tmp = utils::read.csv (files[i], na.strings = "0")
     if (asone) tmp$file = file_names[i]
+    if (!asone) attr(tmp, "filename") = s_files[i]
+    
     tmp
   })
   if (asone) csvs = do.call (rbind, csvs)
-
-  attr(csvs, "object") = "csvs"
 
   return (csvs)
 }
