@@ -17,7 +17,10 @@ Creates a list of dataframes from a textgrid. Each list element is a dataframe r
 }
 \examples{
 \dontrun{
-path = "tmp/yoursound2.TextGrid"
+path = "tuvesamisol.TextGrid"
+
+path = "testing.txt"
+path = "WS005-Melissa.TextGrid"
 readtextgrid (path)
 }
 }

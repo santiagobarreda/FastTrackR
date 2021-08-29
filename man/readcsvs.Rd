@@ -4,7 +4,7 @@
 \alias{readcsvs}
 \title{Load Fast Track csv files}
 \usage{
-readcsvs(path, asone = TRUE, progressbar = FALSE)
+readcsvs(path, fileinformation = NA, asone = FALSE, progressbar = TRUE)
 }
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}

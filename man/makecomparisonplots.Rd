@@ -13,6 +13,7 @@ makecomparisonplots(
   winners = NA,
   number_of_lines = 0.0015,
   progressbar = TRUE,
+  alternate_output_path = NA,
   ...
 )
 }
@@ -32,6 +33,8 @@ makecomparisonplots(
 \item{number_of_lines}{the number of pixels along the x axis for each spectrogram. Consider in relation to image width.}
 
 \item{progressbar}{if TRUE, information about estimated analysis time is printed.}
+
+\item{alternate_output_path}{if not NA, images will be written directly to this path.}
 
 \item{...}{additional parameters are passed to the internal call of plotffs.}
 }

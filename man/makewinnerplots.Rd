@@ -2,7 +2,7 @@
 % Please edit documentation in R/makewinnerplots.R
 \name{makewinnerplots}
 \alias{makewinnerplots}
-\title{Make images for winning analysies}
+\title{Make images for winning analyses}
 \usage{
 makewinnerplots(
   path = NA,
@@ -11,7 +11,8 @@ makewinnerplots(
   width = 1400,
   pointsize = 20,
   number_of_lines = 250,
-  progressbar = TRUE
+  progressbar = TRUE,
+  alternate_output_path = NA
 )
 }
 \arguments{
@@ -28,14 +29,20 @@ makewinnerplots(
 \item{number_of_lines}{the number of pixels along the x axis for each spectrogram. Consider in relation to image width.}
 
 \item{progressbar}{if TRUE, information about estimated analysis time is displayed.}
+
+\item{alternate_output_path}{if not NA, images will be written directly to this path.}
 }
 \description{
-Make images for winning analysies
+This function will operate in one of two ways. If a
 }
 \examples{
 \dontrun{
-# nothing yet
-system.time (makewinnerplots(showprogressbar=TRUE))
-makewinnerplots(csvs = csvs[1:20])
+csvs = readcsvs ()
+
+# this will make a plot
+makewinnerplots(csvs = csvs[[1]])
+
+# this will make 5 plots in the /images_winners folder
+makewinnerplots(csvs = csvs[[1:20]])
 }
 }

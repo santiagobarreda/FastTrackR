@@ -8,7 +8,7 @@ extractvowels(
   tgpath = NA,
   sndpath = NA,
   outputpath = NA,
-  segmenttier = "phone",
+  segmenttier = 1,
   wordtier = NA,
   commenttiers = NA,
   omittier = NA,
@@ -43,8 +43,12 @@ Extracts vowels from larger sounds using information from matching TextGrids.
 }
 \examples{
 \dontrun{
-tgpath = "yoursound3.TextGrid"
-output = extractvowels (tgpath, wordtier="word", outputpath = "working")
+tgpath = "tuvesamisol.TextGrid"
+tgpath = "WS005-Melissa.TextGrid"
+
+output = extractvowels (tgpath, segmenttier="phoneme", wordtier="word", outputpath = "working", stress = NA)
+output = extractvowels (tgpath, wordtier=NA)
+output = extractvowels (tgpath, wordtier=2)
 }
 
 }
