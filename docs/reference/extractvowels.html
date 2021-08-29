@@ -137,7 +137,7 @@
   tgpath <span class='op'>=</span> <span class='cn'>NA</span>,
   sndpath <span class='op'>=</span> <span class='cn'>NA</span>,
   outputpath <span class='op'>=</span> <span class='cn'>NA</span>,
-  segmenttier <span class='op'>=</span> <span class='st'>"phone"</span>,
+  segmenttier <span class='op'>=</span> <span class='fl'>1</span>,
   wordtier <span class='op'>=</span> <span class='cn'>NA</span>,
   commenttiers <span class='op'>=</span> <span class='cn'>NA</span>,
   omittier <span class='op'>=</span> <span class='cn'>NA</span>,
@@ -192,8 +192,13 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>tgpath</span> <span class='op'>=</span> <span class='st'>"yoursound3.TextGrid"</span>
-<span class='va'>output</span> <span class='op'>=</span> <span class='fu'>extractvowels</span> <span class='op'>(</span><span class='va'>tgpath</span>, wordtier<span class='op'>=</span><span class='st'>"word"</span>, outputpath <span class='op'>=</span> <span class='st'>"working"</span><span class='op'>)</span>
+<span class='va'>tgpath</span> <span class='op'>=</span> <span class='st'>"tuvesamisol.TextGrid"</span>
+<span class='va'>tgpath</span> <span class='op'>=</span> <span class='st'>"WS005-Melissa.TextGrid"</span>
+
+<span class='va'>output</span> <span class='op'>=</span> <span class='fu'>extractvowels</span> <span class='op'>(</span><span class='va'>tgpath</span>, segmenttier<span class='op'>=</span><span class='st'>"phoneme"</span>, wordtier<span class='op'>=</span><span class='st'>"word"</span>, 
+outputpath <span class='op'>=</span> <span class='st'>"working"</span>, stress <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
+<span class='va'>output</span> <span class='op'>=</span> <span class='fu'>extractvowels</span> <span class='op'>(</span><span class='va'>tgpath</span>, wordtier<span class='op'>=</span><span class='cn'>NA</span><span class='op'>)</span>
+<span class='va'>output</span> <span class='op'>=</span> <span class='fu'>extractvowels</span> <span class='op'>(</span><span class='va'>tgpath</span>, wordtier<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 </div></pre>
