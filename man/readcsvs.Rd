@@ -9,6 +9,8 @@ readcsvs(path, fileinformation = NA, asone = FALSE, progressbar = TRUE)
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
+\item{fileinformation}{--.}
+
 \item{asone}{If TRUE (the default), the csv files are combined into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.}
 
 \item{progressbar}{if TRUE, a progress bar prints out in the console.}

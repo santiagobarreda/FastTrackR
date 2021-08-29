@@ -46,7 +46,8 @@ Extracts vowels from larger sounds using information from matching TextGrids.
 tgpath = "tuvesamisol.TextGrid"
 tgpath = "WS005-Melissa.TextGrid"
 
-output = extractvowels (tgpath, segmenttier="phoneme", wordtier="word", outputpath = "working", stress = NA)
+output = extractvowels (tgpath, segmenttier="phoneme", wordtier="word", 
+outputpath = "working", stress = NA)
 output = extractvowels (tgpath, wordtier=NA)
 output = extractvowels (tgpath, wordtier=2)
 }
