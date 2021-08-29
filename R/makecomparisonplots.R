@@ -10,6 +10,7 @@
 #' @param winners if you want winners to be highlighted, provide a dataframe with the information in the winners.csv file.
 #' @param number_of_lines the number of pixels along the x axis for each spectrogram. Consider in relation to image width. 
 #' @param progressbar if TRUE, information about estimated analysis time is printed. 
+#' @param alternate_output_path if not NA, images will be written directly to this path.
 #' @param ... additional parameters are passed to the internal call of plotffs.
 #' @export
 #' @examples
@@ -20,7 +21,7 @@
 
 
 makecomparisonplots <- function (formants_plot, path = NA, height = 1000, width = 1400, pointsize = 20, winners = NA, 
-                                 number_of_lines = 0.0015, progressbar = TRUE,...){
+                                 number_of_lines = 0.0015, progressbar = TRUE,alternate_output_path=NA,...){
 
   if (is.na (path)) path = getwd()
   
@@ -36,7 +37,12 @@ makecomparisonplots <- function (formants_plot, path = NA, height = 1000, width 
       if (!is.na(winners)[1]) winner = winners$winner[i]
       
       base_filename = attr (formants_plot[[i]], "filename")
+      
       image_filename = path %+% "/images_comparison/" %+% base_filename %+% ".png"
+      
+      if (!is.na(alternate_output_path))
+        image_filename = alternate_output_path %+% "/" %+% base_filename %+% ".png"
+      
       grDevices::png (image_filename, height = height, width = width, pointsize = 16)
   
       sound = tuneR::readWave (path %+% "/sounds/" %+% base_filename %+% ".wav")
