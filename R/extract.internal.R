@@ -1,6 +1,6 @@
 
 
-extract.internal = function (tgpath, sndpath, segmenttier="phone",wordtier=NA,
+extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,
                            commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA){
 
   vowelstoextract = fasttrackr::vowelstoextract
@@ -50,9 +50,13 @@ extract.internal = function (tgpath, sndpath, segmenttier="phone",wordtier=NA,
 
   extract$omit = as.numeric (extract$duration < 0.03)
 
+  start = Sys.time()
   if (!is.na (wordtier)){
+    cat ("Processing word information.\n")
+    start = Sys.time()
     midpoints = (as.numeric(extract$start)+as.numeric(extract$end))/2
     vowelwordtiers = sapply (1:length (midpoints), function (i){
+      progressbar (i,length (midpoints),start)
       use = (midpoints[i] > tgdata[[wordtier]]$start & midpoints[i] < tgdata[[wordtier]]$end)
       which.max (use)
     })
@@ -98,14 +102,21 @@ extract.internal = function (tgpath, sndpath, segmenttier="phone",wordtier=NA,
 
   extract = extract[extract$omit==0,]
 
+  cat ("\nExtracting sounds.\n")
   times = extract[,c("start","end","omit","filename")]
   times[,1] = as.numeric(times[,1]) - 0.025
   times[,2] = as.numeric(times[,2]) + 0.025
   times[times[,1] < 0,1] = 0
   times[times[,2] > duration,2] = duration
 
-  sounds = lapply (1:nrow (extract),
-                   function (i) extractWave2(sound,times[i,1],times[i,2],times$filename[i]))
+  start = Sys.time()
+  n = nrow (extract)
+  sounds = lapply (1:n,
+                   function (i){
+                     progressbar (i,n,start)
+                     extractWave2(sound,times[i,1],times[i,2],times$filename[i])
+                     }
+                   )
   output = list (data_out, sounds)
 
   output
