@@ -49,14 +49,14 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,wor
 
   segmentation_info = NULL
   file_information = NULL
+  sounds = NULL
 
   for (i in 1:n){
-    output[[i]] = extract.internal (tgpath[i], sndpath[i], segmenttier,wordtier,
+    output = extract.internal (tgpath[i], sndpath[i], segmenttier,wordtier,
                                     commenttiers,omittier, stress, wordstoskip)
 
-    output[[i]][[1]] = cbind(source_file = base[i] %+% ".wav", output[[i]][[1]])
-    
-    segmentation_info = rbind(segmentation_info, output[[i]][[1]])
+    output[[1]] = cbind(source_file = base[i] %+% ".wav", output[[1]])
+    segmentation_info = rbind(segmentation_info, output[[1]])
     
     colors = rep (c("Blue","Green","Magenta","Black",
                    "Lime","Purple","Teal","Navy","Pink",
@@ -69,6 +69,8 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,wor
                                   group = as.numeric(factor(segmentation_info$label)),
                                   color = colors)
     file_information = rbind (file_information, tmp_file_information)
+    
+    sounds = c(sounds, output[[2]])
   }
   file_information$number = 1:nrow(file_information)
 
@@ -89,7 +91,9 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,wor
     utils::write.csv (segmentation_info, outputpath %+% "/output/segmentation_information.csv", row.names = FALSE)
     utils::write.csv (file_information, outputpath %+% "/output/file_information.csv", row.names = FALSE)
   }
-  if (n==1) output = output[[1]]
-
+  output = list (file_information = file_information, 
+                 segmentation_information = segmentation_info,
+                 sounds = sounds)
+  
   invisible (output)
 }
