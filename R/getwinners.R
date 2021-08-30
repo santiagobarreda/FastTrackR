@@ -7,9 +7,10 @@
 #'
 #' @param path the path to the working directory for the Fast Track project. If no path is provided this is the working directory.
 #' @param winners an optional dataframe representing the data in the 'winners.csv' file.
+#' @param selection_info --.
 #' @param formants an optional list of lists representing all of the possible formant analyses.
 #' @param asone if TRUE, the formant data is stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.
-#' @param write if TRUE, the data is written out to a CSV folder in the working directory.
+#' @param write_csv if TRUE, the data is written out to a CSV folder in the working directory.
 #' @return A dataframe or list of dataframes, as per the asone parameter.
 #' @export
 #' @examples
@@ -18,13 +19,38 @@
 #' tmp = getwinners (getwd(), winners$winners, formants, write = TRUE)
 #' }
 
-getwinners <- function (path, winners, formants, asone = TRUE, write = FALSE){
+getwinners <- function (path = NA, formants = NA, winners = NA, selection_info = NA, asone = TRUE, write_csv = FALSE){
+
   if (missing(path)) path = getwd()
 
   # read in data
   ## stop if files dont exist, check for both
-  if (missing(winners)) winners = utils::read.csv (path %+% "/winners.csv")
-  if (missing(formants)) formants = readformants (path)
+
+  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_info.RDS")) 
+    selection_info = readRDS (path %+% "/selection_info.RDS")
+  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_info.RDS")) 
+    stop ("Selection information was not provided and does not exist.")
+  
+  
+  winners_exists = FALSE
+  if (any(!is.na(winners))) winners_exists = TRUE
+  
+  if (!winners_exists & file.exists(path %+% "/winners.csv")){
+      winners = utils::read.csv (path %+% "/winners.csv")
+      winners_exists = TRUE
+  }
+  
+  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_info.RDS")){
+      selection_info = readRDS (path %+% "/selection_info.RDS")
+      winners = selection_info$winners_csv
+  }
+  if (!all(is.na(selection_info)))
+    winners = selection_info$winners_csv
+
+  if (all(is.na(formants))){
+    if (file.exists(path %+% "/formants.RDS")) formants = readRDS (path %+% "/formants.RDS")
+    if (!file.exists(path %+% "/formants.RDS")) formants = readformants (path)
+  }
 
   # find number of formants
   nf = 3 + sum (colnames(winners)=="F4")
@@ -88,13 +114,12 @@ getwinners <- function (path, winners, formants, asone = TRUE, write = FALSE){
     }
   }
 
-  if (write){
+  if (write_csv){
     dir.create (path %+% "/csvs", showWarnings = FALSE)
     filenames = path %+% "/csvs/" %+% winners$file %+% ".csv"
     lapply (1:length(csvs),
             function(j) utils::write.csv (csvs[[j]], filenames[j],row.names=FALSE))
   }
-
   if (asone){
     rows = sapply (csvs, nrow)
     filename = sapply (1:length(rows), function(i) rep (winners$file[i], rows[i]))
@@ -102,6 +127,7 @@ getwinners <- function (path, winners, formants, asone = TRUE, write = FALSE){
     csvs = do.call(rbind, csvs)
     csvs$file = filename
   }
-  invisible (csvs)
+  return (csvs)
+  
 }
 
