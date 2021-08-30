@@ -9,6 +9,7 @@
 #' @param outputpath if NA, nothing is written out. If "working", data is written out to the working directory. Any other path may also be specified.
 #' @param subset a vector indicating a subset of the analyses to be considered.
 #' @param progressbar if TRUE, a progress bar prints out in the console.
+#' @param write if TRUE, an RDS file containing selection information is saved to the working directory.
 #' @return An object of the class "selection_info". A list containing information about the selection of the winners. See the documentation for readselectioninfo for more information. 
 
 #' @export
@@ -30,8 +31,8 @@
 #' winners = autoselect.classic (formants, outputpath="working")
 #' }
 
-autoselect.classic <- function (formants, order = 5, n_formants = 4, 
-                                outputpath = NA, subset = NA, progressbar = FALSE){
+autoselect.classic <- function (formants, order = 5, n_formants = 4, outputpath = NA, 
+                                subset = NA, progressbar = FALSE, write = TRUE){
 
   n_files = length (formants)
   n_steps = length (formants[[1]])
@@ -97,6 +98,7 @@ autoselect.classic <- function (formants, order = 5, n_formants = 4,
     autoselect.write (outputpath, output)
     cat ("\nDone. \n")
   }
+  if (write) saveRDS (output, "selection_information.RDS")
   return (output)
 }
 
