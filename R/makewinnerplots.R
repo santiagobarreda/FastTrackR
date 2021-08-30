@@ -33,8 +33,10 @@ makewinnerplots <- function (path=NA, csvs = NA, height=1000, width = 1400,
 
   if (all(is.na(csvs)) & length(csv_files)==0)
     stop ("No csvs available or provided.")
-  if (all(is.na(csvs)) & length(csv_files)>0)
-    csvs = readcsvs (path, asone = FALSE)
+  if (all(is.na(csvs)) & length(csv_files)>0){
+    csvs = readcsvs (path)
+    csvs = split (csvs, csvs$file)
+  }
 
   if (class(csvs)=="data.frame") csvs = split (csvs, csvs$file)
   filenames = names (csvs)
