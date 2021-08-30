@@ -10,7 +10,8 @@ autoselect.classic(
   n_formants = 4,
   outputpath = NA,
   subset = NA,
-  progressbar = FALSE
+  progressbar = FALSE,
+  write = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ autoselect.classic(
 \item{subset}{a vector indicating a subset of the analyses to be considered.}
 
 \item{progressbar}{if TRUE, a progress bar prints out in the console.}
+
+\item{write}{if TRUE, an RDS file containing selection information is saved to the working directory.}
 }
 \value{
 An object of the class "selection_info". A list containing information about the selection of the winners. See the documentation for readselectioninfo for more information.
