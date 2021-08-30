@@ -8,6 +8,7 @@
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
 #' @param fileinformation --.
 #' @param progressbar if TRUE, a progress bar prints out in the console.
+#' @param write --.
 #' @return A dataframe or list of dataframes, as determined by the \code{asone} parameter.
 #' @export
 #' @examples
@@ -15,7 +16,7 @@
 #' csvs <- readcsvs()
 #' }
 
-readcsvs <- function (path, fileinformation = NA, asone = FALSE, progressbar = TRUE){
+readcsvs <- function (path, fileinformation = NA, progressbar = TRUE,write = FALSE){
   
   if (missing(path)) path = getwd()
   files = list.files (paste0(path,"/csvs"),full.names=TRUE)
@@ -34,6 +35,8 @@ readcsvs <- function (path, fileinformation = NA, asone = FALSE, progressbar = T
     tmp
   })
   csvs = do.call (rbind, csvs)
+  
+  if (wite) saveRDS (csvs, "csvs.RDS")
 
   return (csvs)
 }
