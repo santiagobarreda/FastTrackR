@@ -13,6 +13,7 @@
 #' @param fileinformation a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory. 
 #' @param progressbar if TRUE, information about estimated analysis time is printed. 
 #' @param write_infos if TRUE, analysis info text files are written out as in Praat. 
+#' @param sounds a list of previously loaded sounds.. 
 #' @return A dataframe containing information about the formant tracks for the file.
 #' @export
 #' @examples
@@ -27,7 +28,7 @@
 
 trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowlength = 0.05, 
                           write = TRUE, n_formants = 3, timestep = 0.002, fileinformation = NA, 
-                          progressbar=TRUE, write_infos = FALSE){
+                          progressbar=TRUE, write_infos = FALSE, sounds = NA){
 
   if (is.na (path)) path =  getwd()
 
@@ -37,10 +38,10 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
                             nsteps=nsteps, windowlength = windowlength,
                             timestep = timestep, label = NA)
   
-
   # if path is a path to a working directory, analyze those folders
   if (class(path)=="character"){
-    if (is.na(fileinformation)){
+    
+    if (all(is.na(fileinformation))){
       if (file.exists (path %+% "/file_information.csv"))
         fileinformation = utils::read.csv (path %+% "/file_information.csv")
       
@@ -51,8 +52,22 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
       }
     }
     
-    files = list.files (paste0 (getwd(), "/sounds"), full.names = TRUE)
-    n = length(files)
+    sounds_exist = FALSE
+    if (!all(is.na(sounds))){
+      sounds_exist = TRUE
+      n = length(sounds)
+    }
+    
+    if (!sounds_exist & file.exists (path %+% "sounds.RDS")){
+      sounds = readRDS (path %+% "sounds.RDS")
+      n = length(sounds)
+      sounds_exist = TRUE
+    }
+    
+    if (!sounds_exist){
+      files = list.files (paste0 (path, "/sounds"), full.names = TRUE)
+      n = length(files)
+    }
     
     labels = fileinformation$label
     names (labels) = fileinformation$file
@@ -65,7 +80,8 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
       
       if (progressbar)  progressbar (i,n,start)
       
-      sound = readWave2 (files[i])
+      if (!sounds_exist) sound = readWave2 (files[i])
+      if (sounds_exist) sound = sounds[[i]]
       
       ffs[[i]] = trackformants.internal (sound, from = from, to = to,n_formants = n_formants,
                                    nsteps=nsteps, windowlength = windowlength,
