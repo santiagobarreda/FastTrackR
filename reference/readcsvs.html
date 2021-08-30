@@ -133,7 +133,7 @@
     <p>This function quickly reads in all the files contained in the "/csvs" folder within a Fast Track directory. Since Fast Track exports the acoustic measurements into separate files per token, this function is a quick way to read those all in at once.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readcsvs</span><span class='op'>(</span><span class='va'>path</span>, fileinformation <span class='op'>=</span> <span class='cn'>NA</span>, asone <span class='op'>=</span> <span class='cn'>FALSE</span>, progressbar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>readcsvs</span><span class='op'>(</span><span class='va'>path</span>, fileinformation <span class='op'>=</span> <span class='cn'>NA</span>, progressbar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,10 +145,6 @@
     <tr>
       <th>fileinformation</th>
       <td><p>--.</p></td>
-    </tr>
-    <tr>
-      <th>asone</th>
-      <td><p>If TRUE (the default), the csv files are combined into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.</p></td>
     </tr>
     <tr>
       <th>progressbar</th>
