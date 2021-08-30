@@ -20,8 +20,7 @@
 #' tgpath = "tuvesamisol.TextGrid"
 #' tgpath = "WS005-Melissa.TextGrid"
 #' 
-#' output = extractvowels (tgpath, segmenttier="phoneme", wordtier="word", 
-#' outputpath = "working", stress = NA)
+#' output = extractvowels (tgpath, stress = NA)
 #' output = extractvowels (tgpath, wordtier=NA)
 #' output = extractvowels (tgpath, wordtier=2)
 #' }
@@ -49,17 +48,29 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,wor
   output = list()
 
   segmentation_info = NULL
+  file_information = NULL
 
   for (i in 1:n){
     output[[i]] = extract.internal (tgpath[i], sndpath[i], segmenttier,wordtier,
                                     commenttiers,omittier, stress, wordstoskip)
 
     output[[i]][[1]] = cbind(source_file = base[i] %+% ".wav", output[[i]][[1]])
+    
     segmentation_info = rbind(segmentation_info, output[[i]][[1]])
+    
+    colors = rep (c("Blue","Green","Magenta","Black",
+                   "Lime","Purple","Teal","Navy","Pink",
+                   "Maroon","Olive","Grey","Red"), 5)
+    colors = colors[as.numeric(factor(segmentation_info$label))]
 
-    ## make file information in here too (?)
+    tmp_file_information = data.frame(number = 1, 
+                                  file = segmentation_info$file,
+                                  label = segmentation_info$label, 
+                                  group = as.numeric(factor(segmentation_info$label)),
+                                  color = colors)
+    file_information = rbind (file_information, tmp_file_information)
   }
-  if (n==1) output = output[[1]]
+  file_information$number = 1:nrow(file_information)
 
   if (!is.na (outputpath)){
     if (outputpath == "working") outputpath = getwd()
@@ -74,13 +85,11 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,wor
       lapply (1:length(output[[i]][[2]]),
               function(j) tuneR::writeWave (output[[i]][[2]][[j]], filenames[j]))
     }
-    file_info = data.frame (number = 1:length(all_filenames), file = basename(all_filenames),
-                            label = segmentation_info$label[segmentation_info$omit==0], group = 1, color = "Blue")
-    file_info$group = as.numeric (factor(file_info$label))
 
     utils::write.csv (segmentation_info, outputpath %+% "/output/segmentation_information.csv", row.names = FALSE)
-    utils::write.csv (file_info, outputpath %+% "/output/file_information.csv", row.names = FALSE)
+    utils::write.csv (file_information, outputpath %+% "/output/file_information.csv", row.names = FALSE)
   }
+  if (n==1) output = output[[1]]
 
   invisible (output)
 }
