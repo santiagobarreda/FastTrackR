@@ -13,7 +13,8 @@ extractvowels(
   commenttiers = NA,
   omittier = NA,
   stress = c(0, 1, 2),
-  wordstoskip = NA
+  wordstoskip = NA,
+  write = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ extractvowels(
 \item{stress}{a vector contianing labels you may have used to mark stress.}
 
 \item{wordstoskip}{a vector containing any words you do not want to extract vowels from.}
+
+\item{write}{if TRUE, 'sounds.RDS' and 'file_information.RDS' are saved to the working directory.}
 }
 \value{
 --.

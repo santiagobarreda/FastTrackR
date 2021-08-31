@@ -4,7 +4,7 @@
 \alias{readcsvs}
 \title{Load Fast Track csv files}
 \usage{
-readcsvs(path, fileinformation = NA, progressbar = TRUE)
+readcsvs(path, fileinformation = NA, progressbar = TRUE, write = FALSE)
 }
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
@@ -12,6 +12,8 @@ readcsvs(path, fileinformation = NA, progressbar = TRUE)
 \item{fileinformation}{--.}
 
 \item{progressbar}{if TRUE, a progress bar prints out in the console.}
+
+\item{write}{--.}
 }
 \value{
 A dataframe or list of dataframes, as determined by the \code{asone} parameter.

@@ -5,8 +5,9 @@
 \title{Make images comparing alternative analysies}
 \usage{
 makecomparisonplots(
-  formants_plot,
+  formants,
   path = NA,
+  sounds = NA,
   height = 1000,
   width = 1400,
   pointsize = 20,
@@ -18,9 +19,11 @@ makecomparisonplots(
 )
 }
 \arguments{
-\item{formants_plot}{The formant data to be used for making plots. Read in using the readformants function in this package.}
+\item{formants}{The formant data to be used for making plots. Read in using the readformants function in this package.}
 
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
+
+\item{sounds}{--.}
 
 \item{height}{height of each plot in pixels.}
 

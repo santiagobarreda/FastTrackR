@@ -7,6 +7,7 @@
 makewinnerplots(
   path = NA,
   csvs = NA,
+  sounds = NA,
   height = 1000,
   width = 1400,
   pointsize = 20,
@@ -19,6 +20,8 @@ makewinnerplots(
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
 
 \item{csvs}{csv data loaded using the readcsvs function. In NA, data is read in from the 'csvs' folder in the path directory.}
+
+\item{sounds}{--.}
 
 \item{height}{the desired height of the image in pixels.}
 
