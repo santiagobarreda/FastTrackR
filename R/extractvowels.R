@@ -13,6 +13,7 @@
 #' @param omittier the name of a tier indicating which segments you wish to skip (optional).
 #' @param stress a vector contianing labels you may have used to mark stress.
 #' @param wordstoskip a vector containing any words you do not want to extract vowels from.
+#' @param write if TRUE, 'sounds.RDS' and 'file_information.RDS' are saved to the working directory. 
 #' @return --.
 #' @export
 #' @examples
@@ -26,8 +27,9 @@
 #' }
 #'
 
-extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,wordtier=NA,
-                             commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA){
+extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
+                          wordtier=NA,commenttiers=NA,omittier=NA, stress=c(0,1,2), 
+                          wordstoskip=NA, write = TRUE){
 
   if (!is.na(tgpath) & !is.na(sndpath)){
     if (length(tgpath) != length (sndpath)) stop ("Path lengths do not match.")
@@ -91,9 +93,27 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,wor
     utils::write.csv (segmentation_info, outputpath %+% "/output/segmentation_information.csv", row.names = FALSE)
     utils::write.csv (file_information, outputpath %+% "/output/file_information.csv", row.names = FALSE)
   }
-  output = list (file_information = file_information, 
-                 segmentation_information = segmentation_info,
-                 sounds = sounds)
   
+  file_information = list (file_information = file_information, 
+                           segmentation_information = segmentation_info)
+  
+  output = list (file_information = file_information, sounds = sounds)
+  
+  if (write){
+    saveRDS (output[[1]], getwd() %+% "/file_information.RDS")
+    saveRDS (output[[2]], getwd() %+% "/sounds.RDS")
+  }
+    
   invisible (output)
 }
+
+
+
+
+
+
+
+
+
+
+
