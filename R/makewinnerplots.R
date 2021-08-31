@@ -5,6 +5,7 @@
 #'
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
 #' @param csvs csv data loaded using the readcsvs function. In NA, data is read in from the 'csvs' folder in the path directory. 
+#' @param sounds --. 
 #' @param height the desired height of the image in pixels.
 #' @param width the desired width of the image in pixels.
 #' @param pointsize point size for plotting.
@@ -23,7 +24,7 @@
 #' makewinnerplots(csvs = csvs[[1:20]])
 #' }
 
-makewinnerplots <- function (path=NA, csvs = NA, height=1000, width = 1400, 
+makewinnerplots <- function (path=NA, csvs = NA, sounds = NA, height=1000, width = 1400, 
                              pointsize = 20, number_of_lines = 250, 
                              progressbar = TRUE, alternate_output_path = NA){
 
@@ -41,6 +42,14 @@ makewinnerplots <- function (path=NA, csvs = NA, height=1000, width = 1400,
   if (class(csvs)=="data.frame") csvs = split (csvs, csvs$file)
   filenames = names (csvs)
   
+  sounds_exist = FALSE
+  if (all(!is.na(sounds))) sounds_exist = TRUE
+  
+  if (!sounds_exist & file.exists (path %+% "/sounds.RDS")){
+    sounds = readRDS (path %+% "/sounds.RDS")
+    sounds_exist = TRUE
+  }
+  
   start = Sys.time()
   if (class (csvs)=="list"){
     dir.create(path %+% "/images_winners", showWarnings = FALSE)
@@ -52,9 +61,13 @@ makewinnerplots <- function (path=NA, csvs = NA, height=1000, width = 1400,
         filename = alternate_output_path %+% "/" %+% filenames[i] %+% ".png"
       
       grDevices::png (filename, height = 1000, width = 1400, pointsize = 24)
-    
       graphics::par (mar =c(4,4,2,1))
-      sound = tuneR::readWave (path %+% "/sounds/" %+% filenames[i] %+% ".wav")
+      
+      if (sounds_exist)
+        sound = sounds[[i]]
+      if (!sounds_exist)
+        sound = tuneR::readWave (path %+% "/sounds/" %+% filenames[i] %+% ".wav")
+      
       # spectrogram resolution should relate to image resolution
       spect = spectrogram (sound, plot = FALSE, resolution = 50, timestep = number_of_lines)
       plotffs (csvs[[i]], spect = spect, lwd=3,pch=16,cex=1.25)
