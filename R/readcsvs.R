@@ -36,7 +36,7 @@ readcsvs <- function (path, fileinformation = NA, progressbar = TRUE,write = FAL
   })
   csvs = do.call (rbind, csvs)
   
-  if (wite) saveRDS (csvs, "csvs.RDS")
+  if (write) saveRDS (csvs, "csvs.RDS")
 
   return (csvs)
 }
