@@ -2,8 +2,9 @@
 
 #' Make images comparing alternative analysies
 #'
-#' @param formants_plot The formant data to be used for making plots. Read in using the readformants function in this package.
+#' @param formants The formant data to be used for making plots. Read in using the readformants function in this package.
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
+#' @param sounds --. 
 #' @param height height of each plot in pixels.
 #' @param width width of each plot in pixels.
 #' @param pointsize point size for plotting.
@@ -20,47 +21,67 @@
 #' }
 
 
-makecomparisonplots <- function (formants_plot, path = NA, height = 1000, width = 1400, pointsize = 20, winners = NA, 
-                                 number_of_lines = 0.0015, progressbar = TRUE,alternate_output_path=NA,...){
+makecomparisonplots <- function (formants, path = NA, sounds = NA, height = 1000, width = 1400, 
+                                 pointsize = 20, winners = NA, number_of_lines = 0.0015, progressbar = TRUE,
+                                 alternate_output_path=NA,...){
 
   if (is.na (path)) path = getwd()
   
+  sounds_exist = FALSE
+  if (all(!is.na(sounds))) sounds_exist = TRUE
   
-  if (class(formants_plot) != "formants_single"){
+  if (!sounds_exist & file.exists (path %+% "/sounds.RDS")){
+    sounds = readRDS (path %+% "/sounds.RDS")
+    sounds_exist = TRUE
+  }
+  
+  winners_exist = FALSE
+  winner_value = NA
+  if (!all(is.na(winners)))  winners_exist = TRUE
+  
+  if (class(formants) != "formants_single"){
     dir.create(path %+% "/images_comparison", showWarnings = FALSE)
   
     start = Sys.time ()
-    for (i in 1:length (formants_plot)){
-      if (progressbar & length (formants_plot) > 9) progressbar(i,length (formants_plot),start)
+    for (i in 1:length (formants)){
+      if (progressbar) progressbar(i,length (formants),start)
       
-      if (!is.na(winners)[1]) winner = winners$winner[i]
-      if (!is.na(winners)[1]) winner = winners$winner[i]
+      if (winners_exist) winner_value = winners$winner[i]
       
-      base_filename = attr (formants_plot[[i]], "filename")
+      base_filename = attr (formants[[i]], "filename")
       
       image_filename = path %+% "/images_comparison/" %+% base_filename %+% ".png"
-      
       if (!is.na(alternate_output_path))
         image_filename = alternate_output_path %+% "/" %+% base_filename %+% ".png"
       
       grDevices::png (image_filename, height = height, width = width, pointsize = 16)
-  
-      sound = tuneR::readWave (path %+% "/sounds/" %+% base_filename %+% ".wav")
+      
+      if (sounds_exist)
+        sound = sounds[[i]]
+      if (!sounds_exist)
+        sound = tuneR::readWave (path %+% "/sounds/" %+% base_filename %+% ".wav")
+      
       # spectrogram resolution should relate to image resolution
       spect = spectrogram (sound, plot = FALSE, padding = 1, timestep = number_of_lines)
-      plotffs (formants_plot[[i]], spect = spect, lwd=3, pch=16, winner = winner, ...)
+      plotffs (formants[[i]], spect = spect, lwd=3, pch=16, winner = winner_value, ...)
   
       grDevices::dev.off()
     }
   }
-  if (class(formants_plot) == "formants_single"){
+  if (class(formants) == "formants_single"){
 
-    base_filename = attr (formants_plot, "filename")
+    base_filename = attr (formants, "filename")
 
     sound = tuneR::readWave (path %+% "/sounds/" %+% base_filename %+% ".wav")
+    
+    if (sounds_exist)
+      sound = sounds
+    if (!sounds_exist)
+      sound = tuneR::readWave (path %+% "/sounds/" %+% base_filename %+% ".wav")
+    
     # spectrogram resolution should relate to image resolution
     spect = spectrogram (sound, plot = FALSE, padding = 1, timestep = number_of_lines)
-    plotffs (formants_plot, spect = spect, lwd=3, pch=16, ...)
+    plotffs (formants, spect = spect, lwd=3, pch=16, ...)
       
   }
 }
