@@ -44,6 +44,7 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   
   # Autofill parameters
   if (is.na(path)) path = getwd()
+  
   if (f0_bins == "same") f0_bins = bins
 
   if (all(is.na(csvs))){
@@ -54,15 +55,11 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   if (sum(colnames(csvs)=="f0") > 0) f0present = TRUE
   
   # If the file exists already, read it in instead and be done
-  aggregated_path = paste0(path, "/processed_data/aggregated_data.csv")
-  if (file.exists(aggregated_path) & all(is.na(csvs))) {
-    aggregated = utils::read.csv(aggregated_path)
-    return(aggregated)
-  }
-  
-  # Make sure the csvs object is correct
-  if ((class(csvs)!="data.frame") | (attr(csvs,"object")!="csvs")) 
-    stop ("Please load csvs using the readcsv function and set asone=TRUE.")
+  #aggregated_path = paste0(path, "/processed_data/aggregated_data.csv")
+  #if (file.exists(aggregated_path) & all(is.na(csvs))) {
+  #  aggregated = utils::read.csv(aggregated_path)
+  #  return(aggregated)
+  #}
   
   # How many formants to process?
   if (is.na (n_formants)) {
@@ -71,7 +68,7 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   }
   
   # What method should be used?
-  if (method=="median") method = stats::median
+  if (method=="mean") method = mean
   
   # Split csvs and get filenames
   tmp_csvs = split (csvs, csvs$file)
@@ -97,7 +94,6 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   aggregated = c(t(tmp_agg[,3:5]))
   aggregated =  data.frame(matrix (aggregated,length (files),bins*n_formants, byrow = TRUE))
   colnames (aggregated) = paste0 ("f",rep(1:n_formants,bins),if(bins>1)rep(1:bins,each=n_formants))
-  rownames (aggregated) = 1:nrow(aggregated)
   
   # find duration
   duration = tapply (tmp_csvs$dur, tmp_csvs$file, max)
@@ -130,7 +126,7 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
     })
     # rejoining data
     tmp_csvs = do.call (rbind, tmp_csvs)
-    
+
     f0 = stats::aggregate (f0 ~ bin+file, tmp_csvs, FUN = method, na.rm = TRUE, na.action = stats::na.pass)  
     f0 = data.frame (matrix (f0$f0, length(files), f0_bins, byrow = TRUE))
     colnames (f0) = paste0 ("f0",if(f0_bins>1)1:f0_bins) # only add the number if >1 bins
@@ -139,12 +135,14 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   }
   
   # Add in information from the other file if it exists
-  if (file.exists(paste0(path, "/file_information.csv"))){
-    fileinfo = utils::read.csv(paste0(path, "/file_information.csv"))
-    fileinfo$file = gsub("\\.wav", "", fileinfo$file) # strip off .wav
-    aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
-  }
+  #if (file.exists(paste0(path, "/file_information.csv"))){
+    #fileinfo = utils::read.csv(paste0(path, "/file_information.csv"))
+    #fileinfo$file = gsub("\\.wav", "", fileinfo$file) # strip off .wav
+    #aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
+  #}
   
+  rownames (aggregated) = 1:nrow(aggregated)
+
   aggregated
 }
 
