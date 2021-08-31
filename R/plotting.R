@@ -21,14 +21,15 @@ ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   ntimes = suppressWarnings(max(as.numeric(substr (colnames(aggregated_data),3,3)), na.rm=TRUE))
 
   #expected_colnames = paste0("f", rep(1:nf,ntimes),rep(1:ntimes, each=nf))
-  if (ncol(aggregated_data) < (7+nf*ntimes))
-    stop ("Some formant column is missing, rows can be removed but not columns!")
+  #if (ncol(aggregated_data) < (7+nf*ntimes))
+  #  stop ("Some formant column is missing, rows can be removed but not columns!")
 
   # break-up data into 3d array for easier plotting. rows are observations
   # columns are formants, matrices (3rd dim) are time slices.
   ffs = array (0, dim = c(n,nf,ntimes))
+  spot = which (names(aggregated_data)=="f11")
   for (i in 0:(ntimes-1)){
-    ffs[,,i+1] = as.matrix (aggregated_data[,(8+(i*nf)):(8+nf-1+(i*nf))])
+    ffs[,,i+1] = as.matrix (aggregated_data[,(spot+(i*nf)):(spot+nf-1+(i*nf))])
   }
   color = aggregated_data$color
   color[color=="Lime"] = "green2"
@@ -77,6 +78,7 @@ ft.lines <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   output = ft.plot (aggregated_data, xformant=xformant,yformant=yformant,add=add,
                     lwd=lwd, revaxes=revaxes, logaxes=logaxes)
   ffs = output$ffs; color = output$color
+  if (length(color)==0) color = rep(1, dim(output[[1]])[1])
 
   if (starttime==0) starttime=1
   if (endtime==0) endtime=dim(ffs)[3]
@@ -112,6 +114,8 @@ ft.points <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   output = ft.plot (aggregated_data, xformant=xformant,yformant=yformant,add=add,
                     revaxes=revaxes, logaxes=logaxes)
   ffs = output$ffs; color = output$color
+  if (length(color)==0) color = rep(1, dim(output[[1]])[1])
+  
 
   for (i in 1:nrow(aggregated_data)){
     graphics::text (ffs[i,xformant,time],ffs[i,yformant,time],cex=cex,
@@ -144,6 +148,8 @@ ft.arrows <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   output = ft.plot (aggregated_data, xformant=xformant,yformant=yformant,add=add,
                     lwd=lwd, revaxes=revaxes, logaxes=logaxes,...)
   ffs = output$ffs; color = output$color; ntimes = output$ntimes
+  if (length(color)==0) color = rep(1, dim(output[[1]])[1])
+  
 
   for (i in 1:nrow(aggregated_data)){
     graphics::arrows (ffs[i,xformant,(ntimes-1)],ffs[i,yformant,(ntimes-1)],
