@@ -22,35 +22,37 @@
 getwinners <- function (path = NA, formants = NA, winners = NA, selection_info = NA, asone = TRUE, write_csv = FALSE){
 
   if (missing(path)) path = getwd()
-
-  # read in data
-  ## stop if files dont exist, check for both
-
-  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_info.RDS")) 
-    selection_info = readRDS (path %+% "/selection_info.RDS")
-  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_info.RDS")) 
-    stop ("Selection information was not provided and does not exist.")
-  
   
   winners_exists = FALSE
   if (any(!is.na(winners))) winners_exists = TRUE
   
   if (!winners_exists & file.exists(path %+% "/winners.csv")){
-      winners = utils::read.csv (path %+% "/winners.csv")
-      winners_exists = TRUE
+    winners = utils::read.csv (path %+% "/winners.csv")
+    winners_exists = TRUE
   }
-  
-  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_info.RDS")){
-      selection_info = readRDS (path %+% "/selection_info.RDS")
-      winners = selection_info$winners_csv
-  }
-  if (!all(is.na(selection_info)))
+  # read in data
+  ## stop if files dont exist, check for both
+
+  labels = NA
+  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_info.RDS")){ 
+    selection_info = readRDS (path %+% "/selection_info.RDS")
     winners = selection_info$winners_csv
+    winners_exists = TRUE
+    labels = selection_info$labels
+  }
+
+  if (!all(is.na(selection_info))){
+    winners = selection_info$winners_csv
+    winners_exists = TRUE
+    labels = selection_info$labels
+  }
 
   if (all(is.na(formants))){
     if (file.exists(path %+% "/formants.RDS")) formants = readRDS (path %+% "/formants.RDS")
     if (!file.exists(path %+% "/formants.RDS")) formants = readformants (path)
   }
+  
+  if (!winners_exists) stop ("No winners or solection information available or provided.")
 
   # find number of formants
   nf = 3 + sum (colnames(winners)=="F4")
