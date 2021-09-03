@@ -72,7 +72,7 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   
   # Split csvs and get filenames
   tmp_csvs = split (csvs, csvs$file)
-  files = names (tmp_csvs)
+  files = names (tmp_csvs) %+% ".wav"
   
   # internal function to quickly calculate duration and bins
   tmp_csvs = lapply (tmp_csvs, function (x){
@@ -141,6 +141,26 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
     #aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
   #}
   
+  fileinfo_exists = FALSE
+  if (file.exists (path %+% "/file_information.RDS")){
+    fileinfo = readRDS(path %+% "/file_information.RDS")
+    fileinfo_exists = TRUE
+  }
+  
+  if (!fileinfo_exists & file.exists (path %+% "/file_information.csv")){
+    fileinfo = tryCatch({
+      utils::read.csv(path %+% "/file_information.csv",blank.lines.skip=FALSE,
+                      stringsAsFactors=FALSE, fileEncoding = encoding)
+    }, warning = function(warning_condition){
+      stop ("Problem reading in file_information. Please specify an encoding.")
+    }, error = function(error_condition) {
+      stop ("Problem reading in file_information. Please specify an encoding.")
+    })
+    fileinfo_exists = TRUE
+  }
+  
+  if (fileinfo_exists) aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
+    
   rownames (aggregated) = 1:nrow(aggregated)
 
   aggregated
