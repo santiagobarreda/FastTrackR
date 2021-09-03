@@ -31,20 +31,20 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
                           wordtier=NA,commenttiers=NA,omittier=NA, stress=c(0,1,2), 
                           wordstoskip=NA, write = TRUE){
 
-  if (!is.na(tgpath) & !is.na(sndpath)){
+  if (!all(is.na(tgpath)) & !all(is.na(sndpath))){
     if (length(tgpath) != length (sndpath)) stop ("Path lengths do not match.")
   }
-  if (!is.na(tgpath) & is.na(sndpath)){
+  if (!all(is.na(tgpath)) & all(is.na(sndpath))){
     base = unlist (strsplit (basename (tgpath), split ="\\."))[c(T,F)]
     dirname = dirname (tgpath)
     sndpath = dirname %+% "/" %+% base %+% ".wav"
   }
-  if (is.na(tgpath) & !is.na(sndpath)){
+  if (all(is.na(tgpath)) & !all(is.na(sndpath))){
     base = unlist (strsplit (basename (sndpath), split ="\\."))[c(T,F)]
     dirname = dirname (sndpath)
     tgpath = dirname %+% "/" %+% base %+% ".TextGrid"
   }
-  if (is.na(tgpath) & is.na(sndpath)) stop ("No paths provided.")
+  if (all(is.na(tgpath)) & all(is.na(sndpath))) stop ("No paths provided.")
 
   n = length (tgpath)
   output = list()
