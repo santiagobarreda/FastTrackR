@@ -28,7 +28,7 @@
 
 trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowlength = 0.05, 
                           write = TRUE, n_formants = 3, timestep = 0.002, fileinformation = NA, 
-                          progressbar=TRUE, write_infos = FALSE, sounds = NA){
+                          progressbar=TRUE, write_infos = FALSE, sounds = NA, encoding = "latin1"){
 
   if (is.na (path)) path =  getwd()
 
@@ -43,13 +43,21 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
     
     if (all(is.na(fileinformation))){
       if (file.exists (path %+% "/file_information.csv"))
-        fileinformation = utils::read.csv (path %+% "/file_information.csv")
+        fileinformation = tryCatch({
+          utils::read.csv(path %+% "/file_information.csv",blank.lines.skip=FALSE,
+                          stringsAsFactors=FALSE, fileEncoding = encoding)
+        }, warning = function(warning_condition){
+          stop ("Problem reading in file_information. Please specify an encoding.")
+        }, error = function(error_condition) {
+          stop ("Problem reading in file_information. Please specify an encoding.")
+        })
       
       if (!file.exists (path %+% "/file_information.csv")){
         cat ("No file information exists in your working directory (and none was provided).")
         cat ("A default one was generated and saved in your working directory.")
-        makefileinformation(path)
+        fileinformation = makefileinformation(path)
       }
+      saveRDS (fileinformation, path %+% "/file_information.RDS")
     }
     
     sounds_exist = FALSE
