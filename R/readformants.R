@@ -13,6 +13,7 @@
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
 #' @param fileinformation a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory. 
 #' @param progressbar if TRUE, a progress bar prints out in the console.
+#' @param encoding --.
 #' @return A list of lists of dataframes. The "external" list is as long as number of files that were analyzed. For each "external" list element there are \emph{n} "internal" list elements for \emph{n} analysis steps. For example, \code{formant[[32]][[3]]} contains information regarding the 3rd analysis option for the 32nd file.
 #' @export
 #' @examples
@@ -20,20 +21,11 @@
 #' formants = readformants (progressbar = TRUE)
 #' }
 
-readformants <- function (path, fileinformation = NA, progressbar = TRUE){
+readformants <- function (path, fileinformation = NA, progressbar = TRUE, encoding = "UTF-8"){
   
   if (missing(path)) path = getwd()
   
-  if (is.na(fileinformation)){
-    if (file.exists (path %+% "/file_information.csv"))
-      fileinformation = utils::read.csv (path %+% "/file_information.csv")
-    
-    if (!file.exists (path %+% "/file_information.csv")){
-      cat ("No file information exists in your working directory (and none was provided).")
-      cat ("A default one was generated and saved in your working directory.")
-      fileinformation = makefileinformation(path)
-    }
-  }
+  fileinformation = load_file_info (path, encoding = encoding)
   
   labels = fileinformation$label
   names (labels) = fileinformation$file
