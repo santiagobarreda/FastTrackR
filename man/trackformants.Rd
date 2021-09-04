@@ -16,7 +16,8 @@ trackformants(
   fileinformation = NA,
   progressbar = TRUE,
   write_infos = FALSE,
-  sounds = NA
+  sounds = NA,
+  encoding = "UTF-8"
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ trackformants(
 \item{write_infos}{if TRUE, analysis info text files are written out as in Praat.}
 
 \item{sounds}{a list of previously loaded sounds..}
+
+\item{encoding}{--.}
 }
 \value{
 A dataframe containing information about the formant tracks for the file.

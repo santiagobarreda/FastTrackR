@@ -4,10 +4,12 @@
 \alias{readselectioninfo}
 \title{Load information about the selection of the winning analyses}
 \usage{
-readselectioninfo(path = NA)
+readselectioninfo(path = NA, encoding = "UTF-8")
 }
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
+
+\item{encoding}{--.}
 }
 \value{
 A dataframe containing information about winning analyses. The list elements are:

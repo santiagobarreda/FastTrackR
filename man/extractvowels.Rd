@@ -14,7 +14,8 @@ extractvowels(
   omittier = NA,
   stress = c(0, 1, 2),
   wordstoskip = NA,
-  write = TRUE
+  write = TRUE,
+  encoding = "UTF-8"
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ extractvowels(
 \item{wordstoskip}{a vector containing any words you do not want to extract vowels from.}
 
 \item{write}{if TRUE, 'sounds.RDS' and 'file_information.RDS' are saved to the working directory.}
+
+\item{encoding}{--.}
 }
 \value{
 --.

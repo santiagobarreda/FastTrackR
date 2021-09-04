@@ -4,7 +4,12 @@
 \alias{readformants}
 \title{Load Fast Track formant objects}
 \usage{
-readformants(path, fileinformation = NA, progressbar = TRUE)
+readformants(
+  path,
+  fileinformation = NA,
+  progressbar = TRUE,
+  encoding = "UTF-8"
+)
 }
 \arguments{
 \item{path}{The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.}
@@ -12,6 +17,8 @@ readformants(path, fileinformation = NA, progressbar = TRUE)
 \item{fileinformation}{a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory.}
 
 \item{progressbar}{if TRUE, a progress bar prints out in the console.}
+
+\item{encoding}{--.}
 }
 \value{
 A list of lists of dataframes. The "external" list is as long as number of files that were analyzed. For each "external" list element there are \emph{n} "internal" list elements for \emph{n} analysis steps. For example, \code{formant[[32]][[3]]} contains information regarding the 3rd analysis option for the 32nd file.

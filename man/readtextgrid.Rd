@@ -4,10 +4,12 @@
 \alias{readtextgrid}
 \title{Load textgrid information into R}
 \usage{
-readtextgrid(path)
+readtextgrid(path, encoding = "UTF-8")
 }
 \arguments{
 \item{path}{the path to the Praat textgrid file you want to read.}
+
+\item{encoding}{--.}
 }
 \value{
 A list of dataframes, one containing the data from each interval tier in the textgrid. Each list element is named after the tier.

@@ -4,12 +4,10 @@
 \alias{makefileinformation}
 \title{Make a file information file}
 \usage{
-makefileinformation(path = NA, write = TRUE)
+makefileinformation(path = NA)
 }
 \arguments{
 \item{path}{the path to the working directory for the Fast Track project. If no path is provided this is the working directory.}
-
-\item{write}{if TRUE, the file is written to the indicated path(or working directory).}
 }
 \description{
 Make a file_information.csv file if none exists.

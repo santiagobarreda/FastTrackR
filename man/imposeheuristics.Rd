@@ -5,7 +5,7 @@
 \title{Impose boundaries on formants}
 \usage{
 imposeheuristics(
-  path,
+  path = NA,
   f1max = 1200,
   f4min = 3800,
   rhotic = c(2000, 500),
