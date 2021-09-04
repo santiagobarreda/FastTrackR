@@ -42,7 +42,7 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
   # if path is a path to a working directory, analyze those folders
   if (class(path)=="character"){
     
-    fileinformation = load_file_information (path, encoding = encoding)
+    fileinformation = load_file_info (path, encoding = encoding)
     
     sounds_exist = FALSE
     if (!all(is.na(sounds))){
