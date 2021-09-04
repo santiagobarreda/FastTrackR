@@ -20,8 +20,6 @@ readtextgrid <- function (path, encoding = "UTF-8"){
 
   if (!file.exists(path)) stop ("File does not exist. The path is probably wrong.")
   
-  # file is read in as a vector of lines
-  
   tg = tryCatch({
     utils::read.csv(path,blank.lines.skip=FALSE, skipNul = FALSE,header=FALSE,
                     stringsAsFactors=FALSE, fileEncoding = encoding)[,1]
