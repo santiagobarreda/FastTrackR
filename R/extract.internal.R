@@ -21,7 +21,7 @@ extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding
   }
   if (missing(tgpath) & missing(sndpath)) stop ("No paths provided.")
 
-  tgdata = readtextgrid(tgpath)
+  tgdata = readtextgrid(tgpath, encoding = encoding)
   sound = readWave2 (sndpath)
   duration = length(sound@left)/sound@samp.rate
 
@@ -73,7 +73,6 @@ extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding
     if (!is.na (wordstoskip[1])) extract = extract[!(extract$word %in% wordstoskip),]
   }
   if (!is.na (omittier)){
-    print (omittier)
     midpoints = (as.numeric(extract$start)+as.numeric(extract$end))/2
     vowelomittiers = sapply (1:length (midpoints), function (i){
       use = (midpoints[i] > tgdata[[omittier]]$start & midpoints[i] < tgdata[[omittier]]$end)
