@@ -28,7 +28,7 @@ load_file_info = function (path, encoding = NA){
     cat ("A default one was generated and saved in your working directory.")
     fileinfo = makefileinformation(path)
     utils::write.csv (fileinfo, "file_information.csv", row.names = FALSE,quote=FALSE)
-    writeRDS(fileinfo, path %+% "/file_information.RDS")
+    saveRDS(fileinfo, path %+% "/file_information.RDS")
   }
   
   return (fileinfo)
