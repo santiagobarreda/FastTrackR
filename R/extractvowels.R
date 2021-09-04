@@ -14,6 +14,7 @@
 #' @param stress a vector contianing labels you may have used to mark stress.
 #' @param wordstoskip a vector containing any words you do not want to extract vowels from.
 #' @param write if TRUE, 'sounds.RDS' and 'file_information.RDS' are saved to the working directory. 
+#' @param encoding --. 
 #' @return --.
 #' @export
 #' @examples
