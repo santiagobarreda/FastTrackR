@@ -41,7 +41,7 @@
 #' aggregatedata(path, csvs, bins = 11, f0_bins = "same")
 #' }
 
-aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants = NA, method = "median"){
+aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants = NA, method = "median", encoding = "UTF-8"){
   
   # Autofill parameters
   if (is.na(path)) path = getwd()
