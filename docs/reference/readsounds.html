@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make images for winning analyses — makewinnerplots • fasttrackr</title>
+<title>Read sounds a single data file — readsounds • fasttrackr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Make images for winning analyses — makewinnerplots" />
-<meta property="og:description" content="This function will operate in one of two ways. If a" />
+<meta property="og:title" content="Read sounds a single data file — readsounds" />
+<meta property="og:description" content="This function writes out R internal formant data into text files that can be used in Praat." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -124,80 +124,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make images for winning analyses</h1>
-    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/makewinnerplots.R'><code>R/makewinnerplots.R</code></a></small>
-    <div class="hidden name"><code>makewinnerplots.Rd</code></div>
+    <h1>Read sounds a single data file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/readsounds.R'><code>R/readsounds.R</code></a></small>
+    <div class="hidden name"><code>readsounds.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function will operate in one of two ways. If a</p>
+    <p>This function writes out R internal formant data into text files that can be used in Praat.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>makewinnerplots</span><span class='op'>(</span>
-  path <span class='op'>=</span> <span class='cn'>NA</span>,
-  csvs <span class='op'>=</span> <span class='cn'>NA</span>,
-  sounds <span class='op'>=</span> <span class='cn'>NA</span>,
-  height <span class='op'>=</span> <span class='fl'>1000</span>,
-  width <span class='op'>=</span> <span class='fl'>1400</span>,
-  pointsize <span class='op'>=</span> <span class='fl'>20</span>,
-  number_of_lines <span class='op'>=</span> <span class='fl'>250</span>,
-  progressbar <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  alternate_output_path <span class='op'>=</span> <span class='cn'>NA</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>readsounds</span><span class='op'>(</span>path <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path</th>
-      <td><p>The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.</p></td>
-    </tr>
-    <tr>
-      <th>csvs</th>
-      <td><p>csv data loaded using the readcsvs function. In NA, data is read in from the 'csvs' folder in the path directory.</p></td>
-    </tr>
-    <tr>
-      <th>sounds</th>
-      <td><p>--.</p></td>
-    </tr>
-    <tr>
-      <th>height</th>
-      <td><p>the desired height of the image in pixels.</p></td>
-    </tr>
-    <tr>
-      <th>width</th>
-      <td><p>the desired width of the image in pixels.</p></td>
-    </tr>
-    <tr>
-      <th>pointsize</th>
-      <td><p>point size for plotting.</p></td>
-    </tr>
-    <tr>
-      <th>number_of_lines</th>
-      <td><p>the number of pixels along the x axis for each spectrogram. Consider in relation to image width.</p></td>
-    </tr>
-    <tr>
-      <th>progressbar</th>
-      <td><p>if TRUE, information about estimated analysis time is displayed.</p></td>
-    </tr>
-    <tr>
-      <th>alternate_output_path</th>
-      <td><p>if not NA, images will be written directly to this path.</p></td>
+      <td><p>the path to the working directory for the Fast Track project. If no path is provided this is the working directory.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>csvs</span> <span class='op'>=</span> <span class='fu'><a href='readcsvs.html'>readcsvs</a></span> <span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># this will make a plot</span>
-<span class='fu'>makewinnerplots</span><span class='op'>(</span>csvs <span class='op'>=</span> <span class='va'>csvs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-
-<span class='co'># this will make 5 plots in the /images_winners folder</span>
-<span class='fu'>makewinnerplots</span><span class='op'>(</span>csvs <span class='op'>=</span> <span class='va'>csvs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
