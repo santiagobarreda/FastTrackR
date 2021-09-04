@@ -11,6 +11,7 @@
 #' @param f0_bins an integer or string (default = 1). By default, the F0 values across the entire vowel token are summarized into a single value. However, if you are interested in F0 contours, you can specify how many measurements can be taken. This can be independent of the number of formant measurments. The value \code{"same"} will set this value equal to the \code{"bins"} argument. A value of 0 will result in no calculation of f0. See examples below.
 #' @param n_formants an integer. By default, \code{aggregatedata} will use the number of formants as is contained in \code{csvs} or in the .csv files. However, if you want to, for example, only aggregated data from F1, F2, and F3 even though you have data from F4, you can do so by setting \code{n_formants} to \code{3}.
 #' @param method a string (default = \code{"median"}). Determines what kind of summarization function is used when aggregating data. Other functions to come later.
+#' @param encoding --.
 #' @return A dataframe containing formant measurements and various other information for each file (= vowel token). The column called \code{f12} is the F1 measurement in the second bin. If only one F0 measurement is returned, the column will be named \code{f0}. Otherwise, it will follow the same convention (i.e. the F0 measurement for the third bin will be called \code{f03}).
 #' @export
 #' @examples
@@ -134,38 +135,13 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
     aggregated = cbind (aggregated, f0)
   }
   
-  # Add in information from the other file if it exists
-  #if (file.exists(paste0(path, "/file_information.csv"))){
-    #fileinfo = utils::read.csv(paste0(path, "/file_information.csv"))
-    #fileinfo$file = gsub("\\.wav", "", fileinfo$file) # strip off .wav
-    #aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
-  #}
-  
-  fileinfo_exists = FALSE
-  if (file.exists (path %+% "/file_information.RDS")){
-    fileinfo = readRDS(path %+% "/file_information.RDS")
-    fileinfo_exists = TRUE
-  }
-  
-  if (!fileinfo_exists & file.exists (path %+% "/file_information.csv")){
-    fileinfo = tryCatch({
-      utils::read.csv(path %+% "/file_information.csv",blank.lines.skip=FALSE,
-                      stringsAsFactors=FALSE, fileEncoding = encoding)
-    }, warning = function(warning_condition){
-      stop ("Problem reading in file_information. Please specify an encoding.")
-    }, error = function(error_condition) {
-      stop ("Problem reading in file_information. Please specify an encoding.")
-    })
-    fileinfo_exists = TRUE
-  }
-  
-  if (fileinfo_exists) aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
+  fileinfo = load_file_info(path, encoding = encoding)
+  aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
     
   rownames (aggregated) = 1:nrow(aggregated)
 
   aggregated
 }
-
 
 
 
