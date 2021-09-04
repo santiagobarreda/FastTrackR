@@ -14,6 +14,7 @@
 #' @param progressbar if TRUE, information about estimated analysis time is printed. 
 #' @param write_infos if TRUE, analysis info text files are written out as in Praat. 
 #' @param sounds a list of previously loaded sounds.. 
+#' @param encoding --. 
 #' @return A dataframe containing information about the formant tracks for the file.
 #' @export
 #' @examples
@@ -28,7 +29,7 @@
 
 trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowlength = 0.05, 
                           write = TRUE, n_formants = 3, timestep = 0.002, fileinformation = NA, 
-                          progressbar=TRUE, write_infos = FALSE, sounds = NA, encoding = "latin1"){
+                          progressbar=TRUE, write_infos = FALSE, sounds = NA, encoding = "UTF-8"){
 
   if (is.na (path)) path =  getwd()
 
@@ -41,24 +42,7 @@ trackformants = function (path=NA, from = 4800, to = 6800, nsteps=12, windowleng
   # if path is a path to a working directory, analyze those folders
   if (class(path)=="character"){
     
-    if (all(is.na(fileinformation))){
-      if (file.exists (path %+% "/file_information.csv"))
-        fileinformation = tryCatch({
-          utils::read.csv(path %+% "/file_information.csv",blank.lines.skip=FALSE,
-                          stringsAsFactors=FALSE, fileEncoding = encoding)
-        }, warning = function(warning_condition){
-          stop ("Problem reading in file_information. Please specify an encoding.")
-        }, error = function(error_condition) {
-          stop ("Problem reading in file_information. Please specify an encoding.")
-        })
-      
-      if (!file.exists (path %+% "/file_information.csv")){
-        cat ("No file information exists in your working directory (and none was provided).")
-        cat ("A default one was generated and saved in your working directory.")
-        fileinformation = makefileinformation(path)
-      }
-      saveRDS (fileinformation, path %+% "/file_information.RDS")
-    }
+    fileinformation = load_file_information (path, encoding = encoding)
     
     sounds_exist = FALSE
     if (!all(is.na(sounds))){
