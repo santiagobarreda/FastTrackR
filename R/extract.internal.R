@@ -1,6 +1,6 @@
 
 
-extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,
+extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding = "UTF-8",
                            commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA){
 
   vowelstoextract = fasttrackr::vowelstoextract
