@@ -4,6 +4,7 @@
 #' This function reads in the winners.csv file from a specified path, or assumes it is located in the working directory if not path is specified. 
 #' 
 #' @param path The path to the working directory for the Fast Track project. If no path is provided, the current working directory for the current R session is used.
+#' @param encoding --.
 #' @return A dataframe containing information about winning analyses. The list elements are:
 #' 
 #' 1) winners_csv: A dataframe containing the same information as the winners.csv file. 
@@ -24,7 +25,7 @@
 #' winners <- readselectioninfo()
 #' }
 
-readselectioninfo <- function (path = NA){
+readselectioninfo <- function (path = NA, encoding = "UTF-8"){
   
   if (is.na(path)) path = getwd()
   
@@ -75,14 +76,9 @@ readselectioninfo <- function (path = NA){
   }
   if (file.exists (path %+% "/penalties.csv"))  penalties = utils::read.csv (path %+% "/penalties.csv")
   
-  
-  if (file.exists (path %+% "/file_information.csv")){
-    file_information = utils::read.csv (path %+% "/file_information.csv")
-    labels = file_information$label
-    names (labels) = file_information$file
-  }
-  if (!file.exists (path %+% "/file_information.csv")) labels = NA
-  
+  file_information = load_file_info(path, encoding = encoding)
+  labels = file_information$label
+  names (labels) = file_information$file
 
   selectioninfo = list (winners_csv = winners_csv, errors = errors, total_errors = total_errors, 
                   coefficients = coefficients, penalties = penalties, labels = labels)
