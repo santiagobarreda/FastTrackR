@@ -52,11 +52,11 @@ extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding
 
   start = Sys.time()
   if (!is.na (wordtier)){
-    cat ("Processing word information.\n")
+    #cat ("Processing word information.\n")
     start = Sys.time()
     midpoints = (as.numeric(extract$start)+as.numeric(extract$end))/2
     vowelwordtiers = sapply (1:length (midpoints), function (i){
-      progressbar (i,length (midpoints),start)
+      #progressbar (i,length (midpoints),start)
       use = (midpoints[i] > tgdata[[wordtier]]$start & midpoints[i] < tgdata[[wordtier]]$end)
       which.max (use)
     })
@@ -101,7 +101,7 @@ extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding
 
   extract = extract[extract$omit==0,]
 
-  cat ("\nExtracting sounds.\n")
+  #cat ("\nExtracting sounds.\n")
   times = extract[,c("start","end","omit","filename")]
   times[,1] = as.numeric(times[,1]) - 0.025
   times[,2] = as.numeric(times[,2]) + 0.025
@@ -112,12 +112,12 @@ extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding
   n = nrow (extract)
   sounds = lapply (1:n,
                    function (i){
-                     progressbar (i,n,start)
+                     #progressbar (i,n,start)
                      extractWave2(sound,times[i,1],times[i,2],times$filename[i])
                      }
                    )
+  #cat ("\nSaving sounds.\n")
   output = list (data_out, sounds)
-
   output
 }
 
