@@ -29,7 +29,7 @@
 
 extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
                           wordtier=NA,commenttiers=NA,omittier=NA, stress=c(0,1,2), 
-                          wordstoskip=NA, write = TRUE){
+                          wordstoskip=NA, write = TRUE, encoding = "UTF-8"){
 
   if (!all(is.na(tgpath)) & !all(is.na(sndpath))){
     if (length(tgpath) != length (sndpath)) stop ("Path lengths do not match.")
@@ -55,7 +55,8 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
 
   for (i in 1:n){
     output = extract.internal (tgpath[i], sndpath[i], segmenttier,wordtier,
-                                    commenttiers,omittier, stress, wordstoskip)
+                              commenttiers,omittier, stress, wordstoskip,
+                               encoding=encoding)
 
     output[[1]] = cbind(source_file = base[i] %+% ".wav", output[[1]])
     segmentation_info = rbind(segmentation_info, output[[1]])
@@ -100,7 +101,8 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
   output = list (file_information = file_information, sounds = sounds)
   
   if (write){
-    saveRDS (output[[1]], getwd() %+% "/file_information.RDS")
+    saveRDS (file_information, getwd() %+% "/file_information.RDS")
+    saveRDS (segmentation_info, getwd() %+% "/segmentation_information.RDS")
     saveRDS (output[[2]], getwd() %+% "/sounds.RDS")
   }
     
