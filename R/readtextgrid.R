@@ -5,6 +5,7 @@
 #'
 #' @param path the path to the Praat textgrid file you want to read.
 #' @return A list of dataframes, one containing the data from each interval tier in the textgrid. Each list element is named after the tier.
+#' @param encoding --.
 #' @export
 #' @examples
 #' \dontrun{
@@ -15,29 +16,21 @@
 #' readtextgrid (path)
 #' }
 
-readtextgrid <- function (path){
+readtextgrid <- function (path, encoding = "UTF-8"){
 
   if (!file.exists(path)) stop ("File does not exist. The path is probably wrong.")
   
   # file is read in as a vector of lines
   
   tg = tryCatch({
-    suppressWarnings (utils::read.delim(file(path, encoding = "UTF-8"),header=FALSE, blank.lines.skip=FALSE,
-                                        quote = "")[,1])
-  }, warning = function(warning_condition) {
-    utils::read.delim(file(path, encoding = "UTF-16"),header=FALSE, blank.lines.skip=FALSE, quote = "", 
-                      stringsAsFactors = FALSE)[,1]
+    utils::read.csv(path,blank.lines.skip=FALSE, skipNul = FALSE,header=FALSE,
+                    stringsAsFactors=FALSE, fileEncoding = encoding)[,1]
+  }, warning = function(warning_condition){
+    stop ("Problem reading in file_information. Please specify an encoding.")
   }, error = function(error_condition) {
-    utils::read.delim(file(path, encoding = "UTF-16"),header=FALSE, blank.lines.skip=FALSE, quote = "", 
-                      stringsAsFactors = FALSE)[,1]
+    stop ("Problem reading in file_information. Please specify an encoding.")
   })
 
-  
-  fileIn=file(path,open="rb",encoding="UTF-16")
-  lines = readLines(fileIn, warn = FALSE)
-  
-  
-  
   # check to make sure it is a valid textgrid file
   # and check if it is in long or short format
   filetype = "neither"
@@ -79,12 +72,12 @@ readtextgrid <- function (path){
     # long format processing
     if (filetype=="long"){
       start = (tiers[i]+5)
-      end = (tiers[i]+4+as.numeric(tier_n[i])*3)
+      end = (tiers[i]+4+as.numeric(tier_n[i])*4)
 
       # same as above but some more processing related to the extra 
       # text in the long format
-      output = matrix (tg[start:end],(end-start+1)/3,3,byrow=TRUE)
-      output = data.frame (output[,c(3,1,2)])
+      output = matrix (tg[start:end],(end-start+1)/4,4,byrow=TRUE)
+      output = data.frame (output[,c(4,2,3)])
       colnames(output) = c("label", "start", "end")
       output[,2] = as.numeric(gsub ("xmin = ", "", output[,2]))
       output[,3] = as.numeric(gsub ("xmax = ", "", output[,3]))
