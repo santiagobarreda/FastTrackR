@@ -17,16 +17,16 @@
 #'  # coming soon
 #' }
 
-imposeheuristics <- function (path, f1max=1200, f4min=3800, rhotic=c(2000,500), minF3F4=c(500,1500), 
+imposeheuristics <- function (path=NA, f1max=1200, f4min=3800, rhotic=c(2000,500), minF3F4=c(500,1500), 
                               selectioninfo=NA, write = FALSE){
   
-  if (missing(path)) path = getwd()
+  if (is.na(path)) path = getwd()
   
-  if (is.na(selectioninfo))
+  if (all(is.na(selectioninfo)))
     if (class(selectioninfo) != "selection_info") 
       stop ("Invalid selectioninfo object. Please read in using the readselectioninfo function.")
 
-  if (is.na(selectioninfo)){
+  if (all(is.na(selectioninfo))){
     selectioninfo <- readselectioninfo()
   }
 
@@ -64,6 +64,8 @@ imposeheuristics <- function (path, f1max=1200, f4min=3800, rhotic=c(2000,500), 
     }
   }
   selectioninfo$penalties = penalties
+  
+  ## winners need to be updated here based on penalties and minimum error
   
   # write out if user desires
   if (write) utils::read.csv (penalties, path %+% "/penalties.csv")
