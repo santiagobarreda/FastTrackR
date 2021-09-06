@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Carry out LPC for sound — findformants • fasttrackr</title>
+<title>Track formants for a folder of sounds — trackformants.folder • fasttrackr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Carry out LPC for sound — findformants" />
-<meta property="og:description" content="Carry out LPC for sound" />
+<meta property="og:title" content="Track formants for a folder of sounds — trackformants.folder" />
+<meta property="og:description" content="Track formants for a folder of sounds" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -124,71 +124,98 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Carry out LPC for sound</h1>
-    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/findformants.R'><code>R/findformants.R</code></a></small>
-    <div class="hidden name"><code>findformants.Rd</code></div>
+    <h1>Track formants for a folder of sounds</h1>
+    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/trackformants.folder.R'><code>R/trackformants.folder.R</code></a></small>
+    <div class="hidden name"><code>trackformants.folder.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Carry out LPC for sound</p>
+    <p>Track formants for a folder of sounds</p>
     </div>
 
-    <pre class="usage"><span class='fu'>findformants</span><span class='op'>(</span>
-  <span class='va'>sound</span>,
-  n_formants <span class='op'>=</span> <span class='fl'>4</span>,
-  maxformant <span class='op'>=</span> <span class='fl'>7000</span>,
+    <pre class="usage"><span class='fu'>trackformants.folder</span><span class='op'>(</span>
+  path <span class='op'>=</span> <span class='cn'>NA</span>,
+  from <span class='op'>=</span> <span class='fl'>4800</span>,
+  to <span class='op'>=</span> <span class='fl'>6800</span>,
+  nsteps <span class='op'>=</span> <span class='fl'>12</span>,
   windowlength <span class='op'>=</span> <span class='fl'>0.05</span>,
+  write <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  n_formants <span class='op'>=</span> <span class='fl'>3</span>,
   timestep <span class='op'>=</span> <span class='fl'>0.002</span>,
-  preemphasis_frequency <span class='op'>=</span> <span class='fl'>50</span>,
-  label <span class='op'>=</span> <span class='cn'>NA</span>,
-  returnsound <span class='op'>=</span> <span class='cn'>FALSE</span>
+  fileinformation <span class='op'>=</span> <span class='cn'>NA</span>,
+  progressbar <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  write_infos <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  sounds <span class='op'>=</span> <span class='cn'>NA</span>,
+  encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sound</th>
-      <td><p>a WAV file loaded in using the readwave2 function.</p></td>
+      <th>path</th>
+      <td><p>a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of paths to wave files on your hard drive can be provided instead using the path parameter.</p></td>
     </tr>
     <tr>
-      <th>n_formants</th>
-      <td><p>the number of formant frequencies that should be returned.</p></td>
+      <th>from</th>
+      <td><p>the lowest analysis frequency.</p></td>
     </tr>
     <tr>
-      <th>maxformant</th>
-      <td><p>the maximum formant frequency (i.e., the Nyquist/2).</p></td>
+      <th>to</th>
+      <td><p>the highest analysis frequency.</p></td>
+    </tr>
+    <tr>
+      <th>nsteps</th>
+      <td><p>the number of steps between the lowest and highest analysis frequencies.</p></td>
     </tr>
     <tr>
       <th>windowlength</th>
       <td><p>the windowlength specified in seconds.</p></td>
     </tr>
     <tr>
+      <th>write</th>
+      <td><p>if TRUE, the result of the analysis is saved as an RDS file.</p></td>
+    </tr>
+    <tr>
+      <th>n_formants</th>
+      <td><p>the number of formants returned (5.5. are always tracked).</p></td>
+    </tr>
+    <tr>
       <th>timestep</th>
       <td><p>the analysis time step specified in seconds.</p></td>
     </tr>
     <tr>
-      <th>preemphasis_frequency</th>
-      <td><p>if NA, no preemphasis is applied.</p></td>
+      <th>fileinformation</th>
+      <td><p>a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory.</p></td>
     </tr>
     <tr>
-      <th>label</th>
-      <td><p>if a label is provided, this is added to the formnt information.</p></td>
+      <th>progressbar</th>
+      <td><p>if TRUE, information about estimated analysis time is printed.</p></td>
     </tr>
     <tr>
-      <th>returnsound</th>
-      <td><p>if TRUE, the downsampled sound object is returned in addition to the formant information.</p></td>
+      <th>write_infos</th>
+      <td><p>if TRUE, analysis info text files are written out as in Praat.</p></td>
+    </tr>
+    <tr>
+      <th>sounds</th>
+      <td><p>a list of previously loaded sounds..</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>--.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A matrix in which each row represents a different time point. The first four columns represent the frequencies of F1-F4, and columns 5-8 represent their bandwidths.</p>
+    <p>A dataframe containing information about the formant tracks for the file.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='va'>sound</span> <span class='op'>=</span> <span class='fu'>readWave2</span><span class='op'>(</span><span class='st'>"yoursound.wav"</span><span class='op'>)</span>
-<span class='fu'>trackformants</span> <span class='op'>(</span><span class='va'>sound</span>, maxformant <span class='op'>=</span> <span class='fl'>5300</span><span class='op'>)</span>
+<span class='va'>ffs</span> <span class='op'>=</span> <span class='fu'>trackformants</span> <span class='op'>(</span><span class='va'>sound</span>, timestep <span class='op'>=</span> <span class='fl'>0.002</span><span class='op'>)</span>
+<span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs</span><span class='op'>)</span>
+<span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
