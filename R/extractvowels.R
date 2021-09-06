@@ -98,15 +98,14 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
     utils::write.csv (file_information, outputpath %+% "/output/file_information.csv", row.names = FALSE)
   }
   
-  file_information = list (file_information = file_information, 
-                           segmentation_information = segmentation_info)
-  
-  output = list (file_information = file_information, sounds = sounds)
+  output = list (file_information = file_information, 
+                 segmentation_information = segmentation_info,
+                 sounds = sounds)
   
   if (write){
     saveRDS (file_information, getwd() %+% "/file_information.RDS")
     saveRDS (segmentation_info, getwd() %+% "/segmentation_information.RDS")
-    saveRDS (output[[2]], getwd() %+% "/sounds.RDS")
+    saveRDS (sounds, getwd() %+% "/sounds.RDS")
   }
     
   invisible (output)
