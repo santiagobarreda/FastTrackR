@@ -24,9 +24,9 @@ readtextgrid <- function (path, encoding = "UTF-8"){
     utils::read.csv(path,blank.lines.skip=FALSE, skipNul = FALSE,header=FALSE,
                     stringsAsFactors=FALSE, fileEncoding = encoding)[,1]
   }, warning = function(warning_condition){
-    stop ("Problem reading in file_information. Please specify an encoding.")
+    stop ("Problem with the encoding, try converting the TextGrid file to latin1/ANSI/ASCII or UTF-8.")
   }, error = function(error_condition) {
-    stop ("Problem reading in file_information. Please specify an encoding.")
+    stop ("Problem with the encoding, try converting the TextGrid file to latin1/ANSI/ASCII or UTF-8..")
   })
 
   # check to make sure it is a valid textgrid file
