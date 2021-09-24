@@ -15,9 +15,9 @@ load_file_info = function (path, encoding = NA){
       utils::read.csv(path %+% "/file_information.csv",blank.lines.skip=FALSE,
                       stringsAsFactors=FALSE, encoding = encoding)
     }, warning = function(warning_condition){
-      stop ("Problem reading in file_information. Please specify an encoding.")
+      stop ("Problem with the encoding, try converting the file_information file to latin1/ANSI/ASCII or UTF-8.")
     }, error = function(error_condition) {
-      stop ("Problem reading in file_information. Please specify an encoding.")
+      stop ("Problem with the encoding, try converting the file_information file to latin1/ANSI/ASCII or UTF-8..")
     })
     fileinfo_exists = TRUE
     
@@ -50,9 +50,9 @@ load_segmentation_info = function (path, encoding = NA){
       utils::read.csv(path %+% "/segmentation_information.csv",blank.lines.skip=FALSE,
                       stringsAsFactors=FALSE, encoding = encoding)
     }, warning = function(warning_condition){
-      stop ("Problem reading in file_information. Please specify an encoding.")
+      stop ("Problem with the encoding, try converting the segmentation_information file to latin1/ANSI/ASCII or UTF-8.")
     }, error = function(error_condition) {
-      stop ("Problem reading in file_information. Please specify an encoding.")
+      stop ("Problem with the encoding, try converting the segmentation_information file to latin1/ANSI/ASCII or UTF-8.")
     })
     segmentationinfo_exists = TRUE
     
