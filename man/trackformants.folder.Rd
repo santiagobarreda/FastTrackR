@@ -43,7 +43,7 @@ trackformants.folder(
 
 \item{write_infos}{if TRUE, analysis info text files are written out as in Praat.}
 
-\item{sounds}{a list of previously loaded sounds..}
+\item{sounds}{a list of previously loaded sounds.}
 
 \item{encoding}{--.}
 }
