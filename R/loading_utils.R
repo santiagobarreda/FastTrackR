@@ -3,7 +3,7 @@
 load_file_info = function (path, encoding = NA){
   
   fileinfo_exists = FALSE
-  if (is.na(encoding)) encoding = "UTF-8"
+  if (is.na(encoding)) encoding = ""
   
   if (file.exists (path %+% "/file_information.RDS")){
     fileinfo = readRDS(path %+% "/file_information.RDS")
