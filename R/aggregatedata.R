@@ -12,6 +12,7 @@
 #' @param n_formants an integer. By default, \code{aggregatedata} will use the number of formants as is contained in \code{csvs} or in the .csv files. However, if you want to, for example, only aggregated data from F1, F2, and F3 even though you have data from F4, you can do so by setting \code{n_formants} to \code{3}.
 #' @param method a string (default = \code{"median"}). Determines what kind of summarization function is used when aggregating data. Other functions to come later.
 #' @param encoding --.
+#' @param write --.
 #' @return A dataframe containing formant measurements and various other information for each file (= vowel token). The column called \code{f12} is the F1 measurement in the second bin. If only one F0 measurement is returned, the column will be named \code{f0}. Otherwise, it will follow the same convention (i.e. the F0 measurement for the third bin will be called \code{f03}).
 #' @export
 #' @examples
@@ -41,7 +42,8 @@
 #' aggregatedata(path, csvs, bins = 11, f0_bins = "same")
 #' }
 
-aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants = NA, method = "median", encoding = "UTF-8"){
+aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants = NA, method = "median", encoding = "UTF-8", 
+                           write = FALSE){
   
   # Autofill parameters
   if (is.na(path)) path = getwd()
@@ -139,6 +141,11 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   aggregated = merge(fileinfo, aggregated, by="file", all.x=TRUE)
     
   rownames (aggregated) = 1:nrow(aggregated)
+  
+  if (write){
+    dir.create(path %+% "/processed_data", showWarnings = FALSE)
+    write.csv (aggregated, path %+% "/processed_data/aggregated_data.csv")
+  } 
 
   aggregated
 }
