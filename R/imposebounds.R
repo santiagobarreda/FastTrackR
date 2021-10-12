@@ -19,13 +19,13 @@ imposebounds <- function (path, boundaries=NA, selectioninfo = NA, write = TRUE)
   if (missing(path)) path = getwd()
 
   # or put in some default ones?
-  if (is.na(boundaries)) stop ("No boundaries provided. see data(formantbounds) for a template.")
+  if (all(is.na(boundaries))) stop ("No boundaries provided. see data(formantbounds) for a template.")
 
-  if (!is.na(selectioninfo))
+  if (!all(is.na(selectioninfo)))
     if (class(selectioninfo) != "selection_info") 
       stop ("Invalid selectioninfo object. Please read in using the readselectioninfo function.")
   
-  if (is.na(selectioninfo)){
+  if (all(is.na(selectioninfo))){
     selectioninfo <- readselectioninfo()
   }
   
