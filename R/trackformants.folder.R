@@ -50,8 +50,8 @@ trackformants.folder = function (path=NA, from = 4800, to = 6800, nsteps=12, win
       n = length(sounds)
     }
     
-    if (!sounds_exist & file.exists (path %+% "sounds.RDS")){
-      sounds = readRDS (path %+% "sounds.RDS")
+    if (!sounds_exist & file.exists (path %+% "/sounds.RDS")){
+      sounds = readRDS (path %+% "/sounds.RDS")
       n = length(sounds)
       sounds_exist = TRUE
     }
@@ -60,6 +60,7 @@ trackformants.folder = function (path=NA, from = 4800, to = 6800, nsteps=12, win
       files = list.files (paste0 (path, "/sounds"), full.names = TRUE)
       n = length(files)
     }
+    if (nrow(fileinformation)!=n) stop ("Mismatch between file information and number of sounds in the 'sounds' folder. This will probably cause a problem later on so execution is halted.")
     
     labels = fileinformation$label
     names (labels) = fileinformation$file
@@ -80,6 +81,7 @@ trackformants.folder = function (path=NA, from = 4800, to = 6800, nsteps=12, win
                                    timestep = timestep, label = labels[i])
       
       if (write_infos){
+        dir.create(path %+% "/infos", showWarnings = FALSE)
         output = c(paste0(attr(ffs[[i]],"filename"),".wav"),
                    "Number of steps:",
                    length (attr(ffs[[1]], "cutoffs")),
