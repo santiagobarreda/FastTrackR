@@ -19,7 +19,8 @@
 #' tmp = getwinners (getwd(), winners$winners, formants, write = TRUE)
 #' }
 
-getwinners <- function (path = NA, formants = NA, winners = NA, selection_info = NA, asone = TRUE, write_csv = FALSE){
+getwinners <- function (path = NA, formants = NA, winners = NA, selection_info = NA, asone = TRUE, 
+                        write_csv = FALSE,move_formants = FALSE){
 
   if (missing(path)) path = getwd()
   
@@ -34,11 +35,9 @@ getwinners <- function (path = NA, formants = NA, winners = NA, selection_info =
   ## stop if files dont exist, check for both
 
   labels = NA
-  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_info.RDS")){ 
-    selection_info = readRDS (path %+% "/selection_info.RDS")
+  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_information.RDS")){ 
+    selection_info = readRDS (path %+% "/selection_information.RDS")
     winners = selection_info$winners_csv
-    winners_exists = TRUE
-    labels = selection_info$labels
   }
 
   if (!all(is.na(selection_info))){
@@ -52,7 +51,7 @@ getwinners <- function (path = NA, formants = NA, winners = NA, selection_info =
     if (!file.exists(path %+% "/formants.RDS")) formants = readformants (path)
   }
   
-  if (!winners_exists) stop ("No winners or solection information available or provided.")
+  if (!winners_exists) stop ("No winners or selection information available or provided.")
 
   # find number of formants
   nf = 3 + sum (colnames(winners)=="F4")
@@ -113,6 +112,14 @@ getwinners <- function (path = NA, formants = NA, winners = NA, selection_info =
         tmp_csv[1:minrow,2:9] = tmp_formants
       }
       csvs[[i]] = tmp_csv
+    }
+  }
+  if (move_formants){
+    dir.create (path %+% "/formants_winners", showWarnings = FALSE)
+    
+    for (i in 1:nrow (winners)){
+      file.copy (path %+% "/formants/" %+% winners$file[i] %+% "_" %+% winners$winner[i] %+% "_.Formant",
+                 path %+% "/formants_winners/" %+% winners$file[i] %+% "_" %+% "winner" %+% "_.Formant")
     }
   }
 
