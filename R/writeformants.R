@@ -22,9 +22,11 @@ writeformants <- function (formants, path = NA){
              "nf") # maximum number of formants
   
   n_analyses = attr(formants,"ncutoffs")
-
+  dir.create(path %+% "/formants", showWarnings = FALSE)
+  
+  start = Sys.time()
   for (i in 1:length(formants)){
-    print (i)
+    progressbar(i, length(formants), start = start)
     for (j in 1:n_analyses){
       tmp_formants = formants[[i]][[j]]
 
@@ -40,7 +42,7 @@ writeformants <- function (formants, path = NA){
       tmp_out = c(header, tmp_out)
       output_file = filename %+% "_" %+% j %+% "_" %+% ".Formant"
       
-      writeLines (tmp_out, paste0 (path, "/",output_file))
+      writeLines (tmp_out, paste0 (path, "/formants/",output_file))
     }
   }
 }
