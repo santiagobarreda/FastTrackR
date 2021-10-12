@@ -31,9 +31,12 @@
 #' winners = autoselect.classic (formants, outputpath="working")
 #' }
 
-autoselect.classic <- function (formants, order = 5, n_formants = 4, outputpath = NA, 
+autoselect.classic <- function (formants=NA, order = 5, n_formants = 4, outputpath = NA, 
                                 subset = NA, progressbar = FALSE, write = TRUE){
 
+  if (all(is.na (formants)) & !file.exists (getwd() %+% "/formants.RDS")) stop ("Formant information not provided.")
+  if (all(is.na (formants)) & file.exists (getwd() %+% "/formants.RDS")) formants = readRDS(getwd() %+% "/formants.RDS")
+  
   n_files = length (formants)
   n_steps = length (formants[[1]])
   n_formants = ncol (formants[[1]][[1]])/2
