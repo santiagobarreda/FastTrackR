@@ -43,6 +43,8 @@ extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding
 
   segmentlabels = c("-",tgdata[[segmenttier]]$label,"-")
   use = which (phones %in% vowelstoextract[,2])
+  if (!is.na(stress[1])) use = which (phones %in% vowelstoextract[,2] & (stresses %in% stress))
+  
   extract$previous_sound = segmentlabels[use]
   extract$next_sound = segmentlabels[use+2]
 
