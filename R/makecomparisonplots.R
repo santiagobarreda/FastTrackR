@@ -21,7 +21,7 @@
 #' }
 
 
-makecomparisonplots <- function (formants, path = NA, sounds = NA, height = 1000, width = 1400, 
+makecomparisonplots <- function (formants=NA, path = NA, sounds = NA, height = 1000, width = 1400, 
                                  pointsize = 20, winners = NA, number_of_lines = 0.0015, progressbar = TRUE,
                                  alternate_output_path=NA,...){
 
@@ -34,6 +34,10 @@ makecomparisonplots <- function (formants, path = NA, sounds = NA, height = 1000
     sounds = readRDS (path %+% "/sounds.RDS")
     sounds_exist = TRUE
   }
+  if (all(is.na(formants)) & file.exists (path %+% "/formants.RDS")){
+    formants = readRDS (path %+% "/formants.RDS")
+  }
+  if (all(is.na(formants))) stop ("Formant information not provided and none found in working directory.")
   
   winners_exist = FALSE
   winner_value = NA
