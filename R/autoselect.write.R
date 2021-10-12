@@ -65,10 +65,10 @@ autoselect.write <- function (outputpath, output){
     }
     tmp_reg[[count]] = paste ("winner is: ", winners_csv[i,2])
     
-    write(tmp_reg[[1]],paste0(outputpath,"/",reg_files[i]), append=FALSE)
+    write(tmp_reg[[1]],paste0(outputpath,"/regression_infos/",reg_files[i]), append=FALSE)
     lapply(2:length(tmp_reg), 
            function(x) 
-             write(tmp_reg[[x]], paste0(outputpath,"/",reg_files[i]), append=TRUE,ncolumns=nrow(tmp_reg[[5]]))
+             write(tmp_reg[[x]], paste0(outputpath,"/regression_infos/",reg_files[i]), append=TRUE,ncolumns=nrow(tmp_reg[[5]]))
           )
   }
 }
