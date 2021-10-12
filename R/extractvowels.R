@@ -30,7 +30,7 @@
 
 extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
                           wordtier=NA,commenttiers=NA,omittier=NA, stress=c(0,1,2), 
-                          wordstoskip=NA, write = TRUE, encoding = "UTF-16"){
+                          wordstoskip=NA, write = TRUE, encoding = "UTF-8"){
 
   if (!all(is.na(tgpath)) & !all(is.na(sndpath))){
     if (length(tgpath) != length (sndpath)) stop ("Path lengths do not match.")
@@ -47,6 +47,8 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
   }
   if (all(is.na(tgpath)) & all(is.na(sndpath))) stop ("No paths provided.")
 
+  base = unlist (strsplit (basename (tgpath), split ="\\."))[c(T,F)]
+  
   n = length (tgpath)
   output = list()
 
