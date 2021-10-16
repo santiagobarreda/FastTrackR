@@ -79,7 +79,7 @@ autoselect.classic <- function (formants=NA, order = 5, n_formants = 4, outputpa
   if (n_formants==4) winners_csv[["F4"]] = winners
   
   penalties = matrix (0,nrow(winners_csv),ncol(errors))
-  rownames (penalties) = basename(winners_csv$file)
+  rownames (penalties) = basename(as.character(winners_csv$file))
   
   labels = unlist(sapply (formants, attr, "label"))
   if (!is.null(labels)) names (labels) = winners_csv$file
