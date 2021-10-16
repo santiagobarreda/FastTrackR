@@ -97,6 +97,7 @@ extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding
   }
 
   extract = cbind (filename="--", extract)
+  extract[,1] = as.character(extract[,1])
   extract$filename[extract$omit==0] = paste0 (base, "_", addzeros(1:sum(extract$omit==0)), ".wav")
 
   data_out = extract
