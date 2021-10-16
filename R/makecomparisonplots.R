@@ -8,7 +8,6 @@
 #' @param height height of each plot in pixels.
 #' @param width width of each plot in pixels.
 #' @param pointsize point size for plotting.
-#' @param winners if you want winners to be highlighted, provide a dataframe with the information in the winners.csv file.
 #' @param number_of_lines the number of pixels along the x axis for each spectrogram. Consider in relation to image width. 
 #' @param progressbar if TRUE, information about estimated analysis time is printed. 
 #' @param alternate_output_path if not NA, images will be written directly to this path.
@@ -22,7 +21,7 @@
 
 
 makecomparisonplots <- function (formants=NA, path = NA, sounds = NA, height = 1000, width = 1400, 
-                                 pointsize = 20, winners = NA, number_of_lines = 0.0015, progressbar = TRUE,
+                                 pointsize = 20, number_of_lines = 0.0015, progressbar = TRUE,
                                  alternate_output_path=NA,...){
 
   if (is.na (path)) path = getwd()
@@ -41,8 +40,12 @@ makecomparisonplots <- function (formants=NA, path = NA, sounds = NA, height = 1
   
   winners_exist = FALSE
   winner_value = NA
-  if (!all(is.na(winners)))  winners_exist = TRUE
-  
+  if (file.exists (getwd() %+% "/selection_information.RDS")){
+    selection_information = readRDS(getwd() %+% "/selection_information.RDS")
+    winners = selection_information$winners_csv
+    winners_exist = TRUE
+  }
+
   if (class(formants) != "formants_single"){
     dir.create(path %+% "/images_comparison", showWarnings = FALSE)
   
