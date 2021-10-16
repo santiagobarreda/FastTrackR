@@ -44,6 +44,7 @@ readtextgrid <- function (path, encoding = "UTF-8"){
   if (filetype=="long"){
     tier_names = gsub ("name = ", "", tier_names)
     tier_names = gsub (" ", "", tier_names)
+    tier_names = gsub ("\t", "", tier_names)
   }
   tier_names = gsub ("\\\"", "", tier_names)
   tier_n = getnumbers (tg[tiers+4])
@@ -65,6 +66,7 @@ readtextgrid <- function (path, encoding = "UTF-8"){
 
       output[,1] = gsub ("text = ", "", output[,1])
       output[,1] = gsub (" ", "", output[,1])
+      output[,1] = gsub ("\t", "", output[,1])
       output[,1] = gsub ("\\\"", "", output[,1])
     }
     # long format processing
@@ -83,6 +85,7 @@ readtextgrid <- function (path, encoding = "UTF-8"){
 
       output[,1] = gsub ("text = ", "", output[,1])
       output[,1] = gsub (" ", "", output[,1])
+      output[,1] = gsub ("\t", "", output[,1])
       output[,1] = gsub ("\\\"", "", output[,1])
     }
     outputs[[i]] = output
