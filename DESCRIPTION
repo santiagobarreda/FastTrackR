@@ -25,3 +25,7 @@ Imports:
     phonTools,
     signal,
     tuneR
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr
