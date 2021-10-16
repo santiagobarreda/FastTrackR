@@ -5,13 +5,12 @@
 \title{Make images comparing alternative analysies}
 \usage{
 makecomparisonplots(
-  formants,
+  formants = NA,
   path = NA,
   sounds = NA,
   height = 1000,
   width = 1400,
   pointsize = 20,
-  winners = NA,
   number_of_lines = 0.0015,
   progressbar = TRUE,
   alternate_output_path = NA,
@@ -30,8 +29,6 @@ makecomparisonplots(
 \item{width}{width of each plot in pixels.}
 
 \item{pointsize}{point size for plotting.}
-
-\item{winners}{if you want winners to be highlighted, provide a dataframe with the information in the winners.csv file.}
 
 \item{number_of_lines}{the number of pixels along the x axis for each spectrogram. Consider in relation to image width.}
 

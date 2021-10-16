@@ -11,7 +11,8 @@ aggregatedata(
   f0_bins = 1,
   n_formants = NA,
   method = "median",
-  encoding = "UTF-8"
+  encoding = "UTF-8",
+  write = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ aggregatedata(
 \item{method}{a string (default = \code{"median"}). Determines what kind of summarization function is used when aggregating data. Other functions to come later.}
 
 \item{encoding}{--.}
+
+\item{write}{--.}
 }
 \value{
 A dataframe containing formant measurements and various other information for each file (= vowel token). The column called \code{f12} is the F1 measurement in the second bin. If only one F0 measurement is returned, the column will be named \code{f0}. Otherwise, it will follow the same convention (i.e. the F0 measurement for the third bin will be called \code{f03}).

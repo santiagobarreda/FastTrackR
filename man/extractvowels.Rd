@@ -15,7 +15,7 @@ extractvowels(
   stress = c(0, 1, 2),
   wordstoskip = NA,
   write = TRUE,
-  encoding = "UTF-16"
+  encoding = "UTF-8"
 )
 }
 \arguments{

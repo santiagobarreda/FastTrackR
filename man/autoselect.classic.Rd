@@ -5,7 +5,7 @@
 \title{Automatically select winners}
 \usage{
 autoselect.classic(
-  formants,
+  formants = NA,
   order = 5,
   n_formants = 4,
   outputpath = NA,

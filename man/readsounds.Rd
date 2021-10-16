@@ -4,10 +4,12 @@
 \alias{readsounds}
 \title{Read sounds a single data file}
 \usage{
-readsounds(path = NA)
+readsounds(path = NA, save = TRUE)
 }
 \arguments{
 \item{path}{the path to the working directory for the Fast Track project. If no path is provided this is the working directory.}
+
+\item{save}{--.}
 }
 \description{
 This function writes out R internal formant data into text files that can be used in Praat.

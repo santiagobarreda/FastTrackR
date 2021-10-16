@@ -10,7 +10,8 @@ getwinners(
   winners = NA,
   selection_info = NA,
   asone = TRUE,
-  write_csv = FALSE
+  write_csv = FALSE,
+  move_formants = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ getwinners(
 \item{asone}{if TRUE, the formant data is stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.}
 
 \item{write_csv}{if TRUE, the data is written out to a CSV folder in the working directory.}
+
+\item{move_formants}{--.}
 }
 \value{
 A dataframe or list of dataframes, as per the asone parameter.
