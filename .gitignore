@@ -5,3 +5,4 @@ tmp
 *.RDS
 
 joeys_sandbox.Rmd
+inst/doc
