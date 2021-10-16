@@ -31,7 +31,7 @@ ft.plot <- function(aggregated_data, xformant=1,yformant=2,revaxes=FALSE,
   for (i in 0:(ntimes-1)){
     ffs[,,i+1] = as.matrix (aggregated_data[,(spot+(i*nf)):(spot+nf-1+(i*nf))])
   }
-  color = aggregated_data$color
+  color = as.character(aggregated_data$color)
   color[color=="Lime"] = "green2"
   color[color=="Teal"] = "turquoise2"
   color[color=="Olive"] = "olivedrab3"
