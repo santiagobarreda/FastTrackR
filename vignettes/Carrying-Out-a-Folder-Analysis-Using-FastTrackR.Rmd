@@ -1,0 +1,89 @@
+---
+title: "Carrying Out a Folder Analysis Using FastTrackR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Carrying Out a Folder Analysis Using FastTrackR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Load the `fasttrackr` R package. 
+
+```{r setup}
+library(fasttrackr)
+```
+
+And change the working directory to wherever you would like all your output files to be. 
+
+```{r analysis, eval=FALSE}
+## change to working directory
+setwd("C:/myworkingdirectory/")
+```
+
+For this example I am going to use the example wav and TextGrid files included in Fast TrackR. I am going to write these out to the working directory so that the analysis will be just like one carried out using local wav and TextGrid files.  
+
+```{r, eval=FALSE}
+wav_example
+tuneR::writeWave(wav_example, "rainbowpassage.wav")
+
+textgrid_example[1:10]
+writeLines(textgrid_example, "rainbowpassage.TextGrid")
+```
+
+Then I extract the stressed vowels from the recording, using the TextGrid. The output of the extraction is saved in RDS files to the working directory. 
+
+```{r, eval=FALSE}
+extractvowels ("rainbowpassage.TextGrid", "rainbowpassage.wav", segmenttier=2,wordtier=1,stress = 1)
+```
+
+The formant tracking function relies on the RDS files in the working directory created in the previous step, although they can also be provided directly to the function. 
+
+```{r, eval=FALSE}
+formants = trackformants.folder (from = 4500, to = 6500, nsteps = 20)
+```
+
+Next, we select the best analysis for each file, again relying on the RDS files in the working directory. 
+
+```{r, eval=FALSE}
+selectioninfo = autoselect.classic()
+```
+
+After picking the best analysis, we get the winning analyses.
+
+```{r, eval=FALSE}
+ff_data = getwinners()
+```
+
+Finally, we aggregate the data.
+
+```{r, eval=FALSE}
+aggregated = aggregatedata (csvs = ff_data)
+```
+
+We can plot the aggregated data. 
+
+```{r, eval=FALSE}
+par (mfrow = c(1,1), mar = c(4,4,1,1))
+ft.lines(aggregated, xformant=2,yformant=1, revaxes = TRUE, logaxes=FALSE)
+ft.arrows(aggregated, xformant=2,yformant=1, revaxes = TRUE, logaxes=FALSE)
+ft.points(aggregated, xformant=2,yformant=1, revaxes = TRUE, logaxes=FALSE)
+```
+
+And make figures of the competing analyses or of the winning analysis. 
+
+```{r, eval=FALSE}
+makecomparisonplots()
+makewinnerplots(csvs = ff_data)
+```
+
+
+
+
+
