@@ -88,3 +88,20 @@
 "vowels"
 
 
+#' Example of a Praat TextGrid File
+#'
+#' 
+#'
+
+"textgrid_example"
+
+
+#' Example of a wav file
+#' #'
+#' 
+#'
+
+"wav_example"
+
+
+
