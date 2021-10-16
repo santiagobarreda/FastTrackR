@@ -11,6 +11,7 @@
 #' @param formants an optional list of lists representing all of the possible formant analyses.
 #' @param asone if TRUE, the formant data is stuck together into one dataframe and filenames are indicated in a new column. If FALSE, a list of dataframes is returned and each list element is named after the file.
 #' @param write_csv if TRUE, the data is written out to a CSV folder in the working directory.
+#' @param move_formants --.
 #' @return A dataframe or list of dataframes, as per the asone parameter.
 #' @export
 #' @examples
