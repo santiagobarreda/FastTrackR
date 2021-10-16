@@ -144,7 +144,7 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   
   if (write){
     dir.create(path %+% "/processed_data", showWarnings = FALSE)
-    write.csv (aggregated, path %+% "/processed_data/aggregated_data.csv")
+    utils::write.csv (aggregated, path %+% "/processed_data/aggregated_data.csv")
   } 
 
   aggregated
