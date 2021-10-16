@@ -100,6 +100,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/my-vignette.html">Carrying Out a Folder Analysis Using FastTrackR</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -134,7 +146,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>autoselect.classic</span><span class='op'>(</span>
-  <span class='va'>formants</span>,
+  formants <span class='op'>=</span> <span class='cn'>NA</span>,
   order <span class='op'>=</span> <span class='fl'>5</span>,
   n_formants <span class='op'>=</span> <span class='fl'>4</span>,
   outputpath <span class='op'>=</span> <span class='cn'>NA</span>,
@@ -189,7 +201,7 @@
 <span class='va'>formants</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span> <span class='op'>(</span><span class='st'>'formants.RDS'</span><span class='op'>)</span>
 
 <span class='co'># or track the formants using R</span>
-<span class='va'>formants</span> <span class='op'>=</span> <span class='fu'><a href='trackformants.html'>trackformants</a></span> <span class='op'>(</span><span class='op'>)</span>
+<span class='va'>formants</span> <span class='op'>=</span> <span class='fu'>trackformants</span> <span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># keep results in R</span>
 <span class='va'>winners</span> <span class='op'>=</span> <span class='fu'>autoselect.classic</span> <span class='op'>(</span><span class='va'>formants</span>, progressbar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>

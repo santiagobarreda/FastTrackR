@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot an aggregated file — ft.plot • fasttrackr</title>
+<title>Example of a Praat TextGrid File — textgrid_example • fasttrackr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Plot an aggregated file — ft.plot" />
-<meta property="og:description" content="Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions." />
+<meta property="og:title" content="Example of a Praat TextGrid File — textgrid_example" />
+<meta property="og:description" content="Example of a Praat TextGrid File" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@joey_stan" />
 <meta name="twitter:site" content="@joey_stan" />
@@ -136,68 +136,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot an aggregated file</h1>
-    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/plotting.R'><code>R/plotting.R</code></a></small>
-    <div class="hidden name"><code>ft.plot.Rd</code></div>
+    <h1>Example of a Praat TextGrid File</h1>
+    <small class="dont-index">Source: <a href='https://github.com/santiagobarreda/FastTrackR/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>textgrid_example.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Set up a plot aggregated files. This function does not draw anything but is used to set up the plot for other functions.</p>
+    <p>Example of a Praat TextGrid File</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ft.plot</span><span class='op'>(</span>
-  <span class='va'>aggregated_data</span>,
-  xformant <span class='op'>=</span> <span class='fl'>1</span>,
-  yformant <span class='op'>=</span> <span class='fl'>2</span>,
-  revaxes <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  logaxes <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  xlab <span class='op'>=</span> <span class='cn'>NA</span>,
-  ylab <span class='op'>=</span> <span class='cn'>NA</span>,
-  add <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>textgrid_example</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>aggregated_data</th>
-      <td><p>A dataframe containing the data from an 'aggregated_data' file produced by Fast Track.</p></td>
-    </tr>
-    <tr>
-      <th>xformant</th>
-      <td><p>an integer indicating which formant number should be plotted on the x axis.</p></td>
-    </tr>
-    <tr>
-      <th>yformant</th>
-      <td><p>an integer indicating which formant number should be plotted on the y axis.</p></td>
-    </tr>
-    <tr>
-      <th>revaxes</th>
-      <td><p>if TRUE, axis ranges are inverted so that they go high &gt; low.</p></td>
-    </tr>
-    <tr>
-      <th>logaxes</th>
-      <td><p>if TRUE, axes are logarithmic.</p></td>
-    </tr>
-    <tr>
-      <th>xlab</th>
-      <td><p>an optional user-specified x-axis label.</p></td>
-    </tr>
-    <tr>
-      <th>ylab</th>
-      <td><p>an optional user-specified y-axis label.</p></td>
-    </tr>
-    <tr>
-      <th>add</th>
-      <td><p>if FALSE, a new plot if created.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments are passed to the internal call of 'plot'.</p></td>
-    </tr>
-    </table>
 
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An object of class <code>character</code> of length 604.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

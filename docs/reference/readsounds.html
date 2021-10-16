@@ -100,6 +100,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/my-vignette.html">Carrying Out a Folder Analysis Using FastTrackR</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -133,7 +145,7 @@
     <p>This function writes out R internal formant data into text files that can be used in Praat.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readsounds</span><span class='op'>(</span>path <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>readsounds</span><span class='op'>(</span>path <span class='op'>=</span> <span class='cn'>NA</span>, save <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,6 +153,10 @@
     <tr>
       <th>path</th>
       <td><p>the path to the working directory for the Fast Track project. If no path is provided this is the working directory.</p></td>
+    </tr>
+    <tr>
+      <th>save</th>
+      <td><p>--.</p></td>
     </tr>
     </table>
 
