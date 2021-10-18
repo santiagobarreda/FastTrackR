@@ -2,25 +2,25 @@
 #' Track formants for a folder of sounds
 #'
 #'
-#' @param path a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of paths to wave files on your hard drive can be provided instead using the path parameter.
-#' @param from the lowest analysis frequency.
-#' @param to the highest analysis frequency.
-#' @param nsteps the number of steps between the lowest and highest analysis frequencies.
-#' @param windowlength the windowlength specified in seconds.
+#' @param path the path to the folder you with to analyze. If NA, the working directory is used. 
+#' @param from the lowest maximum formant frequency that will be considered.
+#' @param to the highest maximum formant frequency that will be considered.
+#' @param nsteps the number of analysis steps between the lowest and highest analysis frequencies.
+#' @param windowlength the LPC analysis window length specified in seconds.
 #' @param write if TRUE, the result of the analysis is saved as an RDS file. 
-#' @param n_formants the number of formants returned (5.5. are always tracked).
+#' @param n_formants the number of formants returned and optimized over (5.5. are always tracked).
 #' @param timestep the analysis time step specified in seconds.
 #' @param fileinformation a dataframe representing the "file_information.csv" file used by Fast Track. If NA, it is loaded from the working directory. 
 #' @param progressbar if TRUE, information about estimated analysis time is printed. 
 #' @param write_infos if TRUE, analysis info text files are written out as in Praat. 
 #' @param sounds a list of previously loaded sounds. 
-#' @param encoding --. 
-#' @return A dataframe containing information about the formant tracks for the file.
+#' @param encoding if loading file_information from a local CSV file, you may need to specify the encoding or change the file to UTF-8 encoding.  
+#' @return A 'formants' object containing information about all alternate formant analyses for all files. See the help for the readformants() function in this package for more information on 'formants' objects. 
 #' @export
 #' @examples
 #' \dontrun{
-#' sound = readWave2("yoursound.wav")
-#' ffs = trackformants (sound, timestep = 0.002)
+#' ffs = trackformants.folder ()
+#' ffs
 #' plotffs (ffs)
 #' plotffs (ffs[[2]])
 #' }
@@ -34,10 +34,10 @@ trackformants.folder = function (path=NA, from = 4800, to = 6800, nsteps=12, win
   if (is.na (path)) path =  getwd()
 
   # if there is a single file run it once
-  if (class(path)=="Wave")
-    ffs = trackformants.internal (path, from = from, to = to,n_formants = n_formants,
-                            nsteps=nsteps, windowlength = windowlength,
-                            timestep = timestep, label = NA)
+  #if (class(path)=="Wave")
+  #  ffs = trackformants.internal (path, from = from, to = to,n_formants = n_formants,
+  #                          nsteps=nsteps, windowlength = windowlength,
+  #                          timestep = timestep, label = NA)
   
   # if path is a path to a working directory, analyze those folders
   if (class(path)=="character"){
@@ -101,7 +101,7 @@ trackformants.folder = function (path=NA, from = 4800, to = 6800, nsteps=12, win
     attr(ffs, "nfiles") = length (ffs)
     attr(ffs, "cutoffs") = attr(ffs[[1]], "cutoffs")
     attr(ffs, "ncutoffs") = length (attr(ffs[[1]], "cutoffs"))
-    attr(ffs, "labels") = labels[i]
+    attr(ffs, "labels") = unname (labels)
     attr(ffs, "class") = "formants"
   }
   if (write) saveRDS (ffs, "formants.RDS")
