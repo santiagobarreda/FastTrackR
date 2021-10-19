@@ -15,6 +15,7 @@
 #' @param wordstoskip a vector containing any words you do not want to extract vowels from.
 #' @param write if TRUE, 'sounds.RDS' and 'file_information.RDS' are saved to the working directory. 
 #' @param encoding --. 
+#' @param vowelstoextract --. 
 #' @return --.
 #' @export
 #' @examples
@@ -30,7 +31,7 @@
 
 extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
                           wordtier=NA,commenttiers=NA,omittier=NA, stress=c(0,1,2), 
-                          wordstoskip=NA, write = TRUE, encoding = "UTF-8"){
+                          wordstoskip=NA, write = TRUE, encoding = "UTF-8",vowelstoextract=NA){
 
   if (!all(is.na(tgpath)) & !all(is.na(sndpath))){
     if (length(tgpath) != length (sndpath)) stop ("Path lengths do not match.")
@@ -59,7 +60,7 @@ extractvowels = function (tgpath=NA, sndpath=NA,outputpath=NA, segmenttier=1,
   for (i in 1:n){
     output = extract.internal (tgpath[i], sndpath[i], segmenttier,wordtier,
                               commenttiers,omittier, stress, wordstoskip,
-                               encoding=encoding)
+                               encoding=encoding,vowelstoextract=vowelstoextract)
 
     output[[1]] = cbind(source_file = base[i] %+% ".wav", output[[1]])
     segmentation_info = rbind(segmentation_info, output[[1]])
