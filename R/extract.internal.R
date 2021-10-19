@@ -1,9 +1,8 @@
 
-
 extract.internal = function (tgpath, sndpath, segmenttier=1,wordtier=NA,encoding = "UTF-8",
-                           commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA){
+                           commenttiers=NA,omittier=NA, stress=c(0,1,2), wordstoskip=NA, vowelstoextract = NA){
 
-  vowelstoextract = fasttrackr::vowelstoextract
+  if (all(is.na(vowelstoextract))) vowelstoextract = fasttrackr::vowelstoextract
 
   if (!missing(tgpath) & !missing(sndpath)){
     base = strsplit (basename (tgpath), split ="\\.")[[1]][1]
