@@ -15,7 +15,8 @@ extractvowels(
   stress = c(0, 1, 2),
   wordstoskip = NA,
   write = TRUE,
-  encoding = "UTF-8"
+  encoding = "UTF-8",
+  vowelstoextract = NA
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ extractvowels(
 \item{write}{if TRUE, 'sounds.RDS' and 'file_information.RDS' are saved to the working directory.}
 
 \item{encoding}{--.}
+
+\item{vowelstoextract}{--.}
 }
 \value{
 --.

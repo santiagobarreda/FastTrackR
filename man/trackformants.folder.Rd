@@ -21,19 +21,19 @@ trackformants.folder(
 )
 }
 \arguments{
-\item{path}{a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of paths to wave files on your hard drive can be provided instead using the path parameter.}
+\item{path}{the path to the folder you with to analyze. If NA, the working directory is used.}
 
-\item{from}{the lowest analysis frequency.}
+\item{from}{the lowest maximum formant frequency that will be considered.}
 
-\item{to}{the highest analysis frequency.}
+\item{to}{the highest maximum formant frequency that will be considered.}
 
-\item{nsteps}{the number of steps between the lowest and highest analysis frequencies.}
+\item{nsteps}{the number of analysis steps between the lowest and highest analysis frequencies.}
 
-\item{windowlength}{the windowlength specified in seconds.}
+\item{windowlength}{the LPC analysis window length specified in seconds.}
 
 \item{write}{if TRUE, the result of the analysis is saved as an RDS file.}
 
-\item{n_formants}{the number of formants returned (5.5. are always tracked).}
+\item{n_formants}{the number of formants returned and optimized over (5.5. are always tracked).}
 
 \item{timestep}{the analysis time step specified in seconds.}
 
@@ -45,18 +45,18 @@ trackformants.folder(
 
 \item{sounds}{a list of previously loaded sounds.}
 
-\item{encoding}{--.}
+\item{encoding}{if loading file_information from a local CSV file, you may need to specify the encoding or change the file to UTF-8 encoding.}
 }
 \value{
-A dataframe containing information about the formant tracks for the file.
+A 'formants' object containing information about all alternate formant analyses for all files. See the help for the readformants() function in this package for more information on 'formants' objects.
 }
 \description{
 Track formants for a folder of sounds
 }
 \examples{
 \dontrun{
-sound = readWave2("yoursound.wav")
-ffs = trackformants (sound, timestep = 0.002)
+ffs = trackformants.folder ()
+ffs
 plotffs (ffs)
 plotffs (ffs[[2]])
 }
