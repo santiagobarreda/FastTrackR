@@ -166,23 +166,23 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path</th>
-      <td><p>a Wave object read in using the readWave function from the tuneR package, or a list containing a set of these to be analyzed. A list of paths to wave files on your hard drive can be provided instead using the path parameter.</p></td>
+      <td><p>the path to the folder you with to analyze. If NA, the working directory is used.</p></td>
     </tr>
     <tr>
       <th>from</th>
-      <td><p>the lowest analysis frequency.</p></td>
+      <td><p>the lowest maximum formant frequency that will be considered.</p></td>
     </tr>
     <tr>
       <th>to</th>
-      <td><p>the highest analysis frequency.</p></td>
+      <td><p>the highest maximum formant frequency that will be considered.</p></td>
     </tr>
     <tr>
       <th>nsteps</th>
-      <td><p>the number of steps between the lowest and highest analysis frequencies.</p></td>
+      <td><p>the number of analysis steps between the lowest and highest analysis frequencies.</p></td>
     </tr>
     <tr>
       <th>windowlength</th>
-      <td><p>the windowlength specified in seconds.</p></td>
+      <td><p>the LPC analysis window length specified in seconds.</p></td>
     </tr>
     <tr>
       <th>write</th>
@@ -190,7 +190,7 @@
     </tr>
     <tr>
       <th>n_formants</th>
-      <td><p>the number of formants returned (5.5. are always tracked).</p></td>
+      <td><p>the number of formants returned and optimized over (5.5. are always tracked).</p></td>
     </tr>
     <tr>
       <th>timestep</th>
@@ -214,18 +214,18 @@
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>--.</p></td>
+      <td><p>if loading file_information from a local CSV file, you may need to specify the encoding or change the file to UTF-8 encoding.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe containing information about the formant tracks for the file.</p>
+    <p>A 'formants' object containing information about all alternate formant analyses for all files. See the help for the readformants() function in this package for more information on 'formants' objects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>sound</span> <span class='op'>=</span> <span class='fu'>readWave2</span><span class='op'>(</span><span class='st'>"yoursound.wav"</span><span class='op'>)</span>
-<span class='va'>ffs</span> <span class='op'>=</span> <span class='fu'>trackformants</span> <span class='op'>(</span><span class='va'>sound</span>, timestep <span class='op'>=</span> <span class='fl'>0.002</span><span class='op'>)</span>
+<span class='va'>ffs</span> <span class='op'>=</span> <span class='fu'>trackformants.folder</span> <span class='op'>(</span><span class='op'>)</span>
+<span class='va'>ffs</span>
 <span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs</span><span class='op'>)</span>
 <span class='fu'><a href='plotffs.html'>plotffs</a></span> <span class='op'>(</span><span class='va'>ffs</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='op'>}</span>
