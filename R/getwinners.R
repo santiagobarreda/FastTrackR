@@ -28,16 +28,16 @@ getwinners <- function (path = NA, formants = NA, winners = NA, selection_info =
   winners_exists = FALSE
   if (any(!is.na(winners))) winners_exists = TRUE
   
-  if (!winners_exists & file.exists(path %+% "/winners.csv")){
-    winners = utils::read.csv (path %+% "/winners.csv")
+  if (!winners_exists & file.exists(paste0(path, "/winners.csv"))){
+    winners = utils::read.csv (paste0(path, "/winners.csv"))
     winners_exists = TRUE
   }
   # read in data
   ## stop if files dont exist, check for both
 
   labels = NA
-  if (all(is.na(selection_info)) & file.exists(path %+% "/selection_information.RDS")){ 
-    selection_info = readRDS (path %+% "/selection_information.RDS")
+  if (all(is.na(selection_info)) & file.exists(paste0(path, "/selection_information.RDS"))){ 
+    selection_info = readRDS (paste0(path, "/selection_information.RDS"))
     winners = selection_info$winners_csv
   }
 
@@ -80,6 +80,7 @@ getwinners <- function (path = NA, formants = NA, winners = NA, selection_info =
         tmp_formants = tmp_formants[, c(1,5,2,6,3,7,4,8)]
         tmp_csv[,2:9] = tmp_formants
       }
+      tmp_csv$maxformant = attributes(formants[[1]][[ws[1]]])$maxformant
       csvs[[i]] = tmp_csv
     }
     # if individual formants ARE being selected across analyses
@@ -112,6 +113,7 @@ getwinners <- function (path = NA, formants = NA, winners = NA, selection_info =
                               tmp_formants4[1:minrow, c(1,4)+3])
         tmp_csv[1:minrow,2:9] = tmp_formants
       }
+      tmp_csv$maxformant = attributes(formants[[1]][[tmp_formants1]])$maxformant
       csvs[[i]] = tmp_csv
     }
   }
