@@ -75,7 +75,7 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   
   # Split csvs and get filenames
   tmp_csvs = split (csvs, csvs$file)
-  files = names (tmp_csvs) %+% ".wav"
+  files = paste0 (names (tmp_csvs), ".wav")
   
   # internal function to quickly calculate duration and bins
   tmp_csvs = lapply (tmp_csvs, function (x){
@@ -90,11 +90,18 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   # rejoining data
   tmp_csvs = do.call (rbind, tmp_csvs)
   
-  if (n_formants==3) tmp_agg = stats::aggregate (cbind (f1,f2,f3) ~ bin+file, tmp_csvs, method)  
-  if (n_formants==4) tmp_agg = stats::aggregate (cbind (f1,f2,f3,f4) ~ bin, tmp_csvs, method)
-
+  if (n_formants==3){
+    tmp_agg = stats::aggregate (cbind (f1,f2,f3) ~ bin+file, tmp_csvs, method)  
+    aggregated = c(t(tmp_agg[,3:5]))
+  } 
+  if (n_formants==4){
+    tmp_agg = stats::aggregate (cbind (f1,f2,f3,f4) ~ bin+file, tmp_csvs, method)
+    aggregated = c(t(tmp_agg[,3:6]))
+  }
+  
+  cutoffs = stats::aggregate (maxformant ~ file, tmp_csvs, method)$maxformant
+  
   # aggregated bins into matrix for output
-  aggregated = c(t(tmp_agg[,3:5]))
   aggregated =  data.frame(matrix (aggregated,length (files),bins*n_formants, byrow = TRUE))
   colnames (aggregated) = paste0 ("f",rep(1:n_formants,bins),if(bins>1)rep(1:bins,each=n_formants))
   
@@ -102,7 +109,7 @@ aggregatedata <- function (path=NA, csvs=NA, bins = 5, f0_bins = 1, n_formants =
   duration = tapply (tmp_csvs$dur, tmp_csvs$file, max)
   
   # put parts together
-  aggregated = cbind (file = files, duration, aggregated)
+  aggregated = cbind (file = files, duration, cutoff=cutoffs, aggregated)
   
   # calculation of f0 if it applies
   if (f0_bins == 1 & f0present){
